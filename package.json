@@ -1,0 +1,19 @@
+{
+  "name": "viabil-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static single-file landing page for VIABIL.",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "start": "python3 -m http.server 4173",
+    "check": "python3 - <<'PY'\nfrom pathlib import Path\nhtml = Path('index.html').read_text(encoding='utf-8')\nrequired = ['<!DOCTYPE html>', '<html lang=\"pt-BR\">', '<meta name=\"description\"', '<title>VIABIL']\nmissing = [item for item in required if item not in html]\nif missing:\n    raise SystemExit(f'Missing required markers: {missing}')\nprint('Static checks passed.')\nPY"
+  },
+  "keywords": [
+    "viabil",
+    "landing-page",
+    "static-site",
+    "real-estate",
+    "financial-intelligence"
+  ],
+  "license": "UNLICENSED"
+}
