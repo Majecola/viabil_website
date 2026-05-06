@@ -10,15 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --green-primary: #0A4B35;
-      --green-secondary: #13885E;
-      --green-light: #5FBF9F;
-      --black: #0D0D0D;
-      --gray-dark: #4A4A4A;
-      --gray-light: #E6E8EB;
-      --off-white: #FAFAFA;
+      --green-primary: #0B5E34;
+      --green-secondary: #138A4B;
+      --green-light: #4DC97A;
+      --black: #1A2320;
+      --gray-dark: #2C3830;
+      --gray-light: #E8EBE9;
+      --off-white: #F5F4F0;
       --blue-tech: #1E3A8A;
-      --orange-lite: #FF7A00;
+      --orange-lite: #E8660C;
       --success: #16A34A;
       --warning: #F59E0B;
       --error: #DC2626;
@@ -511,6 +511,23 @@
       transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
     }
     .segment-pill:hover { background: var(--green-primary); color: var(--white); border-color: var(--green-primary); transform: translateY(-1px); }
+    .segment-pill.is-active { background: var(--green-primary); color: var(--white); border-color: var(--green-primary); }
+    .segment-insight {
+      margin: 24px auto 0;
+      max-width: 860px;
+      background: var(--white);
+      border: 1px solid var(--gray-light);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+    .segment-insight-title { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--gray-dark); font-weight: 600; }
+    .segment-insight-copy { margin-top: 6px; font-size: 15px; max-width: 58ch; text-wrap: pretty; }
+    .segment-metric { font-family: 'Courier New', monospace; font-size: 32px; color: var(--green-primary); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .segment-metric small { display: block; font-family: 'Inter', sans-serif; color: var(--gray-dark); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
 
     .clients { background: var(--white); }
     .clients h2 { text-align: center; }
@@ -555,6 +572,11 @@
     .active-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: block; margin-bottom: 12px; }
     .update-card h3 { font-size: 14px; }
     .update-card p { font-size: 12px; line-height: 1.5; margin-top: 6px; }
+    .kpi-value, .stat-number { font-variant-numeric: tabular-nums; }
+    .stage-card { cursor: pointer; transition: transform .25s ease, background .25s ease; border-radius: 10px; }
+    .stage-card:hover { transform: translateY(-2px); background: rgba(11,94,52,.04); }
+    .stage-card.active { background: rgba(11,94,52,.08); }
+    .stage-row:focus-visible { outline: 3px solid rgba(11,94,52,.3); outline-offset: 4px; border-radius: 10px; }
 
     .final-cta { background: var(--green-primary); color: var(--white); padding: 80px 0; text-align: center; overflow: hidden; }
     .final-cta .container { position: relative; }
@@ -635,6 +657,7 @@
       .kpi:nth-child(3), .kpi:nth-child(4) { border-bottom: 0; }
       .chart-panels { flex-direction: column; }
       .feature-grid, .audience-grid, .solutions-grid, .clients-grid, .lite-grid, .updates-grid, .update-cards { grid-template-columns: 1fr; }
+      .segment-insight { grid-template-columns: 1fr; text-align: left; }
       .audience-card { padding: 32px 24px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .stat-block { padding: 18px 10px; flex-direction: column; text-align: center; gap: 8px; }
@@ -943,14 +966,21 @@
         <span class="eyebrow reveal">Segmentos atendidos</span>
         <h2 class="reveal stagger-1">De alto padrão ao MCMV — a VIABIL atende todos os segmentos.</h2>
         <div class="segment-pills reveal stagger-2">
-          <button class="segment-pill" type="button">Residencial Alto Padrão</button>
-          <button class="segment-pill" type="button">Minha Casa Minha Vida</button>
-          <button class="segment-pill" type="button">Loteamentos</button>
-          <button class="segment-pill" type="button">Galpões Logísticos</button>
-          <button class="segment-pill" type="button">Shopping Centers</button>
-          <button class="segment-pill" type="button">Comercial e Escritórios</button>
-          <button class="segment-pill" type="button">Hotéis e Resorts</button>
-          <button class="segment-pill" type="button">Saúde e Educação</button>
+          <button class="segment-pill is-active" type="button" data-segment="Residencial Alto Padrão" data-insight="Projete VGV, velocidade de vendas e ponto de equilíbrio por torre antes da aquisição." data-metric="19.4" data-metric-label="Média de margem líquida">Residencial Alto Padrão</button>
+          <button class="segment-pill" type="button" data-segment="Minha Casa Minha Vida" data-insight="Estruture cenários com limites de subsídio, custo de obra e cronograma de repasse com menor risco." data-metric="12.8" data-metric-label="Ganho médio em previsibilidade">Minha Casa Minha Vida</button>
+          <button class="segment-pill" type="button" data-segment="Loteamentos" data-insight="Compare fases de liberação e fluxo de caixa para antecipar necessidade de capital de giro." data-metric="8.6" data-metric-label="Meses de antecipação de caixa">Loteamentos</button>
+          <button class="segment-pill" type="button" data-segment="Galpões Logísticos" data-insight="Modele ocupação, cap rate e payback com diferentes combinações de BTS e locação especulativa." data-metric="15.1" data-metric-label="Redução em desvios de CAPEX">Galpões Logísticos</button>
+          <button class="segment-pill" type="button" data-segment="Shopping Centers" data-insight="Avalie mix de lojas e receitas acessórias em múltiplos cenários de maturação comercial." data-metric="23.7" data-metric-label="Aumento na assertividade do NOI">Shopping Centers</button>
+          <button class="segment-pill" type="button" data-segment="Comercial e Escritórios" data-insight="Simule vacância, carência e custos condominiais para proteger a rentabilidade do ativo." data-metric="17.3" data-metric-label="Economia média no ciclo de decisão">Comercial e Escritórios</button>
+          <button class="segment-pill" type="button" data-segment="Hotéis e Resorts" data-insight="Cruze sazonalidade, diária média e custo operacional para decisões de implantação mais seguras." data-metric="14.9" data-metric-label="Melhora no ADR projetado">Hotéis e Resorts</button>
+          <button class="segment-pill" type="button" data-segment="Saúde e Educação" data-insight="Teste cenários de ocupação e contratos longos para reduzir volatilidade do retorno." data-metric="11.2" data-metric-label="Redução média de risco">Saúde e Educação</button>
+        </div>
+        <div class="segment-insight reveal stagger-3" id="segmentInsight" aria-live="polite">
+          <div>
+            <p class="segment-insight-title" id="segmentInsightTitle">Residencial alto padrão</p>
+            <p class="segment-insight-copy" id="segmentInsightCopy">Projete VGV, velocidade de vendas e ponto de equilíbrio por torre antes da aquisição.</p>
+          </div>
+          <div class="segment-metric"><span id="segmentInsightMetric">19.4%</span><small id="segmentInsightMetricLabel">Média de margem líquida</small></div>
         </div>
       </div>
     </section>
@@ -1132,6 +1162,38 @@
       });
     }, { threshold: .35 });
     counterObserver.observe(statsTarget);
+
+    const stageCards = document.querySelectorAll('.stage-card');
+    stageCards.forEach((card) => {
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.addEventListener('click', () => {
+        stageCards.forEach(item => item.classList.remove('active'));
+        card.classList.add('active');
+      });
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          card.click();
+        }
+      });
+    });
+
+    const segmentPills = document.querySelectorAll('.segment-pill');
+    const segmentTitle = document.getElementById('segmentInsightTitle');
+    const segmentCopy = document.getElementById('segmentInsightCopy');
+    const segmentMetric = document.getElementById('segmentInsightMetric');
+    const segmentMetricLabel = document.getElementById('segmentInsightMetricLabel');
+    segmentPills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        segmentPills.forEach(item => item.classList.remove('is-active'));
+        pill.classList.add('is-active');
+        segmentTitle.textContent = pill.dataset.segment;
+        segmentCopy.textContent = pill.dataset.insight;
+        segmentMetric.textContent = `${pill.dataset.metric}%`;
+        segmentMetricLabel.textContent = pill.dataset.metricLabel;
+      });
+    });
 
     const navLinks = document.querySelectorAll('.nav-links a');
     const watchedSections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
