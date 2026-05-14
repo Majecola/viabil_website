@@ -15,5 +15,8 @@
     "real-estate",
     "financial-intelligence"
   ],
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "motion": "^12.38.0"
+  }
 }

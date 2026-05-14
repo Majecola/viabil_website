@@ -18,17 +18,22 @@ This repository intentionally uses a single deployable `index.html` file with em
 
 ## Brand
 
-Core colors are defined as CSS custom properties in `:root`:
+Use only the official VIABIL color palette provided in `colors.txt`.
 
-- `--green-primary: #0B5E34`
-- `--green-mid: #138A4B`
-- `--green-lime: #4DC97A`
-- `--graphite: #1A2320`
-- `--graphite-mid: #2C3830`
-- `--off-white: #F5F4F0`
-- `--grey-mid: #7A8B85`
-- `--grey-light: #E8EBE9`
-- `--orange-lite: #E8660C`
+Core colors should be defined as CSS custom properties in `:root`:
+
+- `--green-primary: #0A4B35` - Primary Green. Main brand color for logo icon, primary buttons, key highlights, and important UI elements.
+- `--green-secondary: #13885E` - Secondary Green. Use for hover states, active elements, gradients, and secondary highlights.
+- `--green-light: #5FBF9F` - Light Green. Use for subtle backgrounds, chart fills, and secondary UI details.
+- `--black: #0D0D0D` - Primary text color for the VIABIL wordmark, headlines, and main content.
+- `--gray-dark: #4A4A4A` - Secondary text color for descriptions, labels, and less important text.
+- `--gray-light: #E6E8EB` - UI structure color for borders, dividers, input fields, and subtle backgrounds.
+- `--off-white: #FAFAFA` - Main website background color.
+- `--blue-technology: #1E3A8A` - Data and intelligence accent for charts, selected data points, and interactive highlights.
+- `--orange-lite: #FF7A00` - VIABIL Lite accent color. Use only for the Lite product, CTAs, and differentiation; use sparingly.
+- `--success-green: #16A34A` - Success states, confirmations, and completed actions.
+- `--warning-yellow: #F59E0B` - Alerts and attention points.
+- `--error-red: #DC2626` - Errors and critical messages.
 
 ## Coding standards
 
