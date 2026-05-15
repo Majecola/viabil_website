@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.turbo/
+.vercel/
+
+.codex-ui-audit/
+.playwright-cli/
+.edge-headless/
+
+node-server.err.log
+node-server.out.log
+
+*.log

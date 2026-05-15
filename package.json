@@ -2,11 +2,12 @@
   "name": "viabil-landing",
   "version": "1.0.0",
   "private": true,
-  "description": "Static single-file landing page for VIABIL.",
+  "description": "VIABIL website and training portal frontend.",
   "scripts": {
-    "dev": "python3 -m http.server 4173",
-    "start": "python3 -m http.server 4173",
-    "check": "python3 - <<'PY'\nfrom pathlib import Path\nhtml = Path('index.html').read_text(encoding='utf-8')\nrequired = ['<!DOCTYPE html>', '<html lang=\"pt-BR\">', '<meta name=\"description\"', '<title>VIABIL']\nmissing = [item for item in required if item not in html]\nif missing:\n    raise SystemExit(f'Missing required markers: {missing}')\nprint('Static checks passed.')\nPY"
+    "dev": "next dev -p 4174",
+    "build": "next build",
+    "start": "next start -p 4174",
+    "check": "next build"
   },
   "keywords": [
     "viabil",
@@ -17,6 +18,14 @@
   ],
   "license": "UNLICENSED",
   "dependencies": {
-    "motion": "^12.38.0"
+    "motion": "^12.38.0",
+    "next": "^16.0.7",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.1",
+    "@types/react": "^19.2.7",
+    "typescript": "^6.0.3"
   }
 }
