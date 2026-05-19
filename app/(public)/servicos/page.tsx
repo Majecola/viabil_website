@@ -1,136 +1,201 @@
 import type { Metadata } from "next";
-import { SectionHeader } from "@/components/marketing/SectionHeader";
 import { CTABand } from "@/components/marketing/CTABand";
+import { SectionHeader } from "@/components/marketing/SectionHeader";
 
 export const metadata: Metadata = {
   title: "Serviços | VIABIL",
-  description: "Suporte, Assessoria Operacional, Implantação, Customizações e Integrações — os serviços do VIABIL para maximizar o resultado da plataforma.",
+  description:
+    "Suporte ao usuário, assessoria operacional, implantação, parametrização, customizações e integrações para clientes VIABIL.",
 };
 
 const services = [
   {
-    id: "01",
     name: "Suporte ao Usuário",
-    tag: "Incluso em todos os planos",
-    headline: "Suporte especializado para quem trabalha com mercado imobiliário",
-    desc: "Nossa equipe de suporte é formada por especialistas em viabilidade financeira imobiliária — não apenas técnicos de TI. Eles entendem o que você está tentando analisar e ajudam a chegar no resultado certo.",
-    items: [
-      "Suporte por e-mail e chat",
-      "Base de conhecimento com tutoriais",
-      "Suporte técnico para acesso e funcionamento",
-      "Atendimento por especialistas de produto",
-    ],
+    tag: "Dia a dia",
+    desc: "Atendimento para dúvidas operacionais, técnicas e conceituais. A equipe entende viabilidade financeira imobiliária, não apenas funcionamento de software.",
+    facts: ["300+ atendimentos semanais", "Dúvidas de uso e conceito", "Atualizações e novos recursos"],
   },
   {
-    id: "02",
     name: "Assessoria Operacional",
-    tag: "VIABIL Pro e contratação avulsa",
-    headline: "Um especialista ao lado da sua equipe nas análises mais complexas",
-    desc: "A Assessoria Operacional é quando o time VIABIL atua junto com sua equipe — revisando premissas, orientando modelos, validando cenários e garantindo que a análise está correta antes de uma decisão importante.",
-    items: [
-      "Revisão de premissas e modelos financeiros",
-      "Validação de análises de viabilidade críticas",
-      "Orientação em casos de uso específicos",
-      "Consultoria de processo para equipes técnicas",
-    ],
+    tag: "Casos reais",
+    desc: "Especialistas VIABIL trabalham junto com a equipe do cliente em estudos, validação de premissas e discussão de boas práticas de mercado.",
+    facts: ["Realização conjunta de estudos", "Validação de critérios", "Troca de melhores práticas"],
   },
   {
-    id: "03",
-    name: "Implantação",
-    tag: "VIABIL Full e Pro",
-    headline: "Uma implantação que garante adoção real da plataforma",
-    desc: "A implantação VIABIL vai além de instalar o software. É um processo estruturado para que sua equipe adote o padrão VIABIL na rotina — com configuração das premissas padrão, criação de modelos da empresa e treinamento da equipe.",
-    items: [
-      "Configuração inicial e parametrização padrão",
-      "Criação dos modelos base da empresa",
-      "Treinamento presencial ou remoto da equipe",
-      "Migração de projetos existentes",
-      "Acompanhamento pós-implantação",
-    ],
+    name: "Implantação e Parametrização",
+    tag: "Adoção",
+    desc: "Configuração inicial de premissas, indicadores, curvas, plano de contas, estudos-modelo e homologação para que a empresa adote o padrão VIABIL.",
+    facts: ["Modelo de importação", "Geração de conteúdo", "Testes e homologação"],
   },
   {
-    id: "04",
     name: "Customizações",
-    tag: "VIABIL Pro — sob contrato",
-    headline: "A plataforma adaptada ao modelo de negócio da sua empresa",
-    desc: "Para empresas com modelos financeiros específicos, estruturas de capital diferenciadas ou fluxos de trabalho proprietários, o VIABIL oferece customizações de modelos, relatórios e campos.",
-    items: [
-      "Modelos financeiros customizados",
-      "Relatórios executivos sob medida",
-      "Campos e premissas adicionais",
-      "Dashboards personalizados",
-    ],
+    tag: "Sob medida",
+    desc: "Relatórios, indicadores e extensões funcionais para empresas com demandas específicas, sempre desenvolvidas pela equipe dedicada ao VIABIL.",
+    facts: ["80+ projetos realizados", "Indicadores personalizados", "Relatórios executivos"],
   },
   {
-    id: "05",
     name: "Integrações",
-    tag: "VIABIL Pro — sob contrato",
-    headline: "O VIABIL conectado ao seu ecossistema de dados",
-    desc: "Para empresas com ERP, sistemas de gestão de obra, CRM ou plataformas de dados, o VIABIL oferece integrações via API para eliminar retrabalho e garantir consistência de dados.",
-    items: [
-      "Integração com ERP (SAP, TOTVS, outros)",
-      "Conexão com sistemas de gestão de obra",
-      "API REST para dados de vendas e estoque",
-      "Exportação estruturada para BI",
-    ],
+    tag: "Dados",
+    desc: "Caminhos de integração com os principais ERPs do mercado imobiliário, conforme escopo do projeto, por layouts, exportações ou acesso estruturado a dados.",
+    facts: ["Layouts de importação", "De-para de plano de contas", "Base para acompanhamento"],
   },
 ];
 
-const S = {
-  page: { background: "#F8F9FA" } as React.CSSProperties,
-  hero: { background: "#0A4B35", color: "#fff", padding: "80px 24px 72px" } as React.CSSProperties,
-  container: { maxWidth: 1100, margin: "0 auto" } as React.CSSProperties,
-  section: { padding: "80px 24px" } as React.CSSProperties,
-};
+const implementationSteps = [
+  ["1. Modelo de importação", "Definição de layouts, plano de contas e de-para para que dados externos entrem com consistência."],
+  ["2. Conteúdo e parâmetros", "Configuração de premissas, curvas, indicadores, estudos-modelo e relatórios alinhados à realidade do cliente."],
+  ["3. Testes e homologação", "Rodadas de validação com casos reais antes de consolidar o uso pela equipe."],
+  ["4. Adoção assistida", "Apoio inicial para dúvidas operacionais, conceituais e ajustes finos após a implantação."],
+];
 
 export default function ServicosPage() {
   return (
-    <div style={S.page}>
-      <section style={S.hero}>
-        <div style={{ ...S.container, maxWidth: 760 }}>
-          <span style={{ display: "inline-block", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, padding: "4px 12px", borderRadius: 100, marginBottom: 20 }}>
-            Serviços
-          </span>
-          <h1 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 20 }}>
-            Mais do que software
-          </h1>
-          <p style={{ fontSize: 18, color: "rgba(255,255,255,0.85)", lineHeight: 1.75, maxWidth: 640 }}>
-            O VIABIL entrega não apenas a plataforma — mas também o suporte, a assessoria e a customização para que sua equipe use a ferramenta com máximo resultado.
-          </p>
+    <>
+      <section className="page-hero">
+        <div className="page-hero-inner">
+          <div className="hero-copy-block ui-reveal">
+            <span className="eyebrow">Serviços</span>
+            <h1 className="page-title">Tecnologia sem conteúdo é pouco eficaz.</h1>
+            <p className="page-subtitle">
+              A BDK Solutions opera full-service: desenvolvimento, suporte, treinamento,
+              consultoria, implantação, customização e integração para que o VIABIL se
+              encaixe na realidade de cada cliente.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section style={S.section}>
-        <div style={S.container}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            {services.map((svc, i) => (
-              <div key={svc.id} style={{ background: "#fff", borderRadius: 20, padding: "40px 36px", border: "1px solid #E6E8EB", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
+      <section className="section-block">
+        <div className="section-inner split-grid top">
+          <SectionHeader
+            align="left"
+            eyebrow="Full-service"
+            heading="Serviço faz parte do valor do VIABIL."
+            subheading="O software carrega metodologia, mas a adoção real acontece quando suporte, parametrização e consultoria ajudam a empresa a transformar processo."
+          />
+          <div className="service-flow ui-reveal">
+            {services.map((service) => (
+              <article className="service-row" key={service.name}>
                 <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                    <span style={{ background: "#0A4B35", color: "#fff", fontWeight: 900, fontSize: 13, padding: "4px 12px", borderRadius: 8 }}>{svc.id}</span>
-                    <span style={{ background: "#E8F4EE", color: "#0A4B35", fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100 }}>{svc.tag}</span>
-                  </div>
-                  <h2 style={{ fontSize: "clamp(19px, 2.5vw, 24px)", fontWeight: 800, color: "#1A2320", marginBottom: 10, letterSpacing: "-0.3px" }}>{svc.name}</h2>
-                  <p style={{ fontSize: 15, fontWeight: 600, color: "#0A4B35", marginBottom: 14 }}>{svc.headline}</p>
-                  <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.7 }}>{svc.desc}</p>
+                  <span className="service-tag">{service.tag}</span>
+                  <h2>{service.name}</h2>
+                  <p>{service.desc}</p>
                 </div>
-                <div style={{ paddingTop: 4 }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#9CA3AF", letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 14 }}>O que inclui</div>
-                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
-                    {svc.items.map(item => (
-                      <li key={item} style={{ fontSize: 14, color: "#374151", display: "flex", alignItems: "flex-start", gap: 8 }}>
-                        <span style={{ color: "#0A4B35", fontWeight: 700, flexShrink: 0 }}>✓</span>{item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                <ul className="service-facts" aria-label={`Destaques de ${service.name}`}>
+                  {service.facts.map((fact) => (
+                    <li key={fact}>{fact}</li>
+                  ))}
+                </ul>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <CTABand heading="Precisa de um serviço específico?" subheading="Fale com nossa equipe e descubra como o VIABIL pode suportar o crescimento da sua operação." />
-    </div>
+      <section className="section-block white">
+        <div className="section-inner split-grid">
+          <div className="ui-reveal">
+            <SectionHeader
+              align="left"
+              eyebrow="Conhecimento aplicado"
+              heading="Suporte, implantação e treinamento falam a língua do mercado."
+              subheading="Os consultores VIABIL ajudam em dúvidas conceituais, critérios de estudo, parametrização e práticas que surgem em incorporações, casas, loteamentos e demais segmentos."
+            />
+            <div className="metric-row">
+              <div className="metric-item">
+                <span className="metric-value">300+</span>
+                <span className="metric-label">atendimentos por semana</span>
+              </div>
+              <div className="metric-item">
+                <span className="metric-value">120+</span>
+                <span className="metric-label">treinamentos por ano</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block surface">
+        <div className="section-inner split-grid top">
+          <SectionHeader
+            align="left"
+            eyebrow="Implantação"
+            heading="Parametrizar é traduzir a forma de trabalho da empresa para o VIABIL."
+            subheading="A implantação foi detalhada para explicar o caminho entre contratar o sistema e usar a metodologia com segurança em estudos reais."
+          />
+          <div className="timeline-rail ui-reveal">
+            {implementationSteps.map(([label, desc]) => (
+              <article className="timeline-row" key={label}>
+                <div className="timeline-index">{label}</div>
+                <p>{desc}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block white">
+        <div className="section-inner split-grid top">
+          <SectionHeader
+            align="left"
+            eyebrow="Tabela de vendas"
+            heading="A parametrização define o padrão de análise da empresa."
+            subheading="Na implantação, o VIABIL é configurado com as premissas, plano de contas, curvas, indicadores e tabelas de venda do cliente. O resultado é um modelo-padrão alinhado à realidade da operação — não um template genérico."
+          />
+          <div className="report-sample ui-reveal" style={{ border: "1px solid var(--gray-light)", borderRadius: 18 }}>
+            <div className="report-sample-header">
+              <span className="report-sample-name">Tabela de Vendas</span>
+              <span className="report-sample-tag">Parametrização</span>
+            </div>
+            <div className="report-kpi-list">
+              <div className="report-kpi-row">
+                <span className="report-kpi-label">Tipologia</span>
+                <span className="report-kpi-value neutral">Apto 2 dorms — 62m²</span>
+              </div>
+              <div className="report-kpi-row">
+                <span className="report-kpi-label">Preço de tabela</span>
+                <span className="report-kpi-value">R$ 384.400</span>
+              </div>
+              <div className="report-kpi-row">
+                <span className="report-kpi-label">Entrada (30% ato)</span>
+                <span className="report-kpi-value neutral">R$ 115.320</span>
+              </div>
+              <div className="report-kpi-row">
+                <span className="report-kpi-label">Parcelas mensais (24x)</span>
+                <span className="report-kpi-value neutral">R$ 3.846</span>
+              </div>
+              <div className="report-kpi-row">
+                <span className="report-kpi-label">Chaves (50% saldo)</span>
+                <span className="report-kpi-value neutral">R$ 134.540</span>
+              </div>
+              <div className="report-kpi-row">
+                <span className="report-kpi-label">INCC (correção)</span>
+                <span className="report-kpi-value neutral">100% INCC obra</span>
+              </div>
+              <div className="report-kpi-row">
+                <span className="report-kpi-label">Velocidade estimada</span>
+                <span className="report-kpi-value neutral">4 und/mês</span>
+              </div>
+            </div>
+            <a
+              className="report-sample-link"
+              href="/assets/relatorios/Tabelas de Vendas.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path d="M8 1v9M4 6l4 4 4-4M2 12v2h12v-2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Ver exemplo de tabela real
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <CTABand
+        heading="Precisa parametrizar o VIABIL para sua operação?"
+        subheading="A conversa comercial pode mapear versão, implantação, customizações e integrações sem prometer escopo antes da análise técnica."
+      />
+    </>
   );
 }

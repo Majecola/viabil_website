@@ -1,148 +1,205 @@
 import type { Metadata } from "next";
-import { SectionHeader } from "@/components/marketing/SectionHeader";
-import { CTABand } from "@/components/marketing/CTABand";
 import Link from "next/link";
+import { CTABand } from "@/components/marketing/CTABand";
+import { SectionHeader } from "@/components/marketing/SectionHeader";
 
 export const metadata: Metadata = {
   title: "Versões | VIABIL",
-  description: "Conheça as versões do VIABIL: Lite, Full, Pro/ACP e Cloud. Compare e escolha a certa para o seu negócio.",
+  description:
+    "Conheça VIABIL Lite, Full, Pro/ACP e VIABIL Cloud. Versões compatíveis para troca de estudos entre parceiros.",
 };
 
 const versions = [
   {
     id: "lite",
     name: "VIABIL Lite",
-    tag: "Versão acessível",
-    price: "Para começar",
-    color: "#E67E22",
-    bg: "#FEF3E7",
-    headline: "A porta de entrada para a cultura VIABIL",
-    desc: "O VIABIL Lite é a versão acessível para pequenas incorporadoras, loteadoras e consultorias que querem começar com o padrão do mercado. Sem implantação complexa, sem contrato longo.",
-    features: [
-      "Análise de viabilidade completa",
-      "Cálculo de VGV, TIR e margem",
-      "Simulação de cenários",
-      "Relatórios em PDF",
-      "Acesso individual",
-      "Suporte por e-mail",
-    ],
-    notIncluded: ["Gestão de Terrenos (Landbank)", "Módulo de Acompanhamento", "Consolidação de Portfólio", "Workflow de Tarefas", "Multi-usuário"],
+    tag: "Porta de entrada",
+    profile: "Pequenas empresas, consultores e desenvolvedores em início de estruturação.",
+    desc: "Versão acessível para iniciar a cultura VIABIL com os principais recursos de viabilidade, até 2 licenças e sem customizações.",
+    facts: ["Estudos compatíveis com Full e Pro/ACP", "Principais recursos de viabilidade", "Relatórios pré-formatados", "Investimento inicial mais leve"],
   },
   {
     id: "full",
     name: "VIABIL Full",
-    tag: "Mais popular",
-    price: "Para empresas em crescimento",
-    color: "#0A4B35",
-    bg: "#E8F4EE",
-    headline: "O ciclo completo para incorporadoras em crescimento",
-    desc: "Todos os 5 módulos integrados. Do landbank ao acompanhamento de obra — a plataforma completa para equipes que precisam de padrão e escala.",
-    features: [
-      "Todos os módulos (Terrenos, Viabilidade, Acompanhamento, Consolidação, Workflow)",
-      "Multi-usuário com perfis de acesso",
-      "Relatórios executivos personalizados",
-      "Consolidação de portfólio",
-      "Suporte dedicado",
-      "Treinamento de implantação",
-    ],
-    notIncluded: [],
+    tag: "Padrão corporativo",
+    profile: "Empresas com múltiplos projetos simultâneos e equipes envolvidas no processo.",
+    desc: "Versão padrão para empresas em desenvolvimento, com usuários ilimitados, parametrizações, integrações e módulos de gestão do ciclo.",
+    facts: ["Gestão de Terrenos", "Viabilidade", "Consolidação", "Workflow de Tarefas"],
   },
   {
     id: "pro",
     name: "VIABIL Pro / ACP",
-    tag: "Para grandes operações",
-    price: "Para empresas de grande porte",
-    color: "#1A2320",
-    bg: "#F3F4F6",
-    headline: "Inteligência financeira para grandes carteiras imobiliárias",
-    desc: "O VIABIL Pro é a versão para grandes incorporadoras, fundos imobiliários e empresas com carteiras diversificadas. Customizações, integrações e suporte de assessoria operacional inclusos.",
-    features: [
-      "Tudo do VIABIL Full",
-      "Customizações de modelos e relatórios",
-      "Integrações com ERP e sistemas internos",
-      "Assessoria Operacional VIABIL",
-      "SLA de suporte prioritário",
-      "Treinamento avançado para equipes",
-    ],
-    notIncluded: [],
+    tag: "Acompanhamento completo",
+    profile: "Empresas maduras que precisam comparar planejado, revisado e realizado.",
+    desc: "Inclui tudo do Full e adiciona o módulo Acompanhamento, com suporte de implantação para monitorar resultado e replanejar ações.",
+    facts: ["Tudo do VIABIL Full", "Módulo Acompanhamento", "Reprojeção e alertas", "Apoio de implantação"],
   },
 ];
 
-const S = {
-  page: { background: "#F8F9FA" } as React.CSSProperties,
-  hero: { background: "#0A4B35", color: "#fff", padding: "80px 24px 72px" } as React.CSSProperties,
-  container: { maxWidth: 1100, margin: "0 auto" } as React.CSSProperties,
-  section: { padding: "80px 24px" } as React.CSSProperties,
-};
+const choiceSignals = [
+  ["Quando Lite faz sentido", "A empresa quer entrar na cultura VIABIL com investimento mais acessível, poucos usuários e foco nos principais estudos de viabilidade."],
+  ["Quando Full faz sentido", "A operação já tem vários projetos, equipes envolvidas, necessidade de usuários ilimitados, parametrizações e troca de estudos com parceiros."],
+  ["Quando Pro / ACP faz sentido", "A maturidade exige comparar planejado, revisado e realizado, importar dados e replanejar ações durante a vida do empreendimento."],
+  ["Quando Cloud faz sentido", "O acesso em nuvem reduz investimento inicial de licença e simplifica uso remoto com segurança, confidencialidade e auditabilidade."],
+];
 
 export default function VersoesPage() {
   return (
-    <div style={S.page}>
-      <section style={S.hero}>
-        <div style={{ ...S.container, maxWidth: 760 }}>
-          <span style={{ display: "inline-block", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, padding: "4px 12px", borderRadius: 100, marginBottom: 20 }}>
-            Versões
-          </span>
-          <h1 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 20 }}>
-            Qual versão é certa para você?
-          </h1>
-          <p style={{ fontSize: 18, color: "rgba(255,255,255,0.85)", lineHeight: 1.75, maxWidth: 640 }}>
-            Do primeiro projeto ao portfólio de grande escala — o VIABIL tem uma versão para cada estágio do seu negócio.
-          </p>
+    <>
+      <section className="page-hero">
+        <div className="page-hero-inner">
+          <div className="hero-copy-block ui-reveal">
+            <span className="eyebrow">Versões</span>
+            <h1 className="page-title">A mesma cultura VIABIL em estágios diferentes de operação.</h1>
+            <p className="page-subtitle">
+              Lite, Full e Pro/ACP são compatíveis para troca de estudos entre
+              parceiros. A escolha depende do tamanho da equipe, do volume de projetos
+              e da necessidade de acompanhar previsto x realizado.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section style={S.section}>
-        <div style={S.container}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 28, marginBottom: 72 }}>
-            {versions.map((v) => (
-              <div key={v.id} style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: `2px solid ${v.id === "full" ? v.color : "#E6E8EB"}`, display: "flex", flexDirection: "column" }}>
-                <div style={{ background: v.bg, padding: "28px 28px 24px" }}>
-                  <span style={{ background: v.color, color: "#fff", fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 100, marginBottom: 12, display: "inline-block" }}>
-                    {v.tag}
-                  </span>
-                  <h2 style={{ fontSize: 22, fontWeight: 900, color: v.color, marginBottom: 4 }}>{v.name}</h2>
-                  <p style={{ fontSize: 13, color: "#6B7280", fontWeight: 500 }}>{v.price}</p>
-                </div>
-                <div style={{ padding: "28px", flex: 1, display: "flex", flexDirection: "column" }}>
-                  <p style={{ fontSize: 14, color: "#374151", lineHeight: 1.65, marginBottom: 24 }}>{v.desc}</p>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#9CA3AF", letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 12 }}>Inclui</div>
-                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
-                    {v.features.map(f => (
-                      <li key={f} style={{ fontSize: 13, color: "#374151", display: "flex", alignItems: "flex-start", gap: 8 }}>
-                        <span style={{ color: v.color, fontWeight: 700, flexShrink: 0 }}>✓</span>{f}
-                      </li>
-                    ))}
-                  </ul>
-                  {v.notIncluded.length > 0 && (
-                    <>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#9CA3AF", letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 12 }}>Não inclui</div>
-                      <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
-                        {v.notIncluded.map(f => (
-                          <li key={f} style={{ fontSize: 13, color: "#9CA3AF", display: "flex", alignItems: "flex-start", gap: 8 }}>
-                            <span style={{ flexShrink: 0 }}>—</span>{f}
-                          </li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-                  <Link href="/contato" style={{ marginTop: "auto", display: "block", background: v.color, color: "#fff", textDecoration: "none", padding: "12px 20px", borderRadius: 10, fontSize: 14, fontWeight: 700, textAlign: "center" as const }}>
-                    Solicitar demonstração
-                  </Link>
-                </div>
-              </div>
+      <section className="section-block">
+        <div className="section-inner">
+          <SectionHeader
+            eyebrow="Linha VIABIL"
+            heading="Escolha pela maturidade da operação, não só pela lista de recursos."
+            subheading="A página foi ajustada para não prometer treinamento, pagamento, login ou recursos fora do escopo público do site."
+          />
+          <div className="versions-layout ui-reveal">
+            {versions.map((version) => (
+              <article
+                className={`version-panel ${version.id === "lite" ? "lite" : ""} ${version.id === "full" ? "featured" : ""}`}
+                key={version.id}
+              >
+                <span className="version-tag">{version.tag}</span>
+                <h2 className="version-name">{version.name}</h2>
+                <p className="version-meta">{version.profile}</p>
+                <p>{version.desc}</p>
+                <ul className="version-facts" aria-label={`Resumo ${version.name}`}>
+                  {version.facts.map((fact) => (
+                    <li key={fact}>{fact}</li>
+                  ))}
+                </ul>
+                <Link
+                  className={version.id === "lite" ? "button-secondary" : "button-primary"}
+                  href="/contato"
+                >
+                  Solicitar proposta
+                </Link>
+              </article>
             ))}
           </div>
-
-          <SectionHeader
-            eyebrow="VIABIL Cloud"
-            heading="Disponível também em nuvem"
-            subheading="O VIABIL Cloud é a versão hospedada pela BDK Solutions — sem instalação local, acesso via browser em qualquer dispositivo, com os mesmos modelos e funcionalidades das versões desktop."
-          />
         </div>
       </section>
 
-      <CTABand heading="Não sabe qual versão escolher?" subheading="Fale com um especialista VIABIL. Em 30 minutos ajudamos você a identificar qual versão atende melhor ao estágio e ao modelo do seu negócio." />
-    </div>
+      <section className="section-block white">
+        <div className="section-inner">
+          <div className="cloud-band ui-reveal">
+            <div>
+              <span className="section-eyebrow">VIABIL Cloud</span>
+              <h2 className="section-title">Acesso em nuvem, com segurança e auditabilidade.</h2>
+            </div>
+            <p>
+              O VIABIL Cloud é o modelo por assinatura hospedado em infraestrutura
+              Oracle Cloud + Sky.One. Permite acesso de qualquer dispositivo, sem
+              investimento inicial de licença e com confidencialidade dos dados.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block surface">
+        <div className="section-inner">
+          <div className="metric-row ui-reveal">
+            <div className="metric-item">
+              <span className="metric-value">3</span>
+              <span className="metric-label">versões principais</span>
+            </div>
+            <div className="metric-item">
+              <span className="metric-value">2</span>
+              <span className="metric-label">licenças no VIABIL Lite</span>
+            </div>
+            <div className="metric-item">
+              <span className="metric-value">Full</span>
+              <span className="metric-label">para parametrizações e escala</span>
+            </div>
+            <div className="metric-item">
+              <span className="metric-value">ACP</span>
+              <span className="metric-label">para acompanhamento contínuo</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block white">
+        <div className="section-inner split-grid top">
+          <SectionHeader
+            align="left"
+            eyebrow="Como escolher"
+            heading="A versão certa depende do processo que a empresa precisa sustentar."
+            subheading="A compatibilidade entre versões mantém a troca de estudos com parceiros. O que muda é profundidade, parametrização, implantação e acompanhamento."
+          />
+          <div className="plain-list ui-reveal">
+            {choiceSignals.map(([label, desc]) => (
+              <article className="plain-list-item" key={label}>
+                <h3>{label}</h3>
+                <p>{desc}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block surface">
+        <div className="section-inner split-grid top">
+          <div className="ui-reveal">
+            <SectionHeader
+              align="left"
+              eyebrow="Relatório do investidor"
+              heading="O VIABIL Pro/ACP entrega visão detalhada por participante."
+              subheading="Sócios, investidores e permutantes têm fluxo e indicadores individualizados: capital investido, retorno, MTIR e cronograma de recebimentos. Exemplo real gerado pela plataforma."
+            />
+            <a
+              className="button-secondary"
+              href="/assets/relatorios/Sintetico_Investidor.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ marginTop: 20, display: "inline-flex" }}
+            >
+              Ver relatório completo ↗
+            </a>
+          </div>
+          <div className="investor-summary ui-reveal">
+            <div className="investor-cell">
+              <span className="investor-cell-label">Capital investido</span>
+              <span className="investor-cell-value">R$ 4.800.000</span>
+              <span className="investor-cell-note">aporte total do investidor</span>
+            </div>
+            <div className="investor-cell">
+              <span className="investor-cell-label">Retorno total bruto</span>
+              <span className="investor-cell-value">R$ 7.940.000</span>
+              <span className="investor-cell-note">recebimentos projetados</span>
+            </div>
+            <div className="investor-cell">
+              <span className="investor-cell-label">MTIR do investidor</span>
+              <span className="investor-cell-value">31,2%</span>
+              <span className="investor-cell-note">ao ano, TIR modificada</span>
+            </div>
+            <div className="investor-cell">
+              <span className="investor-cell-label">Período total</span>
+              <span className="investor-cell-value">36 meses</span>
+              <span className="investor-cell-note">da entrada ao último recebimento</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CTABand
+        heading="Não sabe qual versão escolher?"
+        subheading="Uma conversa rápida ajuda a separar o que é essencial agora do que deve entrar em uma implantação mais completa."
+      />
+    </>
   );
 }

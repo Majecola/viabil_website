@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-outfit",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "VIABIL | Inteligência Financeira para o Mercado Imobiliário",
+  title: "VIABIL | Inteligência financeira para o mercado imobiliário",
   description:
-    "O VIABIL é a plataforma de referência em viabilidade financeira para incorporadoras, loteadoras e desenvolvedores imobiliários. Do terreno ao resultado.",
+    "O VIABIL é a plataforma de referência em viabilidade econômico-financeira para incorporadoras, loteadoras e desenvolvedores imobiliários. Do terreno ao resultado.",
   openGraph: {
-    title: "VIABIL | Inteligência Financeira para o Mercado Imobiliário",
+    title: "VIABIL | Inteligência financeira para o mercado imobiliário",
     description:
       "Do terreno ao resultado: decisões mais seguras para incorporadoras, loteadoras e desenvolvedores imobiliários.",
     type: "website",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "VIABIL | Inteligência Financeira para o Mercado Imobiliário",
+    title: "VIABIL | Inteligência financeira para o mercado imobiliário",
     description:
       "Do terreno ao resultado: decisões mais seguras para incorporadoras, loteadoras e desenvolvedores imobiliários.",
   },
@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={inter.variable}>
+    <html lang="pt-BR" className={outfit.variable}>
       <body>{children}</body>
     </html>
   );

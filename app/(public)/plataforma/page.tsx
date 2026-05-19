@@ -1,121 +1,287 @@
 import type { Metadata } from "next";
-import { SectionHeader } from "@/components/marketing/SectionHeader";
+import Link from "next/link";
 import { CTABand } from "@/components/marketing/CTABand";
+import { SectionHeader } from "@/components/marketing/SectionHeader";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "A Plataforma | VIABIL",
-  description: "Conheça o VIABIL: a plataforma de referência em inteligência financeira para incorporação imobiliária. Do terreno ao resultado.",
+  title: "Plataforma | VIABIL",
+  description:
+    "Conheça o VIABIL: a referência em viabilidade econômico-financeira para o ciclo completo do empreendimento imobiliário.",
 };
 
 const cycle = [
-  { step: "01", label: "Captação", desc: "Inteligência geográfica e análise de mercado para identificar terrenos com potencial antes da concorrência." },
-  { step: "02", label: "Terrenos", desc: "Gestão de landbank, histórico de negociações, indicadores de potencial construtivo e viabilidade preliminar." },
-  { step: "03", label: "Viabilidade", desc: "Análise financeira completa: VGV, funding, cronograma de obras, premissas de vendas e margem por cenário." },
-  { step: "04", label: "Decisão", desc: "Relatórios executivos e dashboards que transformam dados em argumentos para parceiros, sócios e investidores." },
-  { step: "05", label: "Acompanhamento", desc: "Previsto × realizado em tempo real para que o empreendimento entregue o que a viabilidade prometeu." },
+  {
+    step: "Captação",
+    desc: "Organize oportunidades, documentos, mapas e histórico de negociação antes da decisão de compra.",
+  },
+  {
+    step: "Viabilidade",
+    desc: "Modele VGV, custos, financiamento, permutas, velocidade de vendas, indicadores e cenários.",
+  },
+  {
+    step: "Decisão",
+    desc: "Leve relatórios consistentes para sócios, investidores, comitês e conselhos.",
+  },
+  {
+    step: "Acompanhamento",
+    desc: "Compare planejado, revisado e realizado para agir antes que o resultado se perca.",
+  },
+  {
+    step: "Replanejamento",
+    desc: "Simule novas ações quando obra, vendas, custos ou funding mudam ao longo do ciclo.",
+  },
 ];
 
 const pillars = [
-  { label: "Valor Agregado", desc: "Decisões mais seguras em todas as etapas do empreendimento, do terreno ao resultado." },
-  { label: "Flexibilidade", desc: "Premissas, indicadores e relatórios parametrizáveis para cada realidade de negócio." },
-  { label: "Parametrização", desc: "Adapte o VIABIL ao seu modelo de trabalho, segmento e equipe — não o contrário." },
-  { label: "Confiança", desc: "Padrão adotado por 600+ empresas. Análises que geram credibilidade com sócios, parceiros e investidores." },
+  {
+    label: "Valor agregado",
+    desc: "Cada estudo passa a sustentar uma decisão de negócio, não apenas um cálculo isolado.",
+  },
+  {
+    label: "Flexibilidade",
+    desc: "A plataforma se adapta a segmentos, estruturas societárias, modelos financeiros e regiões.",
+  },
+  {
+    label: "Parametrização",
+    desc: "Premissas, indicadores, relatórios e modelos seguem a forma de trabalho da empresa.",
+  },
+  {
+    label: "Confiança",
+    desc: "Décadas de uso no mercado reduzem discussões sobre fórmulas e elevam o debate sobre premissas.",
+  },
 ];
 
-const S = {
-  page: { background: "#F8F9FA" } as React.CSSProperties,
-  hero: { background: "#0A4B35", color: "#fff", padding: "80px 24px 72px" } as React.CSSProperties,
-  container: { maxWidth: 1100, margin: "0 auto" } as React.CSSProperties,
-  section: { padding: "80px 24px" } as React.CSSProperties,
-  card: { background: "#fff", borderRadius: 16, padding: "32px 28px", border: "1px solid #E6E8EB" } as React.CSSProperties,
-  grid2: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 } as React.CSSProperties,
-  grid3: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24 } as React.CSSProperties,
-};
+const decisionDepth = [
+  {
+    label: "Do ativo ao portfólio",
+    desc: "O estudo individual precisa conversar com a necessidade de caixa, retorno esperado e exposição dos acionistas no tempo.",
+  },
+  {
+    label: "Premissas vivas",
+    desc: "Preço, custo, velocidade de vendas, financiamento e permutas mudam. A decisão precisa ser recalculável sem perder histórico.",
+  },
+  {
+    label: "Discussão executiva",
+    desc: "Relatórios e indicadores padronizados reduzem ruído técnico e ajudam comitês a discutir risco, retorno e alternativa de ação.",
+  },
+];
 
 export default function PlataformaPage() {
+  const whatsappHref = getWhatsAppHref("Olá, gostaria de entender o ciclo completo do VIABIL.");
+
   return (
-    <div style={S.page}>
-      <section style={S.hero}>
-        <div style={{ ...S.container, maxWidth: 760 }}>
-          <span style={{ display: "inline-block", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, padding: "4px 12px", borderRadius: 100, marginBottom: 20 }}>
-            A Plataforma
-          </span>
-          <h1 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 20 }}>
-            O que é o VIABIL?
-          </h1>
-          <p style={{ fontSize: 18, color: "rgba(255,255,255,0.85)", lineHeight: 1.75, maxWidth: 600 }}>
-            O VIABIL é o sistema integrado de inteligência financeira para o ciclo completo do empreendimento imobiliário. Da captação do terreno ao acompanhamento da obra — todas as decisões num único ambiente parametrizável.
-          </p>
+    <>
+      <section className="page-hero dark">
+        <div className="page-hero-inner">
+          <div className="hero-copy-block ui-reveal">
+            <span className="eyebrow">Plataforma</span>
+            <h1 className="page-title">Inteligência financeira para todo o ciclo imobiliário.</h1>
+            <p className="page-subtitle">
+              O VIABIL nasceu dentro da incorporação imobiliária para simular cenários,
+              analisar indicadores e acompanhar a rentabilidade do negócio do Go/No-Go ao
+              previsto x realizado.
+            </p>
+            <div className="hero-actions">
+              <a className="button-primary" href={whatsappHref}>
+                Solicitar demonstração
+              </a>
+              <Link className="button-secondary" href="/modulos">
+                Ver módulos
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section style={S.section}>
-        <div style={S.container}>
+      <section className="section-block">
+        <div className="section-inner split-grid">
+          <div className="ui-reveal">
+            <SectionHeader
+              align="left"
+              eyebrow="O que é"
+              heading="Uma referência de mercado, não uma planilha mais bonita."
+              subheading="O VIABIL concentra conhecimento prático do setor, modelos financeiros testados e governança para decisões de alto impacto em incorporação residencial, casas, loteamentos e outros segmentos."
+            />
+            <div className="pill-row" aria-label="Diferenciais centrais">
+              <span className="info-pill">DNA imobiliário</span>
+              <span className="info-pill">Padrão entre parceiros</span>
+              <span className="info-pill">Cenários vivos</span>
+              <span className="info-pill">Governança de premissas</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block white">
+        <div className="section-inner">
           <SectionHeader
-            eyebrow="O Ciclo VIABIL"
-            heading="Do terreno ao resultado"
-            subheading="O VIABIL organiza a inteligência financeira em cinco momentos do ciclo do empreendimento, do primeiro mapa até o previsto × realizado."
+            eyebrow="Ciclo VIABIL"
+            heading="Do terreno ao resultado, com a mesma visão gerencial."
+            subheading="A análise não para na aprovação. O ciclo continua quando as premissas mudam, a obra avança e a empresa precisa corrigir rota."
           />
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {cycle.map((item) => (
-              <div key={item.step} style={{ ...S.card, display: "flex", gap: 24, alignItems: "flex-start" }}>
-                <span style={{ background: "#E8F4EE", color: "#0A4B35", fontWeight: 900, fontSize: 13, padding: "6px 12px", borderRadius: 8, whiteSpace: "nowrap" as const, flexShrink: 0 }}>
-                  {item.step} — {item.label}
-                </span>
-                <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.65 }}>{item.desc}</p>
-              </div>
+          <div className="timeline-rail ui-reveal">
+            {cycle.map((item, index) => (
+              <article className="timeline-row" key={item.step}>
+                <div className="timeline-index">{String(index + 1).padStart(2, "0")} · {item.step}</div>
+                <p>{item.desc}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section style={{ ...S.section, background: "#fff" }}>
-        <div style={S.container}>
+      <section className="section-block">
+        <div className="section-inner">
           <SectionHeader
-            eyebrow="Por que o VIABIL"
-            heading="Planilhas vs. VIABIL"
-            subheading="A planilha nunca foi feita para o ciclo do empreendimento. O VIABIL foi."
+            eyebrow="Planilhas x VIABIL"
+            heading="A discussão sai da fórmula e volta para a decisão."
+            subheading="Em negócios imobiliários, a fragilidade está no controle de premissas, versões, indicadores e histórico. O VIABIL reduz esse ruído."
           />
-          <div style={S.grid2}>
-            {[
-              ["Com planilhas", ["Dados dispersos em dezenas de arquivos", "Sem controle de versão ou auditoria", "Erros de fórmula invisíveis", "Análises isoladas por projeto", "Sem padronização entre equipes"]],
-              ["Com o VIABIL", ["Tudo num único ambiente integrado", "Histórico completo e rastreável", "Premissas auditáveis e versionadas", "Consolidação automática de portfólio", "Padrão único para toda a empresa"]],
-            ].map(([title, items]) => (
-              <div key={title as string} style={{ ...S.card, borderLeft: title === "Com o VIABIL" ? "4px solid #0A4B35" : "4px solid #E6E8EB" }}>
-                <h3 style={{ fontSize: 17, fontWeight: 700, color: title === "Com o VIABIL" ? "#0A4B35" : "#374151", marginBottom: 20 }}>
-                  {title as string}
-                </h3>
-                <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
-                  {(items as string[]).map((item) => (
-                    <li key={item} style={{ fontSize: 14, color: "#374151", display: "flex", alignItems: "flex-start", gap: 8 }}>
-                      <span style={{ color: title === "Com o VIABIL" ? "#0A4B35" : "#9CA3AF", fontWeight: 700, flexShrink: 0 }}>
-                        {title === "Com o VIABIL" ? "✓" : "✗"}
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="comparison-grid ui-reveal">
+            <div className="comparison-column">
+              <h3>Quando a análise fica em planilhas</h3>
+              {[
+                ["Governança", "Arquivos circulam sem rastreabilidade clara."],
+                ["Método", "Cada equipe pode calcular de um jeito."],
+                ["Cenários", "Testar mudanças exige refazer muito trabalho."],
+                ["Portfólio", "A visão consolidada depende de recortes manuais."],
+              ].map(([label, copy]) => (
+                <div className="comparison-line" key={label}>
+                  <span className="comparison-label">{label}</span>
+                  <span className="comparison-copy">{copy}</span>
+                </div>
+              ))}
+            </div>
+            <div className="comparison-column strong">
+              <h3>Quando a análise roda no VIABIL</h3>
+              {[
+                ["Governança", "Premissas, versões e usuários ficam organizados."],
+                ["Método", "A empresa trabalha com cálculo testado e padrão de mercado."],
+                ["Cenários", "Stress-cenários e simulações mantêm a decisão viva."],
+                ["Portfólio", "Projetos e oportunidades alimentam uma visão executiva."],
+              ].map(([label, copy]) => (
+                <div className="comparison-line" key={label}>
+                  <span className="comparison-label">{label}</span>
+                  <span className="comparison-copy">{copy}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-block surface">
+        <div className="section-inner split-grid top">
+          <SectionHeader
+            align="left"
+            eyebrow="Pilares"
+            heading="Valor, flexibilidade, parametrização e confiança."
+            subheading="Esses quatro princípios precisam aparecer em toda a experiência porque explicam por que o VIABIL é diferente de soluções genéricas."
+          />
+          <div className="plain-list ui-reveal">
+            {pillars.map((pillar) => (
+              <article className="plain-list-item" key={pillar.label}>
+                <h3>{pillar.label}</h3>
+                <p>{pillar.desc}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section style={S.section}>
-        <div style={S.container}>
-          <SectionHeader eyebrow="Diferenciais" heading="Os 4 pilares do VIABIL" />
-          <div style={S.grid2}>
-            {pillars.map((p) => (
-              <div key={p.label} style={S.card}>
-                <h3 style={{ fontSize: 17, fontWeight: 700, color: "#0A4B35", marginBottom: 10 }}>{p.label}</h3>
-                <p style={{ margin: 0, fontSize: 14, color: "#374151", lineHeight: 1.65 }}>{p.desc}</p>
-              </div>
+      <section className="section-block white">
+        <div className="section-inner split-grid top">
+          <SectionHeader
+            align="left"
+            eyebrow="Decisão contínua"
+            heading="As decisões não são mais estáticas."
+            subheading="O VIABIL ajuda a empresa a avaliar a saúde dos empreendimentos, a necessidade de funding e o retorno esperado conforme o projeto evolui."
+          />
+          <div className="plain-list ui-reveal">
+            {decisionDepth.map((item) => (
+              <article className="plain-list-item" key={item.label}>
+                <h3>{item.label}</h3>
+                <p>{item.desc}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <CTABand />
-    </div>
+      <section className="section-block white">
+        <div className="section-inner">
+          <div className="ui-reveal">
+            <SectionHeader
+              eyebrow="Análise de sensibilidade"
+              heading="Como preço, custo e velocidade de vendas mudam o resultado."
+              subheading="O VIABIL gera automaticamente o mapa de sensibilidade do estudo: uma matriz que mostra como os indicadores reagem a variações nas premissas críticas. Exemplo real abaixo, gerado pela plataforma."
+            />
+          </div>
+          <div className="ui-reveal">
+            <div className="sensitivity-matrix">
+              <div className="sensitivity-row header">
+                <span className="sensitivity-cell label">Variável / Indicador</span>
+                <span className="sensitivity-cell">TIR a.a.</span>
+                <span className="sensitivity-cell">VPL</span>
+                <span className="sensitivity-cell">Margem</span>
+              </div>
+              <div className="sensitivity-row">
+                <span className="sensitivity-cell label">Preço +10%</span>
+                <span className="sensitivity-cell up">37,6%</span>
+                <span className="sensitivity-cell up">R$ 5.820.000</span>
+                <span className="sensitivity-cell up">40,2%</span>
+              </div>
+              <div className="sensitivity-row">
+                <span className="sensitivity-cell label">Cenário base</span>
+                <span className="sensitivity-cell base">28,4%</span>
+                <span className="sensitivity-cell base">R$ 3.140.000</span>
+                <span className="sensitivity-cell base">34,7%</span>
+              </div>
+              <div className="sensitivity-row">
+                <span className="sensitivity-cell label">Preço −10%</span>
+                <span className="sensitivity-cell dn">19,2%</span>
+                <span className="sensitivity-cell dn">R$ 460.000</span>
+                <span className="sensitivity-cell dn">28,8%</span>
+              </div>
+              <div className="sensitivity-row">
+                <span className="sensitivity-cell label">Custo −10%</span>
+                <span className="sensitivity-cell up">31,8%</span>
+                <span className="sensitivity-cell up">R$ 4.080.000</span>
+                <span className="sensitivity-cell up">37,4%</span>
+              </div>
+              <div className="sensitivity-row">
+                <span className="sensitivity-cell label">Custo +10%</span>
+                <span className="sensitivity-cell dn">24,6%</span>
+                <span className="sensitivity-cell dn">R$ 2.200.000</span>
+                <span className="sensitivity-cell dn">31,8%</span>
+              </div>
+              <div className="sensitivity-row">
+                <span className="sensitivity-cell label">Velocidade −20%</span>
+                <span className="sensitivity-cell dn">22,1%</span>
+                <span className="sensitivity-cell dn">R$ 1.740.000</span>
+                <span className="sensitivity-cell dn">33,9%</span>
+              </div>
+            </div>
+            <p style={{ marginTop: 16, fontSize: 13, color: "var(--gray-dark)" }}>
+              Exemplo gerado pelo VIABIL para incorporação residencial SFH. VGV R$ 24,8M, 40 unidades, 24 meses de obra.{" "}
+              <a
+                href="/assets/relatorios/analise_sensibilidade_SFH.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--green-primary)", fontWeight: 700 }}
+              >
+                Abrir exemplo completo ↗
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <CTABand
+        heading="Veja o ciclo completo em uma demonstração."
+        subheading="A melhor conversa começa com o seu tipo de empreendimento, suas premissas e as decisões que sua equipe precisa sustentar."
+      />
+    </>
   );
 }
