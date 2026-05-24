@@ -1,45 +1,42 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { CTABand } from "@/components/marketing/CTABand";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 
 export const metadata: Metadata = {
   title: "Versões | VIABIL",
   description:
-    "Conheça VIABIL Lite, Full, Pro/ACP e VIABIL Cloud. Versões compatíveis para troca de estudos entre parceiros.",
+    "Conheça VIABIL Lite, Full e VIABIL Cloud. Versões compatíveis para troca de estudos entre parceiros.",
 };
 
 const versions = [
   {
     id: "lite",
     name: "VIABIL Lite",
+    logo: "/assets/viabil-lite-logo.webp",
+    logoAlt: "VIABIL Lite",
     tag: "Porta de entrada",
     profile: "Pequenas empresas, consultores e desenvolvedores em início de estruturação.",
     desc: "Versão acessível para iniciar a cultura VIABIL com os principais recursos de viabilidade, até 2 licenças e sem customizações.",
-    facts: ["Estudos compatíveis com Full e Pro/ACP", "Principais recursos de viabilidade", "Relatórios pré-formatados", "Investimento inicial mais leve"],
+    facts: ["Estudos compatíveis com Full", "Principais recursos de viabilidade", "Relatórios pré-formatados", "Investimento inicial mais leve"],
   },
   {
     id: "full",
     name: "VIABIL Full",
+    logo: "/assets/viabil-logo.webp",
+    logoAlt: "VIABIL",
     tag: "Padrão corporativo",
     profile: "Empresas com múltiplos projetos simultâneos e equipes envolvidas no processo.",
     desc: "Versão padrão para empresas em desenvolvimento, com usuários ilimitados, parametrizações, integrações e módulos de gestão do ciclo.",
     facts: ["Gestão de Terrenos", "Viabilidade", "Consolidação", "Workflow de Tarefas"],
-  },
-  {
-    id: "pro",
-    name: "VIABIL Pro / ACP",
-    tag: "Acompanhamento completo",
-    profile: "Empresas maduras que precisam comparar planejado, revisado e realizado.",
-    desc: "Inclui tudo do Full e adiciona o módulo Acompanhamento, com suporte de implantação para monitorar resultado e replanejar ações.",
-    facts: ["Tudo do VIABIL Full", "Módulo Acompanhamento", "Reprojeção e alertas", "Apoio de implantação"],
   },
 ];
 
 const choiceSignals = [
   ["Quando Lite faz sentido", "A empresa quer entrar na cultura VIABIL com investimento mais acessível, poucos usuários e foco nos principais estudos de viabilidade."],
   ["Quando Full faz sentido", "A operação já tem vários projetos, equipes envolvidas, necessidade de usuários ilimitados, parametrizações e troca de estudos com parceiros."],
-  ["Quando Pro / ACP faz sentido", "A maturidade exige comparar planejado, revisado e realizado, importar dados e replanejar ações durante a vida do empreendimento."],
+  ["Quando Acompanhamento faz sentido", "A maturidade exige comparar planejado, revisado e realizado, importar dados e replanejar ações durante a vida do empreendimento."],
   ["Quando Cloud faz sentido", "O acesso em nuvem reduz investimento inicial de licença e simplifica uso remoto com segurança, confidencialidade e auditabilidade."],
 ];
 
@@ -52,9 +49,9 @@ export default function VersoesPage() {
             <span className="eyebrow">Versões</span>
             <h1 className="page-title">A mesma cultura VIABIL em estágios diferentes de operação.</h1>
             <p className="page-subtitle">
-              Lite, Full e Pro/ACP são compatíveis para troca de estudos entre
-              parceiros. A escolha depende do tamanho da equipe, do volume de projetos
-              e da necessidade de acompanhar previsto x realizado.
+              Lite, Full e Cloud mantêm a cultura VIABIL em diferentes formatos de
+              operação. A escolha depende do tamanho da equipe, do volume de projetos
+              e da necessidade de acesso, parametrização e acompanhamento.
             </p>
           </div>
         </div>
@@ -74,7 +71,15 @@ export default function VersoesPage() {
                 key={version.id}
               >
                 <span className="version-tag">{version.tag}</span>
-                <h2 className="version-name">{version.name}</h2>
+                <h2 className="version-name">
+                  <Image
+                    src={version.logo}
+                    alt={version.logoAlt}
+                    width={version.id === "lite" ? 210 : 176}
+                    height={52}
+                    className={`version-card-logo ${version.id === "lite" ? "lite" : ""}`}
+                  />
+                </h2>
                 <p className="version-meta">{version.profile}</p>
                 <p>{version.desc}</p>
                 <ul className="version-facts" aria-label={`Resumo ${version.name}`}>
@@ -115,7 +120,7 @@ export default function VersoesPage() {
           <div className="metric-row ui-reveal">
             <div className="metric-item">
               <span className="metric-value">3</span>
-              <span className="metric-label">versões principais</span>
+              <span className="metric-label">formatos comerciais</span>
             </div>
             <div className="metric-item">
               <span className="metric-value">2</span>
@@ -126,8 +131,8 @@ export default function VersoesPage() {
               <span className="metric-label">para parametrizações e escala</span>
             </div>
             <div className="metric-item">
-              <span className="metric-value">ACP</span>
-              <span className="metric-label">para acompanhamento contínuo</span>
+              <span className="metric-value">Cloud</span>
+              <span className="metric-label">para acesso em nuvem</span>
             </div>
           </div>
         </div>
@@ -139,7 +144,7 @@ export default function VersoesPage() {
             align="left"
             eyebrow="Como escolher"
             heading="A versão certa depende do processo que a empresa precisa sustentar."
-            subheading="A compatibilidade entre versões mantém a troca de estudos com parceiros. O que muda é profundidade, parametrização, implantação e acompanhamento."
+            subheading="A compatibilidade entre formatos mantém a troca de estudos com parceiros. O que muda é profundidade, parametrização, implantação, acesso em nuvem e acompanhamento."
           />
           <div className="plain-list ui-reveal">
             {choiceSignals.map(([label, desc]) => (
@@ -158,7 +163,7 @@ export default function VersoesPage() {
             <SectionHeader
               align="left"
               eyebrow="Relatório do investidor"
-              heading="O VIABIL Pro/ACP entrega visão detalhada por participante."
+              heading="O VIABIL entrega visão detalhada por participante."
               subheading="Sócios, investidores e permutantes têm fluxo e indicadores individualizados: capital investido, retorno, MTIR e cronograma de recebimentos. Exemplo real gerado pela plataforma."
             />
             <a

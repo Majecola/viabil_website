@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-green-primary: #0A4B35;
   --color-green-secondary: #13885E;
@@ -912,7 +914,7 @@ textarea:focus-visible {
 
 .versions-layout {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
   border: 1px solid var(--gray-light);
@@ -943,6 +945,22 @@ textarea:focus-visible {
 
 .version-name {
   color: var(--green-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.version-card-logo {
+  display: block;
+  width: 176px;
+  max-width: 100%;
+  height: auto;
+  max-height: 36px;
+  object-fit: contain;
+}
+
+.version-card-logo.lite {
+  width: 176px;
 }
 
 .version-meta {
@@ -1002,16 +1020,19 @@ textarea:focus-visible {
   flex-direction: column;
   justify-content: flex-end;
   min-height: 420px;
-  background:
-    linear-gradient(180deg, rgba(5, 24, 17, 0.12), rgba(5, 24, 17, 0.94)),
-    var(--green-primary);
+  background: #062f25;
   color: var(--white);
   padding: 32px;
 }
 
+.quote-panel .section-eyebrow,
+.quote-panel .section-title {
+  color: var(--white);
+}
+
 .quote-panel p {
   margin: 16px 0 0;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(255, 255, 255, 0.92);
   font-size: 18px;
   line-height: 1.58;
 }
@@ -1194,6 +1215,19 @@ textarea:focus-visible {
   max-width: 400px;
 }
 
+.footer-brand .brand-lockup {
+  width: fit-content;
+  margin-bottom: 22px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.footer-brand .brand-logo-img {
+  width: 138px;
+}
+
 .footer-brand p,
 .footer-bottom,
 .footer-link {
@@ -1307,6 +1341,17 @@ textarea:focus-visible {
   position: relative;
 }
 
+.quote-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(6, 47, 37, 0.94) 0%, rgba(6, 47, 37, 0.82) 45%, rgba(6, 47, 37, 0.5) 100%),
+    linear-gradient(180deg, rgba(6, 47, 37, 0.1) 0%, rgba(6, 47, 37, 0.86) 100%);
+  pointer-events: none;
+}
+
 .quote-panel-photo {
   position: absolute;
   inset: 0;
@@ -1314,13 +1359,13 @@ textarea:focus-visible {
   height: 100%;
   object-fit: cover;
   object-position: center 12%;
-  opacity: 0.32;
+  opacity: 0.78;
   z-index: 0;
 }
 
 .quote-panel > *:not(.quote-panel-photo) {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* ─── Report sample cards ─── */

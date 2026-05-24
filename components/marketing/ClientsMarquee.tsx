@@ -51,7 +51,16 @@ function MarqueeRow({
 }) {
   const [emblaRef] = useEmblaCarousel(
     { loop: true, dragFree: true, watchDrag: false },
-    [AutoScroll({ speed, direction: reverse ? "backward" : "forward", stopOnInteraction: false })],
+    [
+      AutoScroll({
+        speed,
+        direction: reverse ? "backward" : "forward",
+        startDelay: 0,
+        stopOnFocusIn: false,
+        stopOnInteraction: false,
+        stopOnMouseEnter: false,
+      }),
+    ],
   );
 
   return (
@@ -85,20 +94,23 @@ function MarqueeRow({
                 borderRadius: "10px",
                 padding: "10px 14px",
                 height: "110px",
+                overflow: "hidden",
                 boxShadow: "0 2px 8px rgba(10,75,53,.05)",
               }}
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                width={270}
-                height={90}
+                width={286}
+                height={96}
                 style={{
-                  height: "90px",
+                  height: "96px",
                   width: "auto",
-                  maxWidth: "270px",
+                  maxWidth: "286px",
                   objectFit: "contain",
                   display: "block",
+                  transform: "scale(1.06)",
+                  transformOrigin: "center",
                 }}
               />
             </div>

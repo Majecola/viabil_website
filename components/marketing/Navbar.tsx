@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { MouseEvent } from "react";
 import { useState } from "react";
 
 const navLinks = [
@@ -17,12 +18,18 @@ export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setOpen(false);
+    window.location.href = "/";
+  };
+
   return (
     <header className="site-nav-public">
       <nav className="nav-public-inner" aria-label="Navegação principal">
-        <Link className="brand-lockup" href="/" onClick={() => setOpen(false)}>
+        <a className="brand-lockup" href="/" onClick={handleLogoClick}>
           <img className="brand-logo-img" src="/assets/viabil-logo.webp" alt="VIABIL" />
-        </Link>
+        </a>
 
         <div className="nav-public-links">
           {navLinks.map((link) => (

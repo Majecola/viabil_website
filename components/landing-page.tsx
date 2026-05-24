@@ -37,6 +37,102 @@ const landingShellOverrides = `
     padding-bottom: clamp(28px, 5vh, 52px);
   }
 
+  .landing-source .market-map {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(340px, 1.25fr);
+    align-items: center;
+    gap: clamp(28px, 5vw, 64px);
+    margin: 54px 0 36px;
+  }
+
+  .landing-source .market-map-copy {
+    max-width: 460px;
+  }
+
+  .landing-source .map-kicker {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--green-primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .landing-source .market-map h3 {
+    color: var(--black);
+    font-size: clamp(24px, 2.7vw, 36px);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .landing-source .market-map p {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .landing-source .market-map-points {
+    display: grid;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .landing-source .market-map-points span {
+    position: relative;
+    padding-left: 18px;
+    color: var(--black);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .landing-source .market-map-points span::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green-primary);
+  }
+
+  .landing-source .market-map-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 680px;
+    object-fit: contain;
+  }
+
+  .landing-source .diferenciais {
+    background: var(--green-primary);
+    color: var(--white);
+  }
+
+  .landing-source .diferenciais .eyebrow {
+    color: rgba(255, 255, 255, .9);
+  }
+
+  .landing-source .stage-scroll-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .landing-source .stage-scroll-heading .eyebrow {
+    margin-bottom: 0;
+  }
+
+  .landing-source .stage-scroll-heading h2 {
+    max-width: 760px;
+  }
+
+  .landing-source .stage-scroll-heading p {
+    max-width: 680px;
+    margin: 0;
+  }
+
   @media (min-width: 769px) {
     .landing-source .hero-content {
       transform: translateY(-10px);
@@ -48,6 +144,20 @@ const landingShellOverrides = `
       align-items: flex-start;
       padding-top: 32px;
       padding-bottom: 44px;
+    }
+
+    .landing-source .market-map {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin: 40px 0 28px;
+    }
+
+    .landing-source .market-map-copy {
+      max-width: none;
+    }
+
+    .landing-source .market-map-visual {
+      margin: 0 -12px;
     }
 
     .landing-source .hero-content {

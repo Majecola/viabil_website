@@ -134,11 +134,6 @@ Three versions, all compatible for file exchange between partners:
 - Unlimited users. Allows full customizations and integrations.
 - Includes: Gestão de Terrenos, Viabilidade, Consolidação, Workflow de Tarefas.
 
-**VIABIL Pro / ACP**
-- Most complete version. Includes all Full features plus the Acompanhamento module.
-- Essential for mature companies that need to monitor planned vs. actual performance and replan dynamically.
-- Requires implementation support.
-
 **VIABIL Cloud (SaaS)**
 - Subscription-based monthly model. Hosted on Oracle Cloud + Sky.One infrastructure.
 - Access from any device, anywhere. No initial license investment. Full data security, confidentiality, and auditability.
@@ -170,7 +165,7 @@ Main module. Where feasibility studies are created, simulated, and analyzed.
 - Reports: Premissas, Fluxos de Caixa (sintético e analítico, nominal, indexado, VP), Previsão de Resultados, Análise de Sensibilidade, Tabelas de Venda, Cronograma de Obra e Vendas — all exported directly to Excel.
 - Key indicators: Margem, VPL, TIR, MTIR, Exposição Máxima e Média, Investimento Máximo (Risco), ROI, Yield, Payback — for the project and for each partner/investor separately.
 
-### Acompanhamento (Pro/ACP only)
+### Acompanhamento
 Continuous monitoring module from land acquisition through project close.
 - Compares planejado x revisado x realizado across all stages.
 - Imports actual data from ERPs, spreadsheets, or TXT files (de→para account plan mapping).
@@ -308,7 +303,7 @@ Core public marketing pages:
 - Plataforma (Solucao / O que é o VIABIL).
 - Modulos.
 - Segmentos.
-- Versoes (Lite, Full, Pro/ACP, Cloud).
+- Versoes (Lite, Full, Cloud).
 - Servicos.
 - Viabil Lite.
 - Conteudos / Blog / Recursos (Viabilidade em Pauta).
@@ -326,7 +321,7 @@ Recommended homepage flow:
 6. Analyst/team value section.
 7. Product modules (5 modules).
 8. Segment coverage (lead with incorporação residencial, casas, loteamentos).
-9. Product versions (Lite entry point + Full + Pro/ACP).
+9. Product versions (Lite entry point + Full + Cloud).
 10. Why VIABIL over spreadsheets.
 11. Services and implementation.
 12. About / manifesto strip.
@@ -582,7 +577,7 @@ It should feel accessible, practical, lighter — but still clearly belonging to
 
 Use `--orange-lite` only for Lite accents, CTAs, and differentiation.
 
-Positioning: "A porta de entrada para a cultura VIABIL." Accessible cost, main feasibility features, up to 2 licenses, no customizations. Studies are fully compatible with Full and Pro/ACP versions for partner exchange.
+Positioning: "A porta de entrada para a cultura VIABIL." Accessible cost, main feasibility features, up to 2 licenses, no customizations. Studies are fully compatible with Full for partner exchange.
 
 ---
 

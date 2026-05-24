@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CTABand } from "@/components/marketing/CTABand";
+import { CicloOrbital } from "@/components/marketing/CicloOrbital";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 import { getWhatsAppHref } from "@/lib/whatsapp";
 
@@ -120,6 +121,7 @@ export default function PlataformaPage() {
             heading="Do terreno ao resultado, com a mesma visão gerencial."
             subheading="A análise não para na aprovação. O ciclo continua quando as premissas mudam, a obra avança e a empresa precisa corrigir rota."
           />
+          <CicloOrbital />
           <div className="timeline-rail ui-reveal">
             {cycle.map((item, index) => (
               <article className="timeline-row" key={item.step}>

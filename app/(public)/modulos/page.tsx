@@ -30,7 +30,7 @@ const modules = [
   {
     id: "03",
     name: "Acompanhamento",
-    tag: "Pro / ACP",
+    tag: "Previsto x realizado",
     headline: "Não basta acompanhar. Precisa agir.",
     desc: "Compara planejado, revisado e realizado, importa dados de ERPs ou planilhas e permite replanejar ações para buscar as metas definidas no estudo.",
     facts: ["Previsto x revisado x realizado", "Alertas de divergência", "Wizard de reprojeção", "Visão para sócios e investidores"],
