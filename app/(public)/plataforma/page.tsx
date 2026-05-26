@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CTABand } from "@/components/marketing/CTABand";
 import { CicloOrbital } from "@/components/marketing/CicloOrbital";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
-import { getWhatsAppHref } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Plataforma | VIABIL",
@@ -69,8 +68,6 @@ const decisionDepth = [
 ];
 
 export default function PlataformaPage() {
-  const whatsappHref = getWhatsAppHref("Olá, gostaria de entender o ciclo completo do VIABIL.");
-
   return (
     <>
       <section className="page-hero dark">
@@ -84,9 +81,9 @@ export default function PlataformaPage() {
               previsto x realizado.
             </p>
             <div className="hero-actions">
-              <a className="button-primary" href={whatsappHref}>
+              <Link className="button-primary" href="/contato">
                 Solicitar demonstração
-              </a>
+              </Link>
               <Link className="button-secondary" href="/modulos">
                 Ver módulos
               </Link>

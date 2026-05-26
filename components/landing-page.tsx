@@ -190,6 +190,11 @@ const landingShellOverrides = `
 `;
 
 export function LandingPage() {
+  const homepageBodyHtml = landingBodyHtml.replace(
+    /href="https:\/\/wa\.me\/PLACEHOLDER\?text=Ol%C3%A1%2C\+gostaria\+de\+solicitar\+uma\+demonstra%C3%A7%C3%A3o\+do\+VIABIL\."/g,
+    'href="/contato"',
+  );
+
   const depoimentosRootRef = useRef<ReturnType<typeof createRoot> | null>(null);
   const depoimentosMountRef = useRef<HTMLElement | null>(null);
   const depoimentosGenRef = useRef(0);
@@ -216,9 +221,14 @@ export function LandingPage() {
     ) {
       originalAddEventListener.call(this, type, listener, options);
 
-      if (listener) {
+      const target = this;
+      const shouldTrack =
+        target instanceof Element &&
+        (target.classList.contains("landing-source") || Boolean(target.closest(".landing-source")));
+
+      if (listener && shouldTrack) {
         cleanupCallbacks.push(() => {
-          this.removeEventListener(type, listener, options);
+          target.removeEventListener(type, listener, options);
         });
       }
     };
@@ -414,7 +424,7 @@ export function LandingPage() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `${landingStyles}\n${landingShellOverrides}` }} />
-      <div className="landing-source" dangerouslySetInnerHTML={{ __html: landingBodyHtml }} />
+      <div className="landing-source" dangerouslySetInnerHTML={{ __html: homepageBodyHtml }} />
     </>
   );
 }

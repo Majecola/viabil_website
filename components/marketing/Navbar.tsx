@@ -19,17 +19,20 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
     setOpen(false);
-    window.location.href = "/";
+
+    if (pathname === "/") {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
     <header className="site-nav-public">
       <nav className="nav-public-inner" aria-label="Navegação principal">
-        <a className="brand-lockup" href="/" onClick={handleLogoClick}>
+        <Link className="brand-lockup" href="/" onClick={handleLogoClick}>
           <img className="brand-logo-img" src="/assets/viabil-logo.webp" alt="VIABIL" />
-        </a>
+        </Link>
 
         <div className="nav-public-links">
           {navLinks.map((link) => (
