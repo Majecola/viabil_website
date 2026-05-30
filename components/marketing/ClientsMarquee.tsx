@@ -2,7 +2,6 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
-import Image from "next/image";
 
 type Logo = { src: string; alt: string };
 
@@ -98,15 +97,16 @@ function MarqueeRow({
                 boxShadow: "0 2px 8px rgba(10,75,53,.05)",
               }}
             >
-              <Image
+              <img
                 src={logo.src}
                 alt={logo.alt}
                 width={286}
                 height={96}
                 style={{
-                  height: "96px",
                   width: "auto",
+                  height: "auto",
                   maxWidth: "286px",
+                  maxHeight: "96px",
                   objectFit: "contain",
                   display: "block",
                   transform: "scale(1.06)",

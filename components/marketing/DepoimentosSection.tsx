@@ -84,7 +84,28 @@ const col3 = testimonials.slice(8, 12);
 export function DepoimentosSection() {
   return (
     <div>
+      <style>{`
+        .testimonials-mobile-grid {
+          display: none;
+        }
+
+        @media (max-width: 440px) {
+          .testimonials-desktop-grid {
+            display: none !important;
+          }
+
+          .testimonials-heading-grid {
+            grid-template-columns: 1fr !important;
+          }
+
+          .testimonials-mobile-grid {
+            display: block;
+          }
+        }
+      `}</style>
+
       <div
+        className="testimonials-heading-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "minmax(0, .78fr) minmax(260px, .42fr)",
@@ -131,6 +152,7 @@ export function DepoimentosSection() {
       </div>
 
       <div
+        className="testimonials-desktop-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
@@ -146,6 +168,20 @@ export function DepoimentosSection() {
         <TestimonialsColumn testimonials={col1} duration={28} />
         <TestimonialsColumn testimonials={col2} duration={34} />
         <TestimonialsColumn testimonials={col3} duration={30} />
+      </div>
+
+      <div
+        className="testimonials-mobile-grid"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
+          maxHeight: "680px",
+          overflow: "hidden",
+        }}
+      >
+        <TestimonialsColumn testimonials={testimonials} duration={72} />
       </div>
     </div>
   );

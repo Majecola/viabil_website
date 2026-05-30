@@ -3,11 +3,16 @@ node_modules/
 .turbo/
 .vercel/
 
+.env*
+!.env.example
+
 .codex-ui-audit/
 .playwright-cli/
 .edge-headless/
+.claude/
 
 node-server.err.log
 node-server.out.log
 
 *.log
+*.tsbuildinfo

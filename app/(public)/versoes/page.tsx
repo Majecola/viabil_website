@@ -10,34 +10,52 @@ export const metadata: Metadata = {
     "Conheça VIABIL Lite, Full e VIABIL Cloud. Versões compatíveis para troca de estudos entre parceiros.",
 };
 
-const versions = [
-  {
-    id: "lite",
-    name: "VIABIL Lite",
-    logo: "/assets/viabil-lite-logo.webp",
-    logoAlt: "VIABIL Lite",
-    tag: "Porta de entrada",
-    profile: "Pequenas empresas, consultores e desenvolvedores em início de estruturação.",
-    desc: "Versão acessível para iniciar a cultura VIABIL com os principais recursos de viabilidade, até 2 licenças e sem customizações.",
-    facts: ["Estudos compatíveis com Full", "Principais recursos de viabilidade", "Relatórios pré-formatados", "Investimento inicial mais leve"],
-  },
-  {
-    id: "full",
-    name: "VIABIL Full",
-    logo: "/assets/viabil-logo.webp",
-    logoAlt: "VIABIL",
-    tag: "Padrão corporativo",
-    profile: "Empresas com múltiplos projetos simultâneos e equipes envolvidas no processo.",
-    desc: "Versão padrão para empresas em desenvolvimento, com usuários ilimitados, parametrizações, integrações e módulos de gestão do ciclo.",
-    facts: ["Gestão de Terrenos", "Viabilidade", "Consolidação", "Workflow de Tarefas"],
-  },
-];
-
 const choiceSignals = [
   ["Quando Lite faz sentido", "A empresa quer entrar na cultura VIABIL com investimento mais acessível, poucos usuários e foco nos principais estudos de viabilidade."],
   ["Quando Full faz sentido", "A operação já tem vários projetos, equipes envolvidas, necessidade de usuários ilimitados, parametrizações e troca de estudos com parceiros."],
   ["Quando Acompanhamento faz sentido", "A maturidade exige comparar planejado, revisado e realizado, importar dados e replanejar ações durante a vida do empreendimento."],
   ["Quando Cloud faz sentido", "O acesso em nuvem reduz investimento inicial de licença e simplifica uso remoto com segurança, confidencialidade e auditabilidade."],
+];
+
+const versionHighlights = [
+  {
+    id: "viabil-full",
+    logo: "/assets/viabil-logo.webp",
+    logoAlt: "VIABIL",
+    badge: "Versão corporativa",
+    heading:
+      "VIABIL é a plataforma completa para empresas que precisam padronizar decisões, parametrizar modelos e acompanhar o ciclo imobiliário com governança.",
+    description:
+      "Ideal para incorporadoras, loteadoras, construtoras e grupos com múltiplos projetos, equipes envolvidas e necessidade de customizações, integrações e visão consolidada.",
+    cta: "Solicitar proposta",
+    className: "full",
+    facts: [
+      "Usuários ilimitados",
+      "Gestão de Terrenos, Viabilidade, Consolidação e Workflow",
+      "Parametrizações e relatórios personalizados",
+      "Base para acompanhamento planejado x realizado",
+    ],
+    note: "Para empresas que precisam transformar a metodologia VIABIL em padrão interno de decisão.",
+  },
+  {
+    id: "viabil-lite",
+    logo: "/assets/viabil-lite-logo.webp",
+    logoAlt: "VIABIL Lite",
+    badge: "Versão acessível",
+    heading:
+      "VIABIL Lite é a porta de entrada para a cultura VIABIL. A versão acessível para pequenas incorporadoras, loteadoras e consultorias que querem começar com o padrão do mercado.",
+    description:
+      "Análise de viabilidade, cálculo de VGV, margens e simulações de cenários sem contrato de implantação. Ideal para quem está começando ou quer testar o método VIABIL antes de escalar.",
+    cta: "Conhecer o VIABIL Lite",
+    className: "lite",
+    facts: [
+      "Análise de viabilidade simplificada",
+      "Simulação de cenários básicos",
+      "Relatório de viabilidade em PDF",
+      "Sem necessidade de implantação",
+    ],
+    note: "Ideal para consultores, pequenas incorporadoras e profissionais em início de carreira.",
+  },
 ];
 
 export default function VersoesPage() {
@@ -57,45 +75,56 @@ export default function VersoesPage() {
         </div>
       </section>
 
-      <section className="section-block">
-        <div className="section-inner">
+      <section className="section-block white">
+        <div className="section-inner version-feature-stack">
           <SectionHeader
             eyebrow="Linha VIABIL"
             heading="Escolha pela maturidade da operação, não só pela lista de recursos."
             subheading="A página foi ajustada para não prometer treinamento, pagamento, login ou recursos fora do escopo público do site."
           />
-          <div className="versions-layout ui-reveal">
-            {versions.map((version) => (
-              <article
-                className={`version-panel ${version.id === "lite" ? "lite" : ""} ${version.id === "full" ? "featured" : ""}`}
-                key={version.id}
-              >
-                <span className="version-tag">{version.tag}</span>
-                <h2 className="version-name">
-                  <Image
-                    src={version.logo}
-                    alt={version.logoAlt}
-                    width={version.id === "lite" ? 210 : 176}
-                    height={52}
-                    className={`version-card-logo ${version.id === "lite" ? "lite" : ""}`}
-                  />
-                </h2>
-                <p className="version-meta">{version.profile}</p>
-                <p>{version.desc}</p>
-                <ul className="version-facts" aria-label={`Resumo ${version.name}`}>
+          {versionHighlights.map((version) => (
+            <article
+              className={`version-feature-panel ${version.className} ui-reveal`}
+              id={version.id}
+              key={version.id}
+            >
+              <div className="version-feature-copy">
+                <Image
+                  src={version.logo}
+                  alt={version.logoAlt}
+                  width={version.className === "lite" ? 210 : 180}
+                  height={52}
+                  className={`version-feature-logo ${version.className === "lite" ? "lite" : ""}`}
+                />
+                <span className="version-feature-badge">{version.badge}</span>
+                <h2>{version.heading}</h2>
+                <p>{version.description}</p>
+                <Link
+                  className={version.className === "lite" ? "button-lite" : "button-primary"}
+                  href="/contato"
+                >
+                  {version.cta}
+                </Link>
+              </div>
+
+              <div className="version-feature-card">
+                <Image
+                  src={version.logo}
+                  alt=""
+                  aria-hidden="true"
+                  width={version.className === "lite" ? 190 : 160}
+                  height={48}
+                  className={`version-feature-card-logo ${version.className === "lite" ? "lite" : ""}`}
+                />
+                <ul aria-label={`Destaques ${version.logoAlt}`}>
                   {version.facts.map((fact) => (
                     <li key={fact}>{fact}</li>
                   ))}
                 </ul>
-                <Link
-                  className={version.id === "lite" ? "button-secondary" : "button-primary"}
-                  href="/contato"
-                >
-                  Solicitar proposta
-                </Link>
-              </article>
-            ))}
-          </div>
+                <p>{version.note}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 

@@ -80,7 +80,7 @@ export default function ContatoPage() {
               align="left"
               eyebrow="Formulário"
               heading="Envie os dados principais."
-              subheading="Enquanto o backend de leads não está conectado, o envio abre uma mensagem estruturada no WhatsApp ou no e-mail comercial."
+              subheading="Os dados são registrados para que a equipe VIABIL retorne com o contexto correto."
             />
             <ContactWhatsAppForm />
           </div>

@@ -453,32 +453,6 @@ Security:
 
 ---
 
-## Animation Migration
-
-Preserving the existing landing page animations is mandatory.
-
-Current animation behaviors:
-- Initial hero reveal animations.
-- CTA pulse animation.
-- Scroll reveal/stagger effects.
-- Animated counters.
-- Dashboard/mockup SVG line and point animations.
-- Interactive stage cards.
-- Business carousel controls/dots.
-- Scroll-driven canvas frame animation.
-- Active nav section tracking.
-- Mobile menu animation.
-- `prefers-reduced-motion` handling.
-
-Migration strategy:
-1. Pixel-preserve first: port current CSS/JS behavior into isolated React client components as closely as possible.
-2. Verify against the current `index.html` before refactoring animation internals.
-3. Only modernize with Framer Motion if a specific behavior is brittle or cannot be preserved cleanly.
-4. Do not simplify or remove animations unless explicitly requested.
-5. Any animation improvements must preserve accessibility, performance, and reduced-motion behavior.
-
----
-
 ## Brand
 
 Use only the official VIABIL color palette.

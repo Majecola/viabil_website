@@ -26,7 +26,11 @@ export function Footer() {
       <div className="footer-inner">
         <div className="footer-brand">
           <Link className="brand-lockup" href="/">
-            <img className="brand-logo-img" src="/assets/viabil-logo.webp" alt="VIABIL" />
+            <img
+              className="brand-logo-img"
+              src="/assets/logos/viabil-footer-logo.png"
+              alt="VIABIL"
+            />
           </Link>
           <p>
             Software de viabilidade econômico-financeira para empreendimentos

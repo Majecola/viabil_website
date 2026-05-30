@@ -9,11 +9,145 @@ import {
 } from "@/lib/landing-source";
 import { DepoimentosSection } from "@/components/marketing/DepoimentosSection";
 import { ClientsMarquee } from "@/components/marketing/ClientsMarquee";
+import { NewsletterSignup } from "@/components/marketing/NewsletterSignup";
+
+const archivedHomeSectionIds = [
+  "para-quem",
+  "lite",
+  "versoes-preview",
+  "sobre-strip",
+];
+
+const orderedHomeSectionIds = [
+  "inicio",
+  "prova",
+  "o-que-e",
+  "viabil-newsletter",
+  "ciclo-scroll",
+  "clientes",
+  "depoimentos",
+  "recursos",
+  "diferenciais",
+  "segmentos-atendidos",
+  "servicos-preview",
+  "presenca-nacional",
+  "contato",
+];
+
+function getSectionPattern(sectionId: string) {
+  return new RegExp(
+    String.raw`\s*<section\b(?=[^>]*\bid="${sectionId}")[\s\S]*?<\/section>\s*`,
+    "i",
+  );
+}
+
+function removeSectionsById(html: string, sectionIds: string[]) {
+  return sectionIds.reduce((currentHtml, sectionId) => {
+    return currentHtml.replace(getSectionPattern(sectionId), "\n");
+  }, html);
+}
+
+function splitClientsSection(html: string) {
+  const clientsPattern = getSectionPattern("clientes");
+  const match = html.match(clientsPattern);
+
+  if (!match) {
+    return html;
+  }
+
+  const section = match[0];
+  const headlineStart = section.indexOf('<div class="clients-headline">');
+  const clientsRoot = '<div id="viabil-clients-root"></div>';
+  const clientsRootEnd = section.indexOf(clientsRoot) + clientsRoot.length;
+  const marketStart = section.indexOf('<div class="market-map');
+  const depoimentosRoot = '<div id="viabil-depoimentos-root"></div>';
+  const depoimentosStart = section.indexOf(depoimentosRoot);
+
+  if (
+    headlineStart < 0 ||
+    clientsRootEnd < clientsRoot.length ||
+    marketStart < 0 ||
+    depoimentosStart < 0
+  ) {
+    return html;
+  }
+
+  const proofContent = section.slice(headlineStart, clientsRootEnd).trim();
+  const marketContent = section.slice(marketStart, depoimentosStart).trim();
+
+  const splitSections = `
+    <section class="clients section-pad" id="clientes">
+      <div class="container">
+        ${proofContent}
+      </div>
+    </section>
+
+    <section class="clients section-pad" id="depoimentos">
+      <div class="container">
+        ${depoimentosRoot}
+      </div>
+    </section>
+
+    <section class="clients section-pad" id="presenca-nacional">
+      <div class="container">
+        ${marketContent}
+      </div>
+    </section>
+  `;
+
+  return html.replace(clientsPattern, splitSections);
+}
+
+function orderHomeSections(html: string) {
+  const sections = new Map<string, string>();
+  let workingHtml = html;
+
+  for (const sectionId of orderedHomeSectionIds) {
+    const match = workingHtml.match(getSectionPattern(sectionId));
+    if (!match) {
+      continue;
+    }
+
+    sections.set(sectionId, match[0].trim());
+    workingHtml = workingHtml.replace(match[0], "\n");
+  }
+
+  const firstSectionIndex = workingHtml.search(/<section\b/i);
+  const prefix = firstSectionIndex >= 0 ? workingHtml.slice(0, firstSectionIndex) : workingHtml;
+  const suffix = firstSectionIndex >= 0 ? workingHtml.slice(firstSectionIndex) : "";
+
+  const orderedSections = orderedHomeSectionIds
+    .map((sectionId) => sections.get(sectionId))
+    .filter(Boolean)
+    .join("\n\n");
+
+  return `${prefix}${orderedSections}${suffix}`;
+}
+
+function prepareHomepageHtml(html: string) {
+  const newsletterMount = `
+    <section class="newsletter-home-slot" id="viabil-newsletter" aria-label="Newsletter">
+      <div id="viabil-newsletter-root"></div>
+    </section>
+  `;
+  const homepageHtml = html.replace(
+    /assets\/elements\/map\.png/g,
+    "assets/elements/map-clean.png",
+  );
+
+  return orderHomeSections(
+    removeSectionsById(
+      splitClientsSection(homepageHtml).replace(getSectionPattern("o-que-e"), (section) => `${section}\n${newsletterMount}`),
+      archivedHomeSectionIds,
+    ),
+  );
+}
 
 const landingShellOverrides = `
   .landing-source .site-nav,
   .landing-source .whatsapp-fab,
-  .landing-source > footer {
+  .landing-source > footer,
+  .landing-source footer {
     display: none !important;
   }
 
@@ -139,6 +273,13 @@ const landingShellOverrides = `
     }
   }
 
+  @media (min-width: 1800px) {
+    .landing-source .hero-video .container {
+      padding-left: max(80px, calc((100vw - 1440px) / 2));
+      padding-right: max(80px, calc((100vw - 1440px) / 2));
+    }
+  }
+
   @media (max-width: 768px) {
     .landing-source .hero-video .container {
       align-items: flex-start;
@@ -190,10 +331,22 @@ const landingShellOverrides = `
 `;
 
 export function LandingPage() {
-  const homepageBodyHtml = landingBodyHtml.replace(
+  const homepageBodyHtml = removeSectionsById(
+    prepareHomepageHtml(landingBodyHtml),
+    [],
+  ).replace(
     /href="https:\/\/wa\.me\/PLACEHOLDER\?text=Ol%C3%A1%2C\+gostaria\+de\+solicitar\+uma\+demonstra%C3%A7%C3%A3o\+do\+VIABIL\."/g,
     'href="/contato"',
   );
+  const newsletterSlotPattern =
+    /<section class="newsletter-home-slot" id="viabil-newsletter" aria-label="Newsletter">[\s\S]*?<\/section>/;
+  const newsletterSlotMatch = homepageBodyHtml.match(newsletterSlotPattern);
+  const homepageHtmlBeforeNewsletter = newsletterSlotMatch
+    ? homepageBodyHtml.slice(0, newsletterSlotMatch.index)
+    : homepageBodyHtml;
+  const homepageHtmlAfterNewsletter = newsletterSlotMatch
+    ? homepageBodyHtml.slice((newsletterSlotMatch.index || 0) + newsletterSlotMatch[0].length)
+    : "";
 
   const depoimentosRootRef = useRef<ReturnType<typeof createRoot> | null>(null);
   const depoimentosMountRef = useRef<HTMLElement | null>(null);
@@ -424,7 +577,13 @@ export function LandingPage() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `${landingStyles}\n${landingShellOverrides}` }} />
-      <div className="landing-source" dangerouslySetInnerHTML={{ __html: homepageBodyHtml }} />
+      <div className="landing-source">
+        <div dangerouslySetInnerHTML={{ __html: homepageHtmlBeforeNewsletter }} />
+        {newsletterSlotMatch ? <NewsletterSignup /> : null}
+        {homepageHtmlAfterNewsletter ? (
+          <div dangerouslySetInnerHTML={{ __html: homepageHtmlAfterNewsletter }} />
+        ) : null}
+      </div>
     </>
   );
 }

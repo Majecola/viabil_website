@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { track } from "@vercel/analytics";
 
 const segmentOptions = [
   "Incorporação/Construção",
@@ -26,8 +27,9 @@ const sourceOptions = [
 
 export function ContactWhatsAppForm() {
   const [status, setStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -40,29 +42,38 @@ export function ContactWhatsAppForm() {
       return;
     }
 
-    const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
-    const message = [
-      "Olá, gostaria de falar com um especialista VIABIL.",
-      "",
-      `Nome: ${name}`,
-      `E-mail: ${email}`,
-      `Telefone: ${phone}`,
-      `Empresa: ${data.get("company") || ""}`,
-      `Segmento: ${data.get("segment") || ""}`,
-      `Como conheceu: ${data.get("source") || ""}`,
-      "",
-      String(data.get("message") || "").trim(),
-    ].join("\n");
+    setIsSubmitting(true);
+    setStatus("Enviando seus dados...");
 
-    if (!number) {
-      window.location.href = `mailto:comercial@viabil.com.br?subject=${encodeURIComponent(
-        "Contato pelo site VIABIL",
-      )}&body=${encodeURIComponent(message)}`;
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        company: data.get("company") || "",
+        role: data.get("role") || "",
+        segment: data.get("segment") || "",
+        source: data.get("source") || "",
+        message: data.get("message") || "",
+        sourcePage: window.location.pathname,
+      }),
+    });
+
+    setIsSubmitting(false);
+
+    if (!response.ok) {
+      const payload = await response.json().catch(() => null);
+      setStatus(payload?.error || "Não foi possível enviar agora. Tente novamente.");
       return;
     }
 
-    window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
-    setStatus("Mensagem pronta no WhatsApp. Confira os dados antes de enviar.");
+    track("contact_submit", {
+      source_page: window.location.pathname,
+      segment: String(data.get("segment") || ""),
+    });
+    setStatus("Recebemos seus dados. Um especialista VIABIL entrará em contato.");
     form.reset();
   }
 
@@ -75,6 +86,10 @@ export function ContactWhatsAppForm() {
       <div className="field">
         <label htmlFor="company">Empresa</label>
         <input id="company" name="company" autoComplete="organization" />
+      </div>
+      <div className="field">
+        <label htmlFor="role">Cargo</label>
+        <input id="role" name="role" autoComplete="organization-title" />
       </div>
       <div className="field">
         <label htmlFor="email">E-mail</label>
@@ -111,8 +126,8 @@ export function ContactWhatsAppForm() {
         />
       </div>
       <div className="field full">
-        <button className="button-primary" type="submit">
-          Enviar pelo WhatsApp
+        <button className="button-primary" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Enviando..." : "Enviar dados"}
         </button>
         {status ? <p className="field-note" role="status">{status}</p> : null}
       </div>

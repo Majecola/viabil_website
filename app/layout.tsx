@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -12,6 +13,9 @@ export const metadata: Metadata = {
   title: "VIABIL | Inteligência financeira para o mercado imobiliário",
   description:
     "O VIABIL é a plataforma de referência em viabilidade econômico-financeira para incorporadoras, loteadoras e desenvolvedores imobiliários. Do terreno ao resultado.",
+  icons: {
+    icon: "/assets/viabil-logo.webp",
+  },
   openGraph: {
     title: "VIABIL | Inteligência financeira para o mercado imobiliário",
     description:
@@ -35,7 +39,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={outfit.variable}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
