@@ -38,8 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={outfit.variable}>
-      <body>
+    <html lang="pt-BR" className={outfit.variable} data-scroll-behavior="smooth">
+      <body suppressHydrationWarning>
         {children}
         <Analytics />
       </body>

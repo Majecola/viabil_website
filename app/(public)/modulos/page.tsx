@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { CTABand } from "@/components/marketing/CTABand";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
+import { ViabilidadeFeatures } from "@/components/marketing/ViabilidadeFeatures";
 
 export const metadata: Metadata = {
   title: "Módulos | VIABIL",
@@ -111,6 +112,10 @@ export default function ModulosPage() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="section-block surface">
+        <ViabilidadeFeatures />
       </section>
 
       <section className="section-block white">
