@@ -10,6 +10,7 @@ node_modules/
 .playwright-cli/
 .edge-headless/
 .claude/
+supabase/.temp/
 
 node-server.err.log
 node-server.out.log
