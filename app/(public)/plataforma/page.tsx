@@ -119,7 +119,7 @@ export default function PlataformaPage() {
             subheading="A análise não para na aprovação. O ciclo continua quando as premissas mudam, a obra avança e a empresa precisa corrigir rota."
           />
           <CicloOrbital />
-          <div className="timeline-rail ui-reveal">
+          <div className="timeline-rail plataforma-cycle-rail ui-reveal">
             {cycle.map((item, index) => (
               <article className="timeline-row" key={item.step}>
                 <div className="timeline-index">{String(index + 1).padStart(2, "0")} · {item.step}</div>

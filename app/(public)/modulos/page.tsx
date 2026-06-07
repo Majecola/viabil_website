@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CTABand } from "@/components/marketing/CTABand";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 import { ViabilidadeFeatures } from "@/components/marketing/ViabilidadeFeatures";
+import { ModulosParallax } from "@/components/marketing/ModulosParallax";
 
 export const metadata: Metadata = {
   title: "Módulos | VIABIL",
@@ -117,6 +118,8 @@ export default function ModulosPage() {
       <section className="section-block surface">
         <ViabilidadeFeatures />
       </section>
+
+      <ModulosParallax modules={modules} />
 
       <section className="section-block white">
         <div className="section-inner split-grid">

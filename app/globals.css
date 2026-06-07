@@ -198,88 +198,158 @@ textarea:focus-visible {
 .button-secondary,
 .button-whatsapp,
 .button-text {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
-  min-height: 44px;
+  min-height: 46px;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 10px;
   border-radius: 8px;
   border: 0;
   cursor: pointer;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
   line-height: 1;
   text-decoration: none;
-  transition: transform 160ms var(--ease-out), background 200ms var(--ease-out), color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 180ms var(--ease-out),
+    background 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    color 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out),
+    opacity 220ms var(--ease-out);
+}
+
+.nav-public-cta::after,
+.button-primary::after,
+.button-secondary::after,
+.button-whatsapp::after,
+.button-lite::after {
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  content: "";
+  pointer-events: none;
+}
+
+.nav-public-cta svg,
+.button-primary svg,
+.button-secondary svg,
+.button-whatsapp svg,
+.button-lite svg,
+.button-text svg {
+  flex: 0 0 auto;
+  transition: transform 180ms var(--ease-out);
 }
 
 .nav-public-cta,
 .button-primary {
-  background: var(--green-primary);
+  background: linear-gradient(135deg, var(--green-primary), #073d2c);
   color: var(--white);
-  padding: 0 18px;
+  padding: 0 20px;
+  box-shadow: 0 10px 24px rgba(10, 75, 53, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .nav-public-cta:hover,
   .button-primary:hover {
-    background: var(--green-secondary);
-    box-shadow: 0 14px 28px rgba(10, 75, 53, 0.18);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
+    box-shadow: 0 16px 34px rgba(10, 75, 53, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .nav-public-cta:hover svg,
+  .button-primary:hover svg,
+  .button-secondary:hover svg,
+  .button-whatsapp:hover svg,
+  .button-lite:hover svg,
+  .button-text:hover svg {
+    transform: translateX(2px);
   }
 }
 
 .nav-public-cta:active,
 .button-primary:active {
-  transform: scale(0.97);
+  transform: translateY(0) scale(0.98);
 }
 
 .button-secondary {
-  border: 1px solid rgba(10, 75, 53, 0.22);
-  background: var(--white);
+  border: 1px solid rgba(10, 75, 53, 0.26);
+  background: rgba(255, 255, 255, 0.84);
   color: var(--green-primary);
-  padding: 0 18px;
+  padding: 0 20px;
+  box-shadow: 0 8px 22px rgba(10, 75, 53, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .button-secondary:hover {
+    border-color: rgba(10, 75, 53, 0.42);
     background: rgba(10, 75, 53, 0.06);
-    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(10, 75, 53, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
   }
 }
 
 .button-secondary:active {
-  transform: scale(0.97);
+  transform: translateY(0) scale(0.98);
 }
 
 .button-whatsapp {
-  background: var(--green-primary);
+  background: linear-gradient(135deg, #0A4B35, #0f6f4d);
   color: var(--white);
-  padding: 0 18px;
+  padding: 0 20px;
+  box-shadow: 0 12px 28px rgba(10, 75, 53, 0.2);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .button-whatsapp:hover {
-    background: var(--green-secondary);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #13885E, #0A4B35);
+    box-shadow: 0 16px 36px rgba(10, 75, 53, 0.26);
+    transform: translateY(-2px);
   }
 }
 
 .button-whatsapp:active {
-  transform: scale(0.97);
+  transform: translateY(0) scale(0.98);
 }
 
 .button-text {
   min-height: auto;
   color: var(--green-primary);
   font-size: 15px;
+  font-weight: 800;
   padding: 0;
+  text-underline-offset: 5px;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .button-text:hover {
     color: var(--green-secondary);
-    transform: translateX(2px);
+    text-decoration: underline;
+    transform: translateX(1px);
   }
+}
+
+.nav-public-cta:disabled,
+.button-primary:disabled,
+.button-secondary:disabled,
+.button-whatsapp:disabled,
+.button-lite:disabled,
+button[disabled].nav-public-cta,
+button[disabled].button-primary,
+button[disabled].button-secondary,
+button[disabled].button-whatsapp,
+button[disabled].button-lite {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+  box-shadow: none;
 }
 
 .mobile-menu-button {
@@ -976,32 +1046,36 @@ textarea:focus-visible {
 }
 
 .button-lite {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
-  min-height: 44px;
+  min-height: 46px;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 10px;
   border-radius: 8px;
-  background: var(--orange-lite);
+  background: linear-gradient(135deg, var(--orange-lite), #D96500);
   color: var(--white);
   cursor: pointer;
   font-weight: 800;
+  letter-spacing: 0.01em;
   line-height: 1;
-  padding: 0 18px;
+  padding: 0 20px;
   text-decoration: none;
-  transition: transform 160ms var(--ease-out), background 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  box-shadow: 0 12px 28px rgba(255, 122, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: transform 180ms var(--ease-out), background 220ms var(--ease-out), box-shadow 220ms var(--ease-out), opacity 220ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .button-lite:hover {
-    background: #D96500;
-    box-shadow: 0 14px 28px rgba(255, 122, 0, 0.22);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #FF8C1F, var(--orange-lite));
+    box-shadow: 0 16px 34px rgba(255, 122, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    transform: translateY(-2px);
   }
 }
 
 .button-lite:active {
-  transform: scale(0.97);
+  transform: translateY(0) scale(0.98);
 }
 
 .version-feature-stack {
@@ -1364,6 +1438,7 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
+  align-items: stretch;
 }
 
 .newsletter-row input,
@@ -1739,15 +1814,15 @@ textarea:focus-visible {
   border-radius: 999px;
   background: var(--green-primary);
   color: var(--white);
-  box-shadow: 0 18px 40px rgba(10, 75, 53, 0.32);
-  transition: transform 160ms var(--ease-out), background 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  box-shadow: 0 18px 40px rgba(10, 75, 53, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 180ms var(--ease-out), background 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .whatsapp-float:hover {
     background: var(--green-secondary);
-    box-shadow: 0 20px 46px rgba(10, 75, 53, 0.4);
-    transform: translateY(-2px);
+    box-shadow: 0 22px 48px rgba(10, 75, 53, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px) scale(1.02);
   }
 }
 
@@ -2086,6 +2161,10 @@ textarea:focus-visible {
     --nav-height: 64px;
   }
 
+  .plataforma-cycle-rail {
+    display: none;
+  }
+
   .nav-public-inner {
     padding: 0 16px;
   }
@@ -2235,6 +2314,10 @@ textarea:focus-visible {
     bottom: 16px;
     width: 54px;
     height: 54px;
+  }
+
+  .newsletter-band {
+    padding-bottom: 92px;
   }
 
   .footer-brand .brand-logo-img {

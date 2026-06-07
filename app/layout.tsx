@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description:
     "O VIABIL é a plataforma de referência em viabilidade econômico-financeira para incorporadoras, loteadoras e desenvolvedores imobiliários. Do terreno ao resultado.",
   icons: {
-    icon: "/assets/viabil-logo.webp",
+    icon: "/assets/viabil-favicon.png",
   },
   openGraph: {
     title: "VIABIL | Inteligência financeira para o mercado imobiliário",

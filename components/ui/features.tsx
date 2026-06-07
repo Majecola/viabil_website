@@ -93,7 +93,7 @@ export function Features({ eyebrow, heading, description, features }: FeaturesPr
 
       <div className="mt-12 grid items-center gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(420px,1.08fr)] lg:gap-14">
         <div
-          className="no-scrollbar flex gap-3 overflow-x-auto pb-3 lg:flex-col lg:gap-3 lg:overflow-visible lg:pb-0"
+          className="no-scrollbar grid w-full min-w-0 max-w-full gap-3 pb-0 sm:flex sm:overflow-x-auto sm:overscroll-x-contain sm:pb-3 lg:flex-col lg:gap-3 lg:overflow-visible lg:pb-0"
           ref={containerRef}
         >
           {features.map((feature, index) => {
@@ -103,7 +103,7 @@ export function Features({ eyebrow, heading, description, features }: FeaturesPr
             return (
               <button
                 aria-pressed={isActive}
-                className={`min-w-[282px] cursor-pointer rounded-2xl border p-5 text-left transition duration-300 lg:min-w-0 ${
+                className={`w-full cursor-pointer rounded-2xl border p-5 text-left transition duration-300 sm:w-[min(282px,calc(100vw-48px))] sm:shrink-0 lg:w-auto lg:min-w-0 ${
                   isActive
                     ? "border-green-primary/20 bg-white shadow-[0_18px_44px_rgba(10,75,53,0.12)]"
                     : "border-transparent bg-transparent hover:border-green-primary/10 hover:bg-white/70"

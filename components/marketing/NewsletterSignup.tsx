@@ -59,14 +59,14 @@ export function NewsletterSignup() {
         <form className="newsletter-form" onSubmit={handleSubmit}>
           <label htmlFor="newsletter-email">E-mail profissional</label>
           <div className="newsletter-row">
-            <input id="newsletter-email" name="email" type="email" autoComplete="email" required />
-            <button className="button-primary" type="submit" disabled={isSubmitting}>
+            <input id="newsletter-email" name="email" type="email" autoComplete="email" required suppressHydrationWarning />
+            <button className="button-primary" type="submit" disabled={isSubmitting} suppressHydrationWarning>
               {isSubmitting ? "Enviando..." : "Assinar"}
             </button>
           </div>
           <div className="newsletter-extra">
-            <input name="name" placeholder="Nome" autoComplete="name" />
-            <input name="company" placeholder="Empresa" autoComplete="organization" />
+            <input name="name" placeholder="Nome" autoComplete="name" suppressHydrationWarning />
+            <input name="company" placeholder="Empresa" autoComplete="organization" suppressHydrationWarning />
           </div>
           {status ? <p className="field-note" role="status">{status}</p> : null}
         </form>

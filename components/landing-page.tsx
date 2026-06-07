@@ -10,6 +10,7 @@ import {
 import { DepoimentosSection } from "@/components/marketing/DepoimentosSection";
 import { ClientsMarquee } from "@/components/marketing/ClientsMarquee";
 import { NewsletterSignup } from "@/components/marketing/NewsletterSignup";
+import { PlataformaFeatures } from "@/components/marketing/PlataformaFeatures";
 
 const archivedHomeSectionIds = [
   "para-quem",
@@ -21,13 +22,13 @@ const archivedHomeSectionIds = [
 const orderedHomeSectionIds = [
   "inicio",
   "prova",
-  "o-que-e",
-  "viabil-newsletter",
+  "viabil-plataforma",
   "ciclo-scroll",
   "clientes",
   "depoimentos",
   "recursos",
   "diferenciais",
+  "viabil-newsletter",
   "segmentos-atendidos",
   "servicos-preview",
   "presenca-nacional",
@@ -125,6 +126,11 @@ function orderHomeSections(html: string) {
 }
 
 function prepareHomepageHtml(html: string) {
+  const plataformaMount = `
+    <section class="section-pad" id="viabil-plataforma" aria-label="A Plataforma">
+      <div id="viabil-plataforma-root"></div>
+    </section>
+  `;
   const newsletterMount = `
     <section class="newsletter-home-slot" id="viabil-newsletter" aria-label="Newsletter">
       <div id="viabil-newsletter-root"></div>
@@ -137,7 +143,10 @@ function prepareHomepageHtml(html: string) {
 
   return orderHomeSections(
     removeSectionsById(
-      splitClientsSection(homepageHtml).replace(getSectionPattern("o-que-e"), (section) => `${section}\n${newsletterMount}`),
+      splitClientsSection(homepageHtml).replace(
+        getSectionPattern("o-que-e"),
+        `\n${plataformaMount}\n${newsletterMount}`,
+      ),
       archivedHomeSectionIds,
     ),
   );
@@ -149,6 +158,94 @@ const landingShellOverrides = `
   .landing-source > footer,
   .landing-source footer {
     display: none !important;
+  }
+
+  .landing-source .btn,
+  .landing-source .nav-cta,
+  .landing-source .business-nav {
+    position: relative;
+    isolation: isolate;
+    min-height: 46px;
+    border-radius: 8px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    box-shadow: 0 10px 24px rgba(10, 75, 53, 0.14);
+    transition:
+      transform 180ms var(--ease-out),
+      background 220ms var(--ease-out),
+      border-color 220ms var(--ease-out),
+      color 220ms var(--ease-out),
+      box-shadow 220ms var(--ease-out),
+      opacity 220ms var(--ease-out);
+  }
+
+  .landing-source .btn::after,
+  .landing-source .nav-cta::after,
+  .landing-source .business-nav::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,0));
+    pointer-events: none;
+  }
+
+  .landing-source .btn-primary,
+  .landing-source .nav-cta {
+    background: linear-gradient(135deg, var(--green-primary), #073d2c);
+    box-shadow: 0 12px 28px rgba(10, 75, 53, 0.18), inset 0 1px 0 rgba(255,255,255,.18);
+  }
+
+  .landing-source .btn-secondary {
+    background: rgba(255,255,255,.86);
+    border-color: rgba(10, 75, 53, .28);
+    box-shadow: 0 10px 24px rgba(10, 75, 53, 0.08), inset 0 1px 0 rgba(255,255,255,.8);
+    backdrop-filter: blur(10px);
+  }
+
+  .landing-source .business-nav {
+    border: 1px solid rgba(10, 75, 53, .18);
+    background: rgba(255, 255, 255, .9);
+    color: var(--green-primary);
+  }
+
+  .landing-source .business-dot {
+    border: 1px solid rgba(10, 75, 53, .22);
+    background: rgba(10, 75, 53, .16);
+    transition: width 180ms var(--ease-out), background 180ms var(--ease-out), transform 180ms var(--ease-out);
+  }
+
+  .landing-source .business-dot.is-active {
+    background: var(--green-primary);
+    transform: scale(1.08);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .landing-source .btn:hover,
+    .landing-source .nav-cta:hover,
+    .landing-source .business-nav:hover {
+      transform: translateY(-2px);
+    }
+
+    .landing-source .btn-primary:hover,
+    .landing-source .nav-cta:hover {
+      background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
+      box-shadow: 0 16px 34px rgba(10, 75, 53, 0.22), inset 0 1px 0 rgba(255,255,255,.2);
+    }
+
+    .landing-source .btn-secondary:hover,
+    .landing-source .business-nav:hover {
+      background: rgba(10, 75, 53, .06);
+      border-color: rgba(10, 75, 53, .42);
+      box-shadow: 0 14px 30px rgba(10, 75, 53, 0.12);
+    }
+  }
+
+  .landing-source .btn:active,
+  .landing-source .nav-cta:active,
+  .landing-source .business-nav:active {
+    transform: translateY(0) scale(.98);
   }
 
   .landing-source .hero {
@@ -355,6 +452,9 @@ export function LandingPage() {
   const clientsRootRef = useRef<ReturnType<typeof createRoot> | null>(null);
   const clientsMountRef = useRef<HTMLElement | null>(null);
 
+  const plataformaRootRef = useRef<ReturnType<typeof createRoot> | null>(null);
+  const plataformaMountRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     const cleanupCallbacks: Array<() => void> = [];
     const timeoutIds = new Set<number>();
@@ -433,6 +533,17 @@ export function LandingPage() {
 
     const gen = ++depoimentosGenRef.current;
 
+    const plataformaMount = document.getElementById("viabil-plataforma-root") as HTMLElement | null;
+    if (plataformaMount) {
+      if (plataformaMountRef.current === plataformaMount && plataformaRootRef.current) {
+        plataformaRootRef.current.render(<PlataformaFeatures />);
+      } else {
+        plataformaRootRef.current = createRoot(plataformaMount);
+        plataformaMountRef.current = plataformaMount;
+        plataformaRootRef.current.render(<PlataformaFeatures />);
+      }
+    }
+
     const clientsMount = document.getElementById("viabil-clients-root") as HTMLElement | null;
     if (clientsMount) {
       if (clientsMountRef.current === clientsMount && clientsRootRef.current) {
@@ -509,6 +620,7 @@ export function LandingPage() {
         | undefined;
 
       if (pageTransitionEvent.persisted || navigationEntry?.type === "back_forward") {
+        plataformaRootRef.current?.render(<PlataformaFeatures />);
         clientsRootRef.current?.render(<ClientsMarquee />);
         depoimentosRootRef.current?.render(<DepoimentosSection />);
         originalSetTimeout(restoreLandingAnimationState, 60);
@@ -544,6 +656,9 @@ export function LandingPage() {
 
       originalSetTimeout(() => {
         if (depoimentosGenRef.current === capturedGen) {
+          plataformaRootRef.current?.unmount();
+          plataformaRootRef.current = null;
+          plataformaMountRef.current = null;
           depoimentosRootToUnmount?.unmount();
           depoimentosRootRef.current = null;
           depoimentosMountRef.current = null;
