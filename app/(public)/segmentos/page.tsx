@@ -3,7 +3,8 @@ import { CTABand } from "@/components/marketing/CTABand";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 
 export const metadata: Metadata = {
-  title: "Segmentos | VIABIL",
+  title: "Segmentos",
+  alternates: { canonical: "/segmentos" },
   description:
     "O VIABIL atende incorporação residencial, casas, loteamentos e outros segmentos do mercado imobiliário com modelos parametrizáveis.",
 };
@@ -89,7 +90,7 @@ export default function SegmentosPage() {
             heading="Incorporação, casas e loteamentos vêm primeiro."
             subheading="A estrutura segue a orientação do proprietário: apresentar os segmentos residenciais como o núcleo do posicionamento e tratar os demais como suportados."
           />
-          <div className="segment-grid ui-reveal">
+          <div className="segment-grid ui-reveal ui-stagger">
             {primarySegments.map((segment, index) => (
               <article
                 className={`segment-feature ${index === 0 ? "" : "secondary"}`}
@@ -150,7 +151,7 @@ export default function SegmentosPage() {
             heading="O desafio muda, mas a linguagem financeira permanece."
             subheading="A página agora deixa claro por que cada segmento exige premissas próprias, sem tirar o foco do residencial, casas e loteamentos."
           />
-          <div className="plain-list ui-reveal">
+          <div className="plain-list ui-reveal ui-stagger">
             {segmentMethod.map((item) => (
               <article className="plain-list-item" key={item.label}>
                 <h3>{item.label}</h3>

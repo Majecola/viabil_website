@@ -1,7 +1,7 @@
 "use client";
 import { MapPin, Calculator, CheckSquare, BarChart2, TrendingUp } from "lucide-react";
-import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
-import type { TimelineItem } from "@/components/ui/radial-orbital-timeline";
+import RadialOrbitalTimeline from "@/components/marketing/radial-orbital-timeline";
+import type { TimelineItem } from "@/components/marketing/radial-orbital-timeline";
 
 const cicloData: TimelineItem[] = [
   {

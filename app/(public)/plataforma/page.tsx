@@ -5,7 +5,8 @@ import { CicloOrbital } from "@/components/marketing/CicloOrbital";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 
 export const metadata: Metadata = {
-  title: "Plataforma | VIABIL",
+  title: "Plataforma",
+  alternates: { canonical: "/plataforma" },
   description:
     "Conheça o VIABIL: a referência em viabilidade econômico-financeira para o ciclo completo do empreendimento imobiliário.",
 };
@@ -119,7 +120,7 @@ export default function PlataformaPage() {
             subheading="A análise não para na aprovação. O ciclo continua quando as premissas mudam, a obra avança e a empresa precisa corrigir rota."
           />
           <CicloOrbital />
-          <div className="timeline-rail plataforma-cycle-rail ui-reveal">
+          <div className="timeline-rail plataforma-cycle-rail ui-reveal ui-stagger">
             {cycle.map((item, index) => (
               <article className="timeline-row" key={item.step}>
                 <div className="timeline-index">{String(index + 1).padStart(2, "0")} · {item.step}</div>
@@ -137,7 +138,7 @@ export default function PlataformaPage() {
             heading="A discussão sai da fórmula e volta para a decisão."
             subheading="Em negócios imobiliários, a fragilidade está no controle de premissas, versões, indicadores e histórico. O VIABIL reduz esse ruído."
           />
-          <div className="comparison-grid ui-reveal">
+          <div className="comparison-grid ui-reveal ui-stagger">
             <div className="comparison-column">
               <h3>Quando a análise fica em planilhas</h3>
               {[
@@ -178,7 +179,7 @@ export default function PlataformaPage() {
             heading="Valor, flexibilidade, parametrização e confiança."
             subheading="Esses quatro princípios precisam aparecer em toda a experiência porque explicam por que o VIABIL é diferente de soluções genéricas."
           />
-          <div className="plain-list ui-reveal">
+          <div className="plain-list ui-reveal ui-stagger">
             {pillars.map((pillar) => (
               <article className="plain-list-item" key={pillar.label}>
                 <h3>{pillar.label}</h3>
@@ -197,7 +198,7 @@ export default function PlataformaPage() {
             heading="As decisões não são mais estáticas."
             subheading="O VIABIL ajuda a empresa a avaliar a saúde dos empreendimentos, a necessidade de funding e o retorno esperado conforme o projeto evolui."
           />
-          <div className="plain-list ui-reveal">
+          <div className="plain-list ui-reveal ui-stagger">
             {decisionDepth.map((item) => (
               <article className="plain-list-item" key={item.label}>
                 <h3>{item.label}</h3>

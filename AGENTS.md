@@ -291,7 +291,7 @@ Avoid:
 - Startup hype, generic SaaS language, empty AI promises, overplayful copy, old institutional brochure language.
 - Overpromising integrations, automation, AI, or product capabilities.
 - Making VIABIL look limited to one project type or only initial feasibility.
-- Publishing client names/logos without explicit approval.
+- Customer names and logos may be published on public pages and homepage logo strips. This approval is granted for logos; testimonial quotes still require approval unless they are already provided for publication.
 
 ---
 
@@ -307,7 +307,7 @@ Core public marketing pages:
 - Servicos.
 - Viabil Lite.
 - Conteudos / Blog / Recursos (Viabilidade em Pauta).
-- Clientes / Cases — only with approved proof.
+- Clientes / Cases - client names and logos are approved for publication; testimonial quotes still require approval unless supplied as publishable material.
 - Sobre (BDK Solutions, Equipe, Missao e Valores).
 - Contato.
 
@@ -585,18 +585,18 @@ Do not name specific ERPs (Sienge, etc.) without approval. Do not promise live i
 
 ## Dynamic Clients Section
 
-The Clientes/Cases page and any homepage client logo strip must eventually be dynamic — fetching client names and logos from a Supabase database table, not hardcoded in the component.
+The Clientes/Cases page and any homepage client logo strip should eventually be dynamic - fetching client names and logos from a Supabase database table instead of staying hardcoded permanently.
 
 Requirements:
 - A `clients` table in Supabase stores: client name, logo URL (referencing Supabase Storage), segment, state/region, display order, and a boolean `published` flag.
 - The public page fetches only published clients and renders them.
 - VIABIL admin staff manage client entries through the `/admin` panel (add, edit, toggle published, reorder).
 - The homepage may show a curated subset (e.g., featured flag or a limit on display count).
-- Do not hardcode any client name or logo path — all client data must come from the database.
-- Until the database is populated and approved, render a placeholder strip with neutral text ("Empresas líderes do mercado imobiliário" or equivalent) instead of logos.
-- Client logos must not be published without explicit approval from the company — the `published` flag enforces this at the data level.
+- Customer names and logos are approved for publication on the website. Hardcoded approved logo strips are acceptable during the current redesign, but the long-term source of truth should be the database.
+- Until the database is populated, render the approved logo strip or a placeholder strip with neutral text ("Empresas lideres do mercado imobiliario" or equivalent) if assets are unavailable.
+- The `published` flag controls whether a client appears publicly once the dynamic client database is implemented.
 
-This is a planned future feature. Do not implement it until Eli confirms the database is ready and logos are approved. When implementing, use Next.js server components with Supabase server client for the fetch (no client-side data fetching for this section).
+This is a planned future feature. Do not block current approved logo publication on the database migration. When implementing the dynamic version, use Next.js server components with Supabase server client for the fetch (no client-side data fetching for this section).
 
 ---
 

@@ -7,7 +7,8 @@ import { ViabilidadeFeatures } from "@/components/marketing/ViabilidadeFeatures"
 import { ModulosParallax } from "@/components/marketing/ModulosParallax";
 
 export const metadata: Metadata = {
-  title: "Módulos | VIABIL",
+  title: "Módulos",
+  alternates: { canonical: "/modulos" },
   description:
     "Conheça os módulos do VIABIL: Gestão de Terrenos, Viabilidade, Acompanhamento, Consolidação e Workflow de Tarefas.",
 };
@@ -94,7 +95,7 @@ export default function ModulosPage() {
             heading="Cada módulo cobre uma decisão crítica."
             subheading="A composição muda conforme a versão contratada, mas o objetivo é sempre manter a mesma linguagem financeira em todos os estágios."
           />
-          <div className="module-stack ui-reveal">
+          <div className="module-stack ui-reveal ui-stagger">
             {modules.map((mod) => (
               <article className="module-panel" key={mod.id}>
                 <div className="module-number">{mod.id}</div>
@@ -187,7 +188,7 @@ export default function ModulosPage() {
               subheading="Os relatórios saem do módulo de Viabilidade e do Acompanhamento prontos para comitê, sócios, investidores e parceiros. Os exemplos abaixo são amostras reais geradas pela plataforma."
             />
           </div>
-          <div className="report-sample-grid ui-reveal">
+          <div className="report-sample-grid ui-reveal ui-stagger">
             <article className="report-sample">
               <div className="report-sample-header">
                 <span className="report-sample-name">Fluxo Consolidado</span>

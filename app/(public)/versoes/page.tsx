@@ -5,7 +5,8 @@ import { CTABand } from "@/components/marketing/CTABand";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 
 export const metadata: Metadata = {
-  title: "Versões | VIABIL",
+  title: "Versões",
+  alternates: { canonical: "/versoes" },
   description:
     "Conheça VIABIL Lite, Full e VIABIL Cloud. Versões compatíveis para troca de estudos entre parceiros.",
 };
@@ -20,7 +21,7 @@ const choiceSignals = [
 const versionHighlights = [
   {
     id: "viabil-full",
-    logo: "/assets/viabil-logo.webp",
+    logo: "/assets/logos/viabil-logo.webp",
     logoAlt: "VIABIL",
     badge: "Versão corporativa",
     heading:
@@ -39,7 +40,7 @@ const versionHighlights = [
   },
   {
     id: "viabil-lite",
-    logo: "/assets/viabil-lite-logo.webp",
+    logo: "/assets/logos/viabil-lite-logo.webp",
     logoAlt: "VIABIL Lite",
     badge: "Versão acessível",
     heading:
@@ -146,7 +147,7 @@ export default function VersoesPage() {
 
       <section className="section-block surface">
         <div className="section-inner">
-          <div className="metric-row ui-reveal">
+          <div className="metric-row ui-reveal ui-stagger">
             <div className="metric-item">
               <span className="metric-value">3</span>
               <span className="metric-label">formatos comerciais</span>
@@ -175,7 +176,7 @@ export default function VersoesPage() {
             heading="A versão certa depende do processo que a empresa precisa sustentar."
             subheading="A compatibilidade entre formatos mantém a troca de estudos com parceiros. O que muda é profundidade, parametrização, implantação, acesso em nuvem e acompanhamento."
           />
-          <div className="plain-list ui-reveal">
+          <div className="plain-list ui-reveal ui-stagger">
             {choiceSignals.map(([label, desc]) => (
               <article className="plain-list-item" key={label}>
                 <h3>{label}</h3>

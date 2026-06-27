@@ -9,7 +9,7 @@ export default function AdminLoginPage() {
     <main className="admin-login">
       <div className="admin-login-card">
         <Link className="brand-lockup" href="/">
-          <img className="brand-logo-img" src="/assets/viabil-logo.webp" alt="VIABIL" />
+          <img className="brand-logo-img" src="/assets/logos/viabil-logo.webp" alt="VIABIL" />
         </Link>
         <span className="eyebrow">Painel administrativo</span>
         <h1>Entrar no admin VIABIL</h1>

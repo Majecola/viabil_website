@@ -6,7 +6,7 @@ import {
   GitCompareArrows,
   SlidersHorizontal,
 } from "lucide-react";
-import { Features, type FeatureShowcaseItem } from "@/components/ui/features";
+import { Features, type FeatureShowcaseItem } from "@/components/marketing/features";
 
 const viabilidadeFeatures: FeatureShowcaseItem[] = [
   {

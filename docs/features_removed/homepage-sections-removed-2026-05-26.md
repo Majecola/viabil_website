@@ -69,3 +69,21 @@ Reusable copy:
 
 Suggested future location:
 Can be reused on the `Sobre` page or as a shorter institutional band near the footer.
+
+## Removed Temporarily: `ciclo-scroll`
+
+Archived feature name: `homepage-ciclo-viabil-scroll-section`
+
+Original section name:
+`Ciclo VIABIL / Do terreno ao acompanhamento do resultado.`
+
+Current archive location:
+`components/marketing/archived/HomepageCicloViabilSection.tsx`
+
+Assets intentionally preserved:
+
+- `public/assets/estagios-scroll/frames/`
+- `public/assets/estagios-scroll/frames-3-5/`
+
+Restore instruction:
+Import `HomepageCicloViabilSection` from `@/components/marketing/archived/HomepageCicloViabilSection` in `components/marketing/landing-page.tsx` and render `<HomepageCicloViabilSection />` in the archived placeholder before `ClientsSection`.

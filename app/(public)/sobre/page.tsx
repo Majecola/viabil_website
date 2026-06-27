@@ -4,7 +4,8 @@ import { CTABand } from "@/components/marketing/CTABand";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 
 export const metadata: Metadata = {
-  title: "Sobre | VIABIL e BDK Solutions",
+  title: "Sobre a BDK Solutions",
+  alternates: { canonical: "/sobre" },
   description:
     "Conheça a BDK Solutions, empresa por trás do VIABIL, fundada em 1995 por Eli Wolf.",
 };
@@ -65,7 +66,7 @@ export default function SobrePage() {
               heading="Nascemos dentro do universo da incorporação imobiliária."
               subheading="A BDK absorve demandas e práticas de mercado e traduz esse conhecimento em conceitos, recursos, tecnologia e serviços. É por isso que o VIABIL não soa como um sistema genérico adaptado ao setor."
             />
-            <div className="timeline-rail">
+            <div className="timeline-rail ui-reveal ui-stagger">
               {timeline.map((item) => (
                 <article className="timeline-row" key={item.year}>
                   <div className="timeline-index">{item.year}</div>
@@ -76,7 +77,7 @@ export default function SobrePage() {
           </div>
           <aside className="quote-panel ui-reveal" aria-label="Liderança">
             <Image
-              src="/assets/eli_wolf.png"
+              src="/assets/people/eli_wolf.png"
               alt="Eli Wolf, Diretor Executivo e idealizador do VIABIL"
               fill
               className="quote-panel-photo"
@@ -104,7 +105,7 @@ export default function SobrePage() {
               subheading="A missão é contribuir com o desenvolvimento do setor por meio de softwares e serviços que levam metodologia, segurança e eficiência para decisões imobiliárias."
             />
           </div>
-          <div className="metric-row ui-reveal">
+          <div className="metric-row ui-reveal ui-stagger">
             <div className="metric-item">
               <span className="metric-value">600+</span>
               <span className="metric-label">empresas implementadas</span>
@@ -125,7 +126,7 @@ export default function SobrePage() {
             heading="O DNA imobiliário aparece no produto e no serviço."
             subheading="A BDK não trata o VIABIL como software genérico. A empresa absorve práticas do mercado e devolve isso em metodologia, suporte e evolução contínua."
           />
-          <div className="plain-list ui-reveal">
+          <div className="plain-list ui-reveal ui-stagger">
             {manifestoLines.map(([label, desc]) => (
               <article className="plain-list-item" key={label}>
                 <h3>{label}</h3>
@@ -143,7 +144,7 @@ export default function SobrePage() {
             heading="O que sustenta a relação com o mercado."
             subheading="Os princípios que guiam como a BDK Solutions atua, evolui e se relaciona com clientes e o mercado."
           />
-          <div className="value-grid ui-reveal">
+          <div className="value-grid ui-reveal ui-stagger">
             {values.map(([label, desc]) => (
               <article className="value-item" key={label}>
                 <h3>{label}</h3>

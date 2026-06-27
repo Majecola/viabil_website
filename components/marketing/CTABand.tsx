@@ -11,7 +11,7 @@ export function CTABand({
 }: CTABandProps) {
   return (
     <section className="cta-band">
-      <div className="cta-band-inner">
+      <div className="cta-band-inner ui-reveal">
         <h2>{heading}</h2>
         <p>{subheading}</p>
         <div className="cta-actions">

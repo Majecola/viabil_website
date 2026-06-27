@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { MouseEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/plataforma", label: "Plataforma" },
@@ -17,6 +17,14 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     setOpen(false);
@@ -28,10 +36,10 @@ export function Navbar() {
   };
 
   return (
-    <header className="site-nav-public">
+    <header className={`site-nav-public ${scrolled ? "is-scrolled" : ""}`}>
       <nav className="nav-public-inner" aria-label="Navegação principal">
         <Link className="brand-lockup" href="/" onClick={handleLogoClick}>
-          <img className="brand-logo-img" src="/assets/viabil-logo.webp" alt="VIABIL" />
+          <img className="brand-logo-img" src="/assets/logos/viabil-logo.webp" alt="VIABIL" />
         </Link>
 
         <div className="nav-public-links">

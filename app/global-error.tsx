@@ -147,7 +147,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             }}
           >
             <img
-              src="/assets/viabil-logo.webp"
+              src="/assets/logos/viabil-logo.webp"
               alt="VIABIL"
               style={{ height: "22px", opacity: 0.5 }}
             />

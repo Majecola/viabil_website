@@ -230,7 +230,7 @@ Associated institutions and market presence may include:
 - SECOVI-SP.
 - Fundacao Edson Queiroz / Universidade de Fortaleza.
 
-Do not publish client names, logos, or testimonials without explicit approval.
+Customer names and logos are approved for publication on the website. Testimonial quotes still require approval unless supplied as publishable material.
 
 ## 8. Product Versions
 
@@ -645,7 +645,7 @@ Avoid:
 - Old institutional brochure tone.
 - Overpromising automation or integrations.
 - Making VIABIL look limited to only one project type.
-- Publishing client names or logos without approval.
+- Publishing testimonial quotes without approval. Customer names and logos are approved for publication.
 
 Recommended homepage flow:
 
@@ -911,7 +911,7 @@ Avoid saying:
 
 ## 19. Testimonials And Client Logos
 
-Client testimonials and logos must not be published without explicit approval.
+Customer names and logos are approved for publication on the website. Client testimonial quotes still require approval unless supplied as publishable material.
 
 For placeholders, use anonymous structures such as:
 

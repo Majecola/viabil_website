@@ -7,8 +7,10 @@ export function RevealController() {
   const pathname = usePathname();
 
   useEffect(() => {
+    const targets = document.querySelectorAll(".ui-reveal, .ui-stagger");
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.querySelectorAll(".ui-reveal").forEach((el) => {
+      targets.forEach((el) => {
         el.classList.add("is-visible");
       });
       return;
@@ -25,7 +27,7 @@ export function RevealController() {
       { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
     );
 
-    document.querySelectorAll(".ui-reveal").forEach((el) => observer.observe(el));
+    targets.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
   }, [pathname]);

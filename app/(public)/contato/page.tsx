@@ -4,7 +4,8 @@ import { SectionHeader } from "@/components/marketing/SectionHeader";
 import { getWhatsAppHref } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Contato | VIABIL",
+  title: "Contato",
+  alternates: { canonical: "/contato" },
   description:
     "Fale com o time VIABIL para solicitar demonstração, proposta comercial ou conversar sobre parcerias.",
 };
@@ -53,7 +54,7 @@ export default function ContatoPage() {
               heading="Escolha o assunto e avance pelo WhatsApp."
               subheading="O WhatsApp é o canal principal de conversão do site. O formulário ao lado monta a mensagem com os dados mínimos para contato."
             />
-            <div className="contact-paths">
+            <div className="contact-paths ui-reveal ui-stagger">
               {contactPaths.map((path) => {
                 const href = getWhatsAppHref(path.message);
                 const isExternal = href.startsWith("https://");
