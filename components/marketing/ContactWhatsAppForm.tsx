@@ -42,6 +42,8 @@ export function ContactWhatsAppForm() {
       return;
     }
 
+    const wantsNewsletter = data.get("newsletter") === "on";
+
     setIsSubmitting(true);
     setStatus("Enviando seus dados...");
 
@@ -67,6 +69,22 @@ export function ContactWhatsAppForm() {
       const payload = await response.json().catch(() => null);
       setStatus(payload?.error || "Não foi possível enviar agora. Tente novamente.");
       return;
+    }
+
+    if (wantsNewsletter) {
+      // Best-effort: a newsletter failure must not invalidate the lead.
+      void fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          name,
+          company: data.get("company") || "",
+          role: data.get("role") || "",
+          segment: data.get("segment") || "",
+          sourcePage: window.location.pathname,
+        }),
+      }).catch(() => null);
     }
 
     track("contact_submit", {
@@ -124,6 +142,15 @@ export function ContactWhatsAppForm() {
           name="message"
           placeholder="Conte rapidamente o que sua equipe precisa analisar."
         />
+      </div>
+      <div className="field full">
+        <label className="v1-check" htmlFor="contact-newsletter">
+          <input id="contact-newsletter" name="newsletter" type="checkbox" />
+          <span>
+            Quero receber as atualizações do VIABIL — conteúdos sobre viabilidade, mercado
+            imobiliário e novidades da plataforma.
+          </span>
+        </label>
       </div>
       <div className="field full">
         <button className="button-primary" type="submit" disabled={isSubmitting}>

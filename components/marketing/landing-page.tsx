@@ -1,3 +1,10 @@
+/**
+ * ARCHIVED — v0 homepage (multi-page site).
+ *
+ * Kept intact on purpose: the live homepage is now the compressed one-page
+ * landing in `components/marketing/home/HomeLanding.tsx`. Do not delete —
+ * this is the reference for restoring the full version.
+ */
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JornadaExperience } from "@/components/marketing/jornada/JornadaExperience";
+import { notFound } from "next/navigation";
+import { LEGACY_ROUTES_ENABLED } from "@/lib/legacy-routes";
 
 export const metadata: Metadata = {
   title: "Jornada",
@@ -10,6 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default function JornadaPage() {
+  // Part of the v0 multi-page site. Kept in the codebase, off the web —
+  // flip LEGACY_ROUTES_ENABLED in lib/legacy-routes.ts to restore it.
+  if (!LEGACY_ROUTES_ENABLED) notFound();
+
   return (
     <>
       <JornadaExperience />

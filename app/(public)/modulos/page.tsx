@@ -5,6 +5,8 @@ import { CTABand } from "@/components/marketing/CTABand";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
 import { ViabilidadeFeatures } from "@/components/marketing/ViabilidadeFeatures";
 import { ModulosParallax } from "@/components/marketing/ModulosParallax";
+import { notFound } from "next/navigation";
+import { LEGACY_ROUTES_ENABLED } from "@/lib/legacy-routes";
 
 export const metadata: Metadata = {
   title: "Módulos",
@@ -72,6 +74,10 @@ const reportExamples = [
 ];
 
 export default function ModulosPage() {
+  // Part of the v0 multi-page site. Kept in the codebase, off the web —
+  // flip LEGACY_ROUTES_ENABLED in lib/legacy-routes.ts to restore it.
+  if (!LEGACY_ROUTES_ENABLED) notFound();
+
   return (
     <>
       <section className="page-hero">

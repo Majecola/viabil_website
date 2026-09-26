@@ -3,21 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+/**
+ * v1 is a single-page landing: the nav scrolls the homepage instead of
+ * routing. Each entry maps to a section id rendered by HomeLanding.
+ */
 const navLinks = [
-  { href: "/plataforma", label: "Plataforma" },
-  { href: "/modulos", label: "Módulos" },
-  { href: "/segmentos", label: "Segmentos" },
-  { href: "/versoes", label: "Versões" },
-  { href: "/servicos", label: "Serviços" },
-  { href: "/sobre", label: "Sobre" },
+  { id: "plataforma", label: "Plataforma" },
+  { id: "ciclo", label: "Ciclo" },
+  { id: "modulos", label: "Módulos" },
+  { id: "segmentos", label: "Segmentos" },
+  { id: "implantacao", label: "Implantação" },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
+  const isHome = pathname === "/";
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeId, setActiveId] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -26,13 +31,65 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Scroll-spy: highlight the section currently under the nav.
+  useEffect(() => {
+    if (!isHome) {
+      setActiveId("");
+      return;
+    }
+
+    const sections = navLinks
+      .map((link) => document.getElementById(link.id))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (!sections.length) return;
+
+    const inView = new Map<string, number>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) inView.set(entry.target.id, entry.intersectionRatio);
+          else inView.delete(entry.target.id);
+        });
+
+        // Nothing tracked is on screen (hero, evolução, depoimentos, contato):
+        // drop the highlight rather than leaving a stale one lit.
+        const best = [...inView.entries()].sort((a, b) => b[1] - a[1])[0];
+        setActiveId(best ? best[0] : "");
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.2, 0.6, 1] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [isHome]);
+
+  const scrollToId = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+      setOpen(false);
+      if (!isHome) return; // let Next route to /#id
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      event.preventDefault();
+      target.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        block: "start",
+      });
+      window.history.replaceState(null, "", `#${id}`);
+    },
+    [isHome],
+  );
+
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     setOpen(false);
-
-    if (pathname === "/") {
-      event.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    if (!isHome) return;
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -44,17 +101,23 @@ export function Navbar() {
 
         <div className="nav-public-links">
           {navLinks.map((link) => (
-            <Link
-              className={`nav-public-link ${pathname === link.href ? "is-active" : ""}`}
-              key={link.href}
-              href={link.href}
+            <a
+              aria-current={activeId === link.id ? "true" : undefined}
+              className={`nav-public-link ${activeId === link.id ? "is-active" : ""}`}
+              href={`/#${link.id}`}
+              key={link.id}
+              onClick={(event) => scrollToId(event, link.id)}
             >
               {link.label}
-            </Link>
+            </a>
           ))}
-          <Link className="nav-public-cta" href="/contato">
+          <a
+            className="nav-public-cta"
+            href="/#contato"
+            onClick={(event) => scrollToId(event, "contato")}
+          >
             Solicitar demonstração
-          </Link>
+          </a>
         </div>
 
         <button
@@ -73,18 +136,22 @@ export function Navbar() {
 
       <div id="mobile-menu" className={`mobile-menu-panel ${open ? "is-open" : ""}`}>
         {navLinks.map((link) => (
-          <Link
-            className={`nav-public-link ${pathname === link.href ? "is-active" : ""}`}
-            key={link.href}
-            href={link.href}
-            onClick={() => setOpen(false)}
+          <a
+            className={`nav-public-link ${activeId === link.id ? "is-active" : ""}`}
+            href={`/#${link.id}`}
+            key={link.id}
+            onClick={(event) => scrollToId(event, link.id)}
           >
             {link.label}
-          </Link>
+          </a>
         ))}
-        <Link className="nav-public-cta" href="/contato" onClick={() => setOpen(false)}>
+        <a
+          className="nav-public-cta"
+          href="/#contato"
+          onClick={(event) => scrollToId(event, "contato")}
+        >
           Solicitar demonstração
-        </Link>
+        </a>
       </div>
     </header>
   );

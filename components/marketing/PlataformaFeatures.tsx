@@ -217,11 +217,9 @@ function PlatformDashboard() {
           </div>
         </div>
 
-        <div className="mt-3 grid gap-2 text-sm font-semibold text-[var(--ink-soft)] sm:grid-cols-3">
-          <span className="rounded-lg bg-white px-3 py-2">Lite</span>
-          <span className="rounded-lg bg-white px-3 py-2">Full</span>
-          <span className="rounded-lg bg-white px-3 py-2">Cloud</span>
-        </div>
+        <p className="mt-3 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[var(--ink-soft)]">
+          Disponível nas versões Lite, Full e Cloud.
+        </p>
       </div>
     </div>
   );
@@ -279,10 +277,10 @@ export function PlataformaFeatures() {
             </div>
 
             <a
-              href="/plataforma"
+              href="#ciclo"
               className="platform-cta mt-8 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--green-primary)] px-5 text-sm font-bold text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--green-secondary)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-[rgba(19,136,94,0.34)] active:scale-[0.98]"
             >
-              Conhecer a plataforma completa
+              Entender o ciclo completo
               <ArrowRight className="size-4" strokeWidth={2} aria-hidden="true" />
             </a>
           </div>
