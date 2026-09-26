@@ -29,7 +29,9 @@ const sections: LegalSection[] = [
     ),
   },
   {
-    id: "conteudo",
+    // Not "conteudo": the public layout's <main> already owns that id, and a
+    // duplicate breaks the skip link and the main landmark.
+    id: "natureza-do-conteudo",
     title: "2. Natureza do conteúdo",
     body: (
       <>
