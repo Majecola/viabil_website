@@ -20,6 +20,12 @@ const footerLinks = [
   },
 ];
 
+const legalLinks = [
+  { href: "/privacidade", label: "Privacidade" },
+  { href: "/cookies", label: "Cookies" },
+  { href: "/termos", label: "Termos de Uso" },
+];
+
 export function Footer() {
   return (
     <footer className="site-footer">
@@ -56,6 +62,15 @@ export function Footer() {
 
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} BDK Solutions. Todos os direitos reservados.</span>
+        <ul className="footer-legal">
+          {legalLinks.map((link) => (
+            <li key={link.href}>
+              <Link className="footer-link" href={link.href}>
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
         <span>VIABIL® é uma marca da BDK Solutions.</span>
       </div>
     </footer>

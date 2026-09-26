@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
+import { CookieConsent } from "@/components/marketing/CookieConsent";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -81,7 +81,8 @@ export default function RootLayout({
     <html lang="pt-BR" className={outfit.variable} data-scroll-behavior="smooth">
       <body suppressHydrationWarning>
         {children}
-        <Analytics />
+        {/* Mounts <Analytics /> only after the visitor opts in. */}
+        <CookieConsent />
       </body>
     </html>
   );
