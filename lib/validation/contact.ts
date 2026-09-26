@@ -21,6 +21,15 @@ export const newsletterSubscribeSchema = z.object({
   sourcePage: z.string().trim().max(240).optional().or(z.literal("")),
 });
 
+export const prototypeRequestSchema = z.object({
+  email: z.string().trim().email().max(180),
+  name: z.string().trim().max(120).optional().or(z.literal("")),
+  company: z.string().trim().max(160).optional().or(z.literal("")),
+  segment: z.string().trim().max(120).optional().or(z.literal("")),
+  newsletter: z.boolean().optional().default(false),
+  sourcePage: z.string().trim().max(240).optional().or(z.literal("")),
+});
+
 export const replySchema = z.object({
   subject: z.string().trim().min(3).max(180),
   body: z.string().trim().min(10).max(6000),
