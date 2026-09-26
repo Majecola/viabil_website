@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LEGACY_ROUTES_ENABLED } from "@/lib/legacy-routes";
 
 const sectionLinks = [
   { href: "/#plataforma", label: "Plataforma" },
@@ -9,7 +10,8 @@ const sectionLinks = [
   { href: "/#contato", label: "Contato" },
 ];
 
-// The full site stays online while v1 is the compressed landing page.
+// The v0 multi-page site. Rendered only when those routes are switched back
+// on in lib/legacy-routes.ts — otherwise these would be six dead links.
 const detailLinks = [
   { href: "/plataforma", label: "A plataforma" },
   { href: "/modulos", label: "Módulos em detalhe" },
@@ -56,18 +58,20 @@ export function Footer() {
           </ul>
         </div>
 
-        <div>
-          <div className="footer-heading">Mais detalhes</div>
-          <ul className="footer-links">
-            {detailLinks.map((link) => (
-              <li key={link.href}>
-                <Link className="footer-link" href={link.href}>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {LEGACY_ROUTES_ENABLED ? (
+          <div>
+            <div className="footer-heading">Mais detalhes</div>
+            <ul className="footer-links">
+              {detailLinks.map((link) => (
+                <li key={link.href}>
+                  <Link className="footer-link" href={link.href}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
 
       <div className="footer-bottom">

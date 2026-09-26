@@ -3,6 +3,8 @@ import Link from "next/link";
 import { CTABand } from "@/components/marketing/CTABand";
 import { CicloOrbital } from "@/components/marketing/CicloOrbital";
 import { SectionHeader } from "@/components/marketing/SectionHeader";
+import { notFound } from "next/navigation";
+import { LEGACY_ROUTES_ENABLED } from "@/lib/legacy-routes";
 
 export const metadata: Metadata = {
   title: "Plataforma",
@@ -69,6 +71,10 @@ const decisionDepth = [
 ];
 
 export default function PlataformaPage() {
+  // Part of the v0 multi-page site. Kept in the codebase, off the web —
+  // flip LEGACY_ROUTES_ENABLED in lib/legacy-routes.ts to restore it.
+  if (!LEGACY_ROUTES_ENABLED) notFound();
+
   return (
     <>
       <section className="page-hero dark">
