@@ -176,7 +176,7 @@ export function Features({ eyebrow, heading, description, features }: FeaturesPr
                     <span className="size-2 rounded-full bg-blue-technology/20" />
                   </div>
                   <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-green-primary">
-                    Placeholder de screenshot
+                    Visão do módulo
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col justify-between gap-4 p-5 sm:p-7">
@@ -199,7 +199,7 @@ export function Features({ eyebrow, heading, description, features }: FeaturesPr
                     ))}
                   </div>
                   <p className="m-0 text-xs leading-5 text-gray-dark">
-                    Espaço reservado para a captura real do software.
+                    Representação da leitura que o módulo entrega ao time de decisão.
                   </p>
                 </div>
               </div>

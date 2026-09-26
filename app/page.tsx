@@ -1,7 +1,10 @@
-import { LandingPage } from "@/components/marketing/landing-page";
 import { Footer } from "@/components/marketing/Footer";
 import { Navbar } from "@/components/marketing/Navbar";
+import { RevealController } from "@/components/marketing/RevealController";
 import { WhatsAppFloatingButton } from "@/components/marketing/WhatsAppFloatingButton";
+import { ConstructionBadge } from "@/components/marketing/home/ConstructionBadge";
+import { HomeLanding } from "@/components/marketing/home/HomeLanding";
+import { PrototipoModal } from "@/components/marketing/home/PrototipoModal";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.viabil.com.br";
 
@@ -53,12 +56,27 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+      {/* Opt into scroll-reveal only when scripting is available, so the page
+          never renders as blank content if JS is off or fails. The flag goes on
+          <body>, which carries suppressHydrationWarning — putting it on <html>
+          makes React report an attribute mismatch on every hydration. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.body.classList.add('v1-anim')`,
+        }}
+      />
+      <a className="skip-link" href="#conteudo">
+        Ir para o conteúdo
+      </a>
       <Navbar />
-      <main className="site-main">
-        <LandingPage />
+      <main id="conteudo" className="site-main">
+        <HomeLanding />
       </main>
       <Footer />
       <WhatsAppFloatingButton />
+      <PrototipoModal />
+      <ConstructionBadge />
+      <RevealController />
     </div>
   );
 }

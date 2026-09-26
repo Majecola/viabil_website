@@ -1,23 +1,22 @@
 import Link from "next/link";
 
-const footerLinks = [
-  {
-    title: "Produto",
-    links: [
-      { href: "/plataforma", label: "Plataforma" },
-      { href: "/modulos", label: "Módulos" },
-      { href: "/versoes", label: "Versões" },
-      { href: "/servicos", label: "Serviços" },
-    ],
-  },
-  {
-    title: "Mercado",
-    links: [
-      { href: "/segmentos", label: "Segmentos" },
-      { href: "/sobre", label: "BDK Solutions" },
-      { href: "/contato", label: "Contato" },
-    ],
-  },
+const sectionLinks = [
+  { href: "/#plataforma", label: "Plataforma" },
+  { href: "/#ciclo", label: "Ciclo VIABIL" },
+  { href: "/#modulos", label: "Módulos" },
+  { href: "/#segmentos", label: "Segmentos" },
+  { href: "/#implantacao", label: "Implantação" },
+  { href: "/#contato", label: "Contato" },
+];
+
+// The full site stays online while v1 is the compressed landing page.
+const detailLinks = [
+  { href: "/plataforma", label: "A plataforma" },
+  { href: "/modulos", label: "Módulos em detalhe" },
+  { href: "/versoes", label: "Versões" },
+  { href: "/servicos", label: "Serviços" },
+  { href: "/segmentos", label: "Segmentos" },
+  { href: "/sobre", label: "BDK Solutions" },
 ];
 
 const legalLinks = [
@@ -44,20 +43,31 @@ export function Footer() {
           </p>
         </div>
 
-        {footerLinks.map((col) => (
-          <div key={col.title}>
-            <div className="footer-heading">{col.title}</div>
-            <ul className="footer-links">
-              {col.links.map((link) => (
-                <li key={link.href}>
-                  <Link className="footer-link" href={link.href}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div>
+          <div className="footer-heading">Navegue</div>
+          <ul className="footer-links">
+            {sectionLinks.map((link) => (
+              <li key={link.href}>
+                <a className="footer-link" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <div className="footer-heading">Mais detalhes</div>
+          <ul className="footer-links">
+            {detailLinks.map((link) => (
+              <li key={link.href}>
+                <Link className="footer-link" href={link.href}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div className="footer-bottom">
