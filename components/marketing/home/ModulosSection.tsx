@@ -1,10 +1,25 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { BarChart3, Layers3, LineChart, MapPinned, Workflow } from "lucide-react";
 
-const MODULES = [
+type ModuleShot = { src: string; width: number; height: number; alt: string };
+
+// `shot` = real screen from the owner's demo recording; Acompanhamento has none yet.
+const MODULES: {
+  id: string;
+  tag: string;
+  name: string;
+  headline: string;
+  desc: string;
+  facts: string[];
+  Icon: typeof MapPinned;
+  accent: string;
+  rows: number[];
+  shot?: ModuleShot;
+}[] = [
   {
     id: "01",
     tag: "Originação e landbank",
@@ -15,6 +30,7 @@ const MODULES = [
     Icon: MapPinned,
     accent: "#13885E",
     rows: [64, 42, 78, 51],
+    shot: { src: "/assets/produto/mod-terrenos.webp", width: 1178, height: 758, alt: "Cadastro de terrenos do VIABIL com croqui de localização e mapa do terreno" },
   },
   {
     id: "02",
@@ -26,6 +42,7 @@ const MODULES = [
     Icon: BarChart3,
     accent: "#5FBF9F",
     rows: [48, 72, 58, 88],
+    shot: { src: "/assets/produto/mod-viabilidade.webp", width: 578, height: 630, alt: "Indicadores e resultados de um estudo simulado no VIABIL: VGV, VPL, exposição máxima e TIR" },
   },
   {
     id: "03",
@@ -48,6 +65,7 @@ const MODULES = [
     Icon: Layers3,
     accent: "#13885E",
     rows: [70, 46, 82, 58],
+    shot: { src: "/assets/produto/mod-consolidacao.webp", width: 560, height: 305, alt: "Fluxo consolidado de vários estudos com indicadores do portfólio: VPL, exposição máxima e TIR" },
   },
   {
     id: "05",
@@ -59,6 +77,7 @@ const MODULES = [
     Icon: Workflow,
     accent: "#5FBF9F",
     rows: [52, 66, 47, 75],
+    shot: { src: "/assets/produto/mod-workflow.webp", width: 888, height: 663, alt: "Follow-up de tarefas de um terreno no VIABIL com responsáveis, status, eventos e prazos" },
   },
 ];
 
@@ -151,8 +170,32 @@ export function ModulosSection() {
               <motion.div
                 className="v1-mod-visual"
                 style={reduceMotion ? undefined : { y: visualY }}
-                aria-hidden="true"
+                aria-hidden={current.shot ? undefined : true}
               >
+                {current.shot ? (
+                  <div className="v1-mod-window is-shot">
+                    <div className="v1-mod-window-bar">
+                      <span style={{ background: current.accent }} />
+                      <em />
+                      <b />
+                    </div>
+                    <motion.div
+                      className="v1-mod-shot"
+                      key={`${current.id}-shot`}
+                      initial={{ opacity: 0, scale: 1.02 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <Image
+                        alt={current.shot.alt}
+                        height={current.shot.height}
+                        sizes="(min-width: 1200px) 540px, 42vw"
+                        src={current.shot.src}
+                        width={current.shot.width}
+                      />
+                    </motion.div>
+                  </div>
+                ) : (
                 <div className="v1-mod-window">
                   <div className="v1-mod-window-bar">
                     <span style={{ background: current.accent }} />
@@ -196,6 +239,7 @@ export function ModulosSection() {
                     </div>
                   </div>
                 </div>
+                )}
               </motion.div>
             </div>
           </div>
@@ -220,6 +264,17 @@ export function ModulosSection() {
                   </li>
                 ))}
               </ul>
+              {mod.shot ? (
+                <Image
+                  alt={mod.shot.alt}
+                  className="v1-mod-stack-shot"
+                  height={mod.shot.height}
+                  loading="lazy"
+                  sizes="(min-width: 760px) 640px, 92vw"
+                  src={mod.shot.src}
+                  width={mod.shot.width}
+                />
+              ) : null}
             </article>
           ))}
         </div>

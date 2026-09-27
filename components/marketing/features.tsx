@@ -10,6 +10,8 @@ export interface FeatureShowcaseItem {
   title: string;
   description: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   imageAlt: string;
   previewItems: string[];
 }
@@ -158,9 +160,9 @@ export function Features({ eyebrow, heading, description, features }: FeaturesPr
             <Image
               alt={activeFeature.imageAlt}
               className="h-auto w-full"
-              height={720}
+              height={activeFeature.imageHeight ?? 720}
               src={activeFeature.image}
-              width={1080}
+              width={activeFeature.imageWidth ?? 1080}
             />
           ) : (
             <div

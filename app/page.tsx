@@ -56,15 +56,6 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      {/* Opt into scroll-reveal only when scripting is available, so the page
-          never renders as blank content if JS is off or fails. The flag goes on
-          <body>, which carries suppressHydrationWarning — putting it on <html>
-          makes React report an attribute mismatch on every hydration. */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `document.body.classList.add('v1-anim')`,
-        }}
-      />
       <a className="skip-link" href="#conteudo">
         Ir para o conteúdo
       </a>

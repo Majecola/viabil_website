@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CookieConsent } from "@/components/marketing/CookieConsent";
 import { Outfit } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -78,8 +79,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={outfit.variable} data-scroll-behavior="smooth">
+    // suppressHydrationWarning: the beforeInteractive script below adds
+    // `v1-anim` to <html> before React hydrates.
+    <html
+      lang="pt-BR"
+      className={outfit.variable}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body suppressHydrationWarning>
+        {/* Opt into scroll-reveal only when scripting runs, so content never
+            stays hidden if JS is off. A raw <script> inside a page component is
+            not executed on client-side renders, hence next/script here. */}
+        <Script id="v1-anim" strategy="beforeInteractive">
+          {`document.documentElement.classList.add('v1-anim')`}
+        </Script>
         {children}
         {/* Mounts <Analytics /> only after the visitor opts in. */}
         <CookieConsent />
