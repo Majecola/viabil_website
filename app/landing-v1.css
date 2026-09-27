@@ -2433,3 +2433,33 @@
   padding: 0;
   list-style: none;
 }
+
+/* Módulos: real screenshots in the pinned window */
+.v1-mod-window.is-shot {
+  max-width: 540px;
+  background: #0c1d17;
+}
+
+.v1-mod-shot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: min(58svh, 520px);
+  background: #e7efe9;
+  overflow: hidden;
+}
+
+.v1-mod-shot img {
+  width: 100%;
+  height: auto;
+  max-height: min(58svh, 520px);
+  object-fit: contain;
+}
+
+.v1-mod-stack-shot {
+  width: 100%;
+  height: auto;
+  margin-top: 18px;
+  border-radius: 12px;
+  box-shadow: var(--v1-shadow-card);
+}

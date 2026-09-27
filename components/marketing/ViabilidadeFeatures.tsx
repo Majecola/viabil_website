@@ -15,7 +15,10 @@ const viabilidadeFeatures: FeatureShowcaseItem[] = [
     title: "Premissas parametrizáveis",
     description:
       "Estruture curvas de obra e infraestrutura, condições comerciais, financiamentos, permutas e participações conforme a realidade de cada negócio.",
-    imageAlt: "Placeholder para futura captura das premissas parametrizáveis no VIABIL",
+    image: "/assets/produto/v04_obra_curvas.webp",
+    imageWidth: 1178,
+    imageHeight: 758,
+    imageAlt: "Tela de premissas de obra do VIABIL: custo por metro quadrado, curvas de obra por fase e taxa de administração",
     previewItems: ["Curvas de obra e vendas", "Modelos de financiamento", "Sócios e investidores"],
   },
   {
@@ -24,7 +27,10 @@ const viabilidadeFeatures: FeatureShowcaseItem[] = [
     title: "Fluxo de caixa e indicadores",
     description:
       "Analise resultados em tempo real com indicadores como margem, VPL, TIR, MTIR, exposição de caixa, ROI, yield e payback.",
-    imageAlt: "Placeholder para futura captura do fluxo de caixa e indicadores no VIABIL",
+    image: "/assets/produto/v10_resumo_simulado.webp",
+    imageWidth: 1178,
+    imageHeight: 758,
+    imageAlt: "Estudo simulado no VIABIL: resumo das contas e indicadores como VGV, VPL, exposição máxima e TIR",
     previewItems: ["Fluxo sintético e analítico", "VPL, TIR e margem", "Exposição de caixa"],
   },
   {
@@ -33,7 +39,10 @@ const viabilidadeFeatures: FeatureShowcaseItem[] = [
     title: "Stress-cenários e sensibilidade",
     description:
       "Teste o impacto de mudanças em preço de venda, custo de construção, velocidade de vendas, permuta financeira, juros e outras variáveis críticas.",
-    imageAlt: "Placeholder para futura captura da análise de sensibilidade no VIABIL",
+    image: "/assets/produto/v16_sensibilidade.webp",
+    imageWidth: 1300,
+    imageHeight: 500,
+    imageAlt: "Análise de sensibilidade exportada pelo VIABIL: VPL sobre receita cruzando variações de preço de venda e custo de obra",
     previewItems: ["Preço de venda", "Custo de construção", "Velocidade de vendas"],
   },
   {
@@ -42,7 +51,10 @@ const viabilidadeFeatures: FeatureShowcaseItem[] = [
     title: "Relatórios para decisão",
     description:
       "Exporte premissas, fluxos de caixa, previsão de resultados, tabelas de vendas e análises de sensibilidade diretamente para Excel.",
-    imageAlt: "Placeholder para futura captura dos relatórios exportáveis no VIABIL",
+    image: "/assets/produto/v12_relatorios.webp",
+    imageWidth: 1178,
+    imageHeight: 758,
+    imageAlt: "Central de relatórios do VIABIL: premissas, previsão de resultados, fluxos de caixa e análise de sensibilidade",
     previewItems: ["Premissas", "Previsão de resultados", "Análise de sensibilidade"],
   },
 ];
