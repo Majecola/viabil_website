@@ -126,7 +126,7 @@ const sections: LegalSection[] = [
         <p>
           Trabalhamos para manter o site disponível e atualizado, mas ele pode passar por
           manutenções, interrupções e alterações de conteúdo sem aviso prévio. Este site está em
-          evolução: parte das seções indica explicitamente estar em construção.
+          evolução e seu conteúdo pode ser ampliado ou revisado.
         </p>
         <p>
           O site contém links para serviços de terceiros — como WhatsApp. Não controlamos esses
