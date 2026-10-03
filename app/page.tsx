@@ -2,7 +2,6 @@ import { Footer } from "@/components/marketing/Footer";
 import { Navbar } from "@/components/marketing/Navbar";
 import { RevealController } from "@/components/marketing/RevealController";
 import { WhatsAppFloatingButton } from "@/components/marketing/WhatsAppFloatingButton";
-import { ConstructionBadge } from "@/components/marketing/home/ConstructionBadge";
 import { HomeLanding } from "@/components/marketing/home/HomeLanding";
 import { PrototipoModal } from "@/components/marketing/home/PrototipoModal";
 
@@ -66,7 +65,6 @@ export default function Page() {
       <Footer />
       <WhatsAppFloatingButton />
       <PrototipoModal />
-      <ConstructionBadge />
       <RevealController />
     </div>
   );
