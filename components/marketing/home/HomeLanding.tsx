@@ -43,7 +43,7 @@ export function HomeLanding() {
 
       <section
         aria-label="A plataforma VIABIL"
-        className="v1-band is-white is-flush"
+        className="v1-band is-white"
         id="plataforma"
       >
         <PlataformaFeatures />
