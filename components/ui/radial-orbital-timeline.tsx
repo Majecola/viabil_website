@@ -22,9 +22,15 @@ interface RadialOrbitalTimelineProps {
 const SPIN_DEG_PER_SEC = 6;
 /** How long it takes to swing a clicked node up to the top of the ring. */
 const SETTLE_MS = 620;
-/** Angle where the selected node comes to rest (12 o'clock, so the card hangs
-    down through the middle of the ring exactly like the reference component). */
-const REST_ANGLE = -90;
+/** Angle where the selected node comes to rest: 3 o'clock, facing the detail
+    panel, so the spoke from the hub points straight at the card. */
+const REST_ANGLE = 0;
+/** Below this width the panel no longer fits beside the ring: the detail drops below it. */
+const SIDE_BY_SIDE_MIN = 820;
+/** Room the side layout keeps for the panel, the gap, the nodes overhanging the ring
+    and the stage padding, before sizing the ring. */
+const PANEL_MIN = 340;
+const SIDE_CHROME = 72 + 2 * 60 + 2 * 48;
 
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
 
@@ -74,12 +80,12 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
 
     const measure = () => {
       const width = node.getBoundingClientRect().width || 900;
-      const compact = width < 680;
+      const compact = width < SIDE_BY_SIDE_MIN;
       setMetrics({
         compact,
         radius: compact
-          ? Math.max(88, Math.min(118, (width - 128) / 2))
-          : Math.min(250, Math.max(190, width * 0.24)),
+          ? Math.max(88, Math.min(150, (width - 128) / 2))
+          : Math.min(230, Math.max(150, (width - PANEL_MIN - SIDE_CHROME) / 2)),
       });
     };
 
@@ -241,7 +247,7 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
 
   return (
     <div
-      className={`v1-orbit${metrics.compact ? " is-compact" : ""}${active ? " is-focused" : ""}`}
+      className={`v1-orbit${metrics.compact ? " is-compact" : ""}`}
       ref={containerRef}
     >
       <div
@@ -303,32 +309,25 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
           );
         })}
 
-        {/* Desktop: the card hangs below the top slot, where the selected node
-            has just settled. Anchored to the ring, never inside a node. */}
-        {active && !metrics.compact && settled ? (
-          <Card
-            className="v1-orbit-card"
-            style={{ width: Math.min(340, metrics.radius * 1.5) }}
-          >
-            {detail}
-          </Card>
-        ) : null}
       </div>
 
-      {/* Phones have no room for a hanging card: the detail sits below instead. */}
-      {metrics.compact ? (
-        <div aria-live="polite" className="v1-orbit-sheet">
-          {active ? (
-            <Card className="v1-orbit-card is-static" key={active.id}>
+      {/* The detail always opens in the same place: beside the ring on wide
+          screens (once the node has settled at 3 o'clock, facing it), below the
+          ring on narrow ones. The panel keeps its size, so nothing shifts. */}
+      <div aria-live="polite" className="v1-orbit-panel">
+        {active ? (
+          metrics.compact || settled ? (
+            <Card className="v1-orbit-card" key={active.id}>
               {detail}
             </Card>
-          ) : (
-            <p className="v1-orbit-hint">
-              Toque em uma etapa do ciclo para ver o que O VIABIL organiza nela.
-            </p>
-          )}
-        </div>
-      ) : null}
+          ) : null
+        ) : (
+          <p className="v1-orbit-hint">
+            {metrics.compact ? "Toque" : "Clique"} em uma etapa do ciclo para ver o que O VIABIL
+            organiza nela.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

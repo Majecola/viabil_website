@@ -1585,8 +1585,6 @@
    Rotation is a single custom property (`--orbit-rot`) written by one rAF
    loop; each node derives its polar position from it and counter-rotates so
    the label stays upright. No per-node transitions, so nothing lags behind.
-   Depth (opacity + scale) is computed in CSS from the same angle via sin(),
-   which keeps the illusion alive without a single extra React render.
    ========================================================================== */
 
 .v1-orbit {
@@ -1601,6 +1599,20 @@
      below the ring are dead zones where the spin silently resumes. */
   padding: 56px 0 60px;
   width: 100%;
+}
+
+/* Wide screens: the ring on the left, the detail panel on the right, centred
+   together. The ring's side margin is the room its nodes overhang it by. */
+.v1-orbit:not(.is-compact) {
+  grid-template-columns: auto minmax(340px, 460px);
+  align-items: center;
+  justify-content: center;
+  column-gap: 72px;
+  padding-inline: 48px;
+}
+
+.v1-orbit:not(.is-compact) .v1-orbit-ring {
+  margin-inline: 60px;
 }
 
 .v1-orbit-ring {
@@ -1703,17 +1715,10 @@
   }
 }
 
-/* The card lands on top of the hub, so step out of its way. */
-.v1-orbit.is-focused .v1-orbit-core {
-  opacity: 0.26;
-}
-
 /* ── Nodes ─────────────────────────────────────────── */
 
 .v1-orbit-node {
   --angle: calc(var(--orbit-rot) + var(--a));
-  /* Front of the orbit (bottom of the ring) reads nearer: brighter and larger. */
-  --depth: calc((1 + sin(var(--angle))) / 2);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1727,11 +1732,9 @@
   border: 0;
   background: none;
   cursor: pointer;
-  opacity: calc(0.5 + 0.5 * var(--depth));
-  /* Polar placement, an equal counter-rotation to keep the pill level, then a
-     touch of depth scaling. */
-  transform: rotate(var(--angle)) translate(var(--orbit-r)) rotate(calc(-1 * var(--angle)))
-    scale(calc(0.9 + 0.1 * var(--depth)));
+  /* Polar placement, then an equal counter-rotation to keep the pill level. Every
+     step is drawn at full strength: no node fades as it passes the top. */
+  transform: rotate(var(--angle)) translate(var(--orbit-r)) rotate(calc(-1 * var(--angle)));
 }
 
 .v1-orbit-halo {
@@ -1743,7 +1746,7 @@
   margin: -46px 0 0 -46px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(19, 136, 94, 0.22) 0%, rgba(19, 136, 94, 0) 68%);
-  opacity: calc(0.25 + 0.55 * var(--depth));
+  opacity: 0.5;
   pointer-events: none;
 }
 
@@ -1781,11 +1784,6 @@
   transition: color 260ms ease;
 }
 
-.v1-orbit-node:hover,
-.v1-orbit-node:focus-visible {
-  opacity: 1;
-}
-
 .v1-orbit-node:hover .v1-orbit-dot,
 .v1-orbit-node:focus-visible .v1-orbit-dot {
   transform: scale(1.12);
@@ -1802,10 +1800,6 @@
 }
 
 /* Neighbours in the cycle pulse while a step is open. */
-.v1-orbit-node.is-related {
-  opacity: 1;
-}
-
 .v1-orbit-node.is-related .v1-orbit-dot {
   border-color: var(--green-secondary, #13885e);
   animation: v1-orbit-pulse 1.9s ease-in-out infinite;
@@ -1823,10 +1817,6 @@
 
 .v1-orbit-node.is-active {
   z-index: 200;
-  opacity: 1;
-  /* The selected node has settled at the top: drop the depth scaling so the
-     card below it is measured from a stable, unscaled box. */
-  transform: rotate(var(--angle)) translate(var(--orbit-r)) rotate(calc(-1 * var(--angle)));
 }
 
 .v1-orbit-node.is-active .v1-orbit-dot {
@@ -1845,44 +1835,50 @@
   opacity: 0.9;
 }
 
-/* ── Detail card ─────────────────────────────────────── */
+/* ── Detail panel and card ───────────────────────────── */
+
+/* The panel holds its size whether it shows the hint or a card, so opening a
+   step never moves the ring. */
+.v1-orbit-panel {
+  display: grid;
+  align-items: center;
+  width: 100%;
+  min-height: 280px;
+}
+
+.v1-orbit.is-compact .v1-orbit-panel {
+  place-items: center;
+  width: min(560px, 100%);
+  min-height: 96px;
+}
 
 .v1-orbit-card {
-  position: absolute;
-  top: calc(50% - var(--orbit-r) + 74px);
-  left: 50%;
-  z-index: 300;
+  width: 100%;
   padding: 0;
   border: 1px solid rgba(10, 75, 53, 0.18);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.97);
-  backdrop-filter: blur(10px);
+  background: #fff;
   text-align: left;
-  transform: translateX(-50%);
   cursor: default;
   animation: v1-orbit-card-in 320ms var(--v1-ease) both;
 }
 
+/* It slides out from the ring's side. */
 @keyframes v1-orbit-card-in {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-8px);
+    transform: translateX(-12px);
   }
 }
 
-.v1-orbit-card.is-static {
-  position: static;
-  top: auto;
-  left: auto;
-  width: 100%;
-  transform: none;
+.v1-orbit.is-compact .v1-orbit-card {
   animation: none;
 }
 
 .v1-orbit-card-head {
   display: grid;
   gap: 4px;
-  padding: 18px 20px 0;
+  padding: 22px 24px 0;
 }
 
 .v1-orbit-card-step {
@@ -1895,19 +1891,19 @@
 
 .v1-orbit-card-title {
   color: var(--green-deep, #0a4b35);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.01em;
 }
 
 .v1-orbit-card-body {
-  padding: 10px 20px 18px;
+  padding: 10px 24px 22px;
 }
 
 .v1-orbit-card-body p {
   margin: 0;
   color: var(--v1-muted);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
 }
 
@@ -1948,6 +1944,11 @@
 
 .v1-orbit.is-compact {
   gap: 24px;
+}
+
+/* The bottom node and its label hang below the ring: keep them off the card. */
+.v1-orbit.is-compact .v1-orbit-ring {
+  margin-bottom: 44px;
 }
 
 .v1-orbit.is-compact .v1-orbit-node {
@@ -1994,25 +1995,30 @@
   height: 10px;
 }
 
-.v1-orbit.is-compact.is-focused .v1-orbit-core {
-  opacity: 1;
-}
-
-.v1-orbit-sheet {
-  display: grid;
-  place-items: center;
-  width: min(560px, 100%);
-  min-height: 96px;
-}
-
 .v1-orbit-hint {
   max-width: 34ch;
   margin: 0;
   color: var(--v1-muted);
   font-size: 13.5px;
   line-height: 1.55;
-  text-align: center;
   opacity: 0.75;
+}
+
+/* Wide screens: the hint holds the card's place as an empty frame, so the
+   right side reads as "a step opens here", not as blank space. */
+.v1-orbit:not(.is-compact) .v1-orbit-hint {
+  display: grid;
+  place-items: center;
+  max-width: none;
+  min-height: 220px;
+  padding: 24px 32px;
+  border: 1px dashed rgba(10, 75, 53, 0.2);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.v1-orbit.is-compact .v1-orbit-hint {
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
