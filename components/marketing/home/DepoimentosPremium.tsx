@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 
 type Quote = {
+  /** Quote text. Wrap the key phrase in [[double brackets]] to highlight it. */
   text: string;
   name: string;
   role: string;
@@ -12,71 +12,136 @@ type Quote = {
 
 const QUOTES: Quote[] = [
   {
-    text: "O VIABIL é sem sombra de dúvidas o principal software de viabilidade de empreendimentos imobiliários do Brasil. É um instrumento importante para as empresas que pretendem melhorar a governança.",
+    text: "O VIABIL é sem sombra de dúvidas [[o principal software de viabilidade]] de empreendimentos imobiliários do Brasil. É um instrumento importante para as empresas que pretendem melhorar a governança.",
     name: "Felipe Cavalcante",
     role: "Presidente · ADIT Brasil",
     initials: "FC",
   },
   {
-    text: "O VIABIL é um aliado da empresa, dando agilidade ao processo e fornecendo informações claras e objetivas que permitem aos nossos diretores tomar decisões mais seguras com relação aos nossos investimentos.",
+    text: "O VIABIL é um aliado da empresa, dando agilidade ao processo e fornecendo informações claras e objetivas que permitem aos nossos diretores [[tomar decisões mais seguras]] com relação aos nossos investimentos.",
     name: "Diretoria de Investimentos",
     role: "Rodobens Negócios Imobiliários",
     initials: "RD",
   },
   {
-    text: "Com o VIABIL, conseguimos parametrizar nossos estudos, aumentar nossa assertividade e controlar o acesso a múltiplos usuários, sem perder a confiabilidade nos resultados.",
+    text: "Com o VIABIL, conseguimos [[parametrizar nossos estudos]], aumentar nossa assertividade e controlar o acesso a múltiplos usuários, sem perder a confiabilidade nos resultados.",
     name: "Novos Negócios",
     role: "Porto Ferraz Construtora",
     initials: "PF",
   },
   {
-    text: "O VIABIL acompanhou as mudanças, desenvolveu novas ferramentas e colaborou com o crescimento do Real Estate em todo o Brasil, proporcionando respostas rápidas sem perder o poder de analisar as diversas variáveis.",
+    text: "O VIABIL acompanhou as mudanças, desenvolveu novas ferramentas e colaborou com o crescimento do Real Estate em todo o Brasil, proporcionando [[respostas rápidas]] sem perder o poder de analisar as diversas variáveis.",
     name: "Greco G. Montagna",
     role: "Gerente Comercial Real Estate · BTG Pactual",
     initials: "GM",
   },
   {
-    text: "O VIABIL é uma ferramenta indispensável no dia a dia de nossa empresa, seja para cadastrar terrenos, padronizar os estudos de viabilidade econômica, tomadas de decisão de investimento e controle dos nossos resultados.",
+    text: "O VIABIL é uma [[ferramenta indispensável]] no dia a dia de nossa empresa, seja para cadastrar terrenos, padronizar os estudos de viabilidade econômica, tomadas de decisão de investimento e controle dos nossos resultados.",
     name: "Equipe Técnica",
     role: "Cury Construtora",
     initials: "CU",
   },
 ];
 
-const INTERVAL = 7000;
+/** Delay (ms) before each card starts revealing, and per-word stagger. */
+const CARD_DELAY = 140;
+const WORD_STEP = 16;
+
+type Segment = { mark: boolean; parts: string[] };
+
+/** Splits into plain / highlighted segments, each a list of words and the original whitespace. */
+function segment(text: string): Segment[] {
+  return text
+    .split(/(\[\[.*?\]\])/)
+    .filter(Boolean)
+    .map((part) => {
+      const mark = part.startsWith("[[");
+      return { mark, parts: (mark ? part.slice(2, -2) : part).split(/(\s+)/).filter(Boolean) };
+    });
+}
+
+function plain(text: string) {
+  return text.replace(/\[\[|\]\]/g, "");
+}
+
+/** Words fade in one by one; the highlighted phrase is grouped so its marker sweeps as one stroke. */
+function RevealText({ text, startMs }: { text: string; startMs: number }) {
+  const segments = segment(text);
+  let wordIndex = 0;
+
+  const rendered = segments.map((seg, g) => {
+    const words = seg.parts.map((part, i) => {
+      if (/^\s+$/.test(part)) return <Fragment key={i}>{part}</Fragment>;
+      const delay = startMs + wordIndex++ * WORD_STEP;
+      return (
+        <span className="v1-voice-word" key={i} style={{ "--d": `${delay}ms` } as CSSProperties}>
+          {part}
+        </span>
+      );
+    });
+    return seg.mark ? (
+      <mark className="v1-voice-mark" key={g}>
+        {words}
+      </mark>
+    ) : (
+      <Fragment key={g}>{words}</Fragment>
+    );
+  });
+
+  // The marker sweeps once every word has landed.
+  const markDelay = `${startMs + wordIndex * WORD_STEP + 120}ms`;
+
+  return (
+    <>
+      <span className="sr-only">{plain(text)}</span>
+      <span aria-hidden="true" style={{ "--mark-d": markDelay } as CSSProperties}>
+        {rendered}
+      </span>
+    </>
+  );
+}
+
+function trackPointer(event: PointerEvent<HTMLElement>) {
+  const card = event.currentTarget;
+  const rect = card.getBoundingClientRect();
+  card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+  card.style.setProperty("--my", `${event.clientY - rect.top}px`);
+}
 
 export function DepoimentosPremium() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const stageRef = useRef<HTMLDivElement>(null);
-
-  const select = useCallback((index: number) => {
-    setActive(index);
-  }, []);
+  const wallRef = useRef<HTMLDivElement>(null);
+  // "armed" hides content for the entrance; never set without JS or with reduced motion.
+  const [state, setState] = useState<"idle" | "armed" | "in">("idle");
 
   useEffect(() => {
-    if (paused || reduceMotion) return;
-    const timer = window.setTimeout(
-      () => setActive((current) => (current + 1) % QUOTES.length),
-      INTERVAL,
-    );
-    return () => window.clearTimeout(timer);
-  }, [active, paused, reduceMotion]);
+    const wall = wallRef.current;
+    if (!wall) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setState("in");
+      return;
+    }
 
-  // Pause the rotation while the section is off-screen.
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
+    const rect = wall.getBoundingClientRect();
+    // Already scrolled past (e.g. reload mid-page): show immediately.
+    if (rect.bottom < 0) {
+      setState("in");
+      return;
+    }
+
+    setState("armed");
     const io = new IntersectionObserver(
-      ([entry]) => setPaused(!entry.isIntersecting),
-      { threshold: 0.2 },
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setState("in");
+        io.disconnect();
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -6% 0px" },
     );
-    io.observe(stage);
+    io.observe(wall);
     return () => io.disconnect();
   }, []);
 
-  const current = QUOTES[active];
+  const [featured, ...rest] = QUOTES;
 
   return (
     <section className="v1-band" id="depoimentos">
@@ -93,66 +158,56 @@ export function DepoimentosPremium() {
         </div>
 
         <div
-          className="v1-quote-stage v1-rise v1-rise-1"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          ref={stageRef}
+          className={`v1-voices ${state === "armed" ? "is-armed" : ""} ${state === "in" ? "is-armed is-in" : ""}`}
+          ref={wallRef}
         >
-          <div className="v1-quote-panel">
-            <span className="v1-quote-mark" aria-hidden="true">
-              &ldquo;
-            </span>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={current.name}
-                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? undefined : { opacity: 0, y: -12 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <blockquote className="v1-quote-text">{current.text}</blockquote>
-                <div className="v1-quote-foot">
-                  <span className="v1-quote-initials" aria-hidden="true">
-                    {current.initials}
-                  </span>
-                  <div className="v1-quote-who">
-                    <strong>{current.name}</strong>
-                    <span>{current.role}</span>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          <figure
+            className="v1-voice is-featured"
+            onPointerMove={trackPointer}
+            style={{ "--c": "0ms" } as CSSProperties}
+          >
+            <svg className="v1-voice-glyph" viewBox="0 0 64 48" aria-hidden="true">
+              <path pathLength={1} d="M27 4C13 8 4 18 4 31c0 7.5 5.4 13 12 13s12-5.4 12-12-5.4-12-12-12c-.9 0-1.8.1-2.6.3C15.5 14.6 20 10.6 27 9.5z" />
+              <path pathLength={1} d="M59 4C45 8 36 18 36 31c0 7.5 5.4 13 12 13s12-5.4 12-12-5.4-12-12-12c-.9 0-1.8.1-2.6.3C47.5 14.6 52 10.6 59 9.5z" />
+            </svg>
+            <blockquote className="v1-voice-text">
+              <RevealText text={featured.text} startMs={260} />
+            </blockquote>
+            <figcaption className="v1-voice-foot">
+              <span className="v1-voice-initials" aria-hidden="true">
+                {featured.initials}
+              </span>
+              <span className="v1-voice-who">
+                <strong>{featured.name}</strong>
+                <span>{featured.role}</span>
+              </span>
+            </figcaption>
+          </figure>
 
-          <div>
-            <div className="v1-quote-picker" role="tablist" aria-label="Depoimentos de clientes">
-              {QUOTES.map((quote, index) => (
-                <button
-                  aria-selected={index === active}
-                  className={`v1-quote-chip ${index === active ? "is-active" : ""}`}
-                  key={quote.name}
-                  onClick={() => select(index)}
-                  role="tab"
-                  type="button"
-                >
-                  <i aria-hidden="true">{quote.initials}</i>
-                  <span style={{ minWidth: 0 }}>
-                    <b>{quote.name}</b>
+          {rest.map((quote, i) => {
+            const delay = (i + 1) * CARD_DELAY;
+            return (
+              <figure
+                className="v1-voice"
+                key={quote.role}
+                onPointerMove={trackPointer}
+                style={{ "--c": `${delay}ms` } as CSSProperties}
+              >
+                <blockquote className="v1-voice-text">
+                  <RevealText text={quote.text} startMs={delay + 260} />
+                </blockquote>
+                <figcaption className="v1-voice-foot">
+                  <span className="v1-voice-initials" aria-hidden="true">
+                    {quote.initials}
+                  </span>
+                  <span className="v1-voice-who">
+                    <strong>{quote.name}</strong>
                     <span>{quote.role}</span>
                   </span>
-                </button>
-              ))}
-            </div>
-
-            <div className="v1-quote-progress" aria-hidden="true">
-              <motion.i
-                key={`${active}-${paused}`}
-                initial={{ width: "0%" }}
-                animate={{ width: paused || reduceMotion ? "0%" : "100%" }}
-                transition={{ duration: paused || reduceMotion ? 0 : INTERVAL / 1000, ease: "linear" }}
-              />
-            </div>
-          </div>
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
       </div>
     </section>

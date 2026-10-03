@@ -960,173 +960,293 @@
   }
 }
 
-/* ─── Depoimentos (restyled) ────────────────────────────────────────── */
+/* ─── Depoimentos — mural de vozes ──────────────────────────────────── *
+   All quotes stay on screen (no rotation). On first view the cards rise in
+   sequence, each quote "is read" word by word, then its key phrase gets a
+   marker sweep. `.is-armed` is only set by JS without reduced motion, so the
+   content is fully visible otherwise.                                     */
 
-.v1-quote-stage {
+.v1-voices {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(28px, 4vw, 60px);
-  align-items: center;
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-auto-rows: minmax(0, auto);
+  gap: clamp(14px, 1.6vw, 20px);
 }
 
-.v1-quote-panel {
+.v1-voice {
+  --mx: 50%;
+  --my: 0%;
   position: relative;
-  padding: clamp(30px, 3.4vw, 46px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 26px;
+  margin: 0;
+  padding: clamp(22px, 2.2vw, 30px);
   border: 1px solid var(--v1-line);
-  border-radius: 24px;
-  background:
-    radial-gradient(120% 120% at 100% 0%, rgba(19, 136, 94, 0.07) 0%, transparent 58%),
-    var(--white);
+  border-radius: 20px;
+  background: var(--white);
   box-shadow: var(--v1-shadow-card);
-  min-height: 330px;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    opacity 760ms var(--v1-ease) var(--c, 0ms),
+    transform 760ms var(--v1-ease) var(--c, 0ms),
+    translate 380ms var(--v1-ease),
+    box-shadow 380ms var(--v1-ease),
+    border-color 380ms var(--v1-ease),
+    filter 380ms var(--v1-ease);
 }
 
-.v1-quote-mark {
+/* Pointer spotlight. */
+.v1-voice::before {
+  content: "";
   position: absolute;
-  top: 4px;
-  right: 22px;
-  color: rgba(10, 75, 53, 0.055);
-  font-size: 108px;
-  font-weight: 800;
-  line-height: 1;
-  user-select: none;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    340px circle at var(--mx) var(--my),
+    rgba(95, 191, 159, 0.16),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 380ms var(--v1-ease);
   pointer-events: none;
 }
 
-.v1-quote-text {
+/* Accent rule that draws across the top once the card lands. */
+.v1-voice::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(22px, 2.2vw, 30px);
+  right: clamp(22px, 2.2vw, 30px);
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(90deg, var(--green-secondary), var(--green-light) 70%, transparent);
+  transform-origin: left;
+  transition: transform 900ms var(--v1-ease) calc(var(--c, 0ms) + 380ms);
+}
+
+.v1-voice.is-featured {
+  grid-row: span 2;
+  justify-content: flex-start;
+  border-color: rgba(95, 191, 159, 0.22);
+  background:
+    radial-gradient(110% 80% at 100% 0%, rgba(95, 191, 159, 0.22) 0%, transparent 60%),
+    linear-gradient(162deg, #0b5a40 0%, #0a4b35 46%, #06301f 100%);
+  box-shadow: var(--v1-shadow-lift);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.v1-voice.is-featured::before {
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(95, 191, 159, 0.2), transparent 62%);
+}
+
+.v1-voice.is-featured::after {
+  background: linear-gradient(90deg, var(--green-light), rgba(95, 191, 159, 0.2) 70%, transparent);
+}
+
+.v1-voice-glyph {
+  width: clamp(54px, 5vw, 70px);
+  height: auto;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.v1-voice-glyph path {
+  fill: rgba(95, 191, 159, 0.9);
+  stroke: var(--green-light);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition:
+    stroke-dashoffset 1100ms var(--v1-ease) 200ms,
+    fill 700ms var(--v1-ease) 1050ms;
+}
+
+.v1-voice-glyph path + path {
+  transition-delay: 380ms, 1200ms;
+}
+
+.v1-voice-text {
   margin: 0;
-  color: var(--green-primary);
-  font-size: clamp(18px, 1.85vw, 25px);
+  color: var(--ink-soft);
+  font-size: clamp(15px, 1.12vw, 16.5px);
   font-weight: 500;
-  line-height: 1.46;
-  letter-spacing: -0.018em;
+  line-height: 1.6;
+  letter-spacing: -0.006em;
   text-wrap: pretty;
 }
 
-.v1-quote-foot {
+.v1-voice.is-featured .v1-voice-text {
+  margin-top: auto;
+  padding-top: clamp(28px, 4vw, 56px);
+  color: var(--white);
+  font-size: clamp(20px, 1.85vw, 26px);
+  line-height: 1.42;
+  letter-spacing: -0.018em;
+}
+
+.v1-voice-word {
+  transition:
+    opacity 560ms var(--v1-ease) var(--d, 0ms),
+    filter 560ms var(--v1-ease) var(--d, 0ms);
+}
+
+.v1-voice-mark {
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  border-radius: 3px;
+  background-color: transparent;
+  background-image: linear-gradient(
+    transparent 56%,
+    rgba(95, 191, 159, 0.38) 56%,
+    rgba(95, 191, 159, 0.38) 94%,
+    transparent 94%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: inherit;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  font-weight: 650;
+  transition: background-size 900ms var(--v1-ease) var(--mark-d, 0ms);
+}
+
+.v1-voice:not(.is-featured) .v1-voice-mark {
+  color: var(--green-primary);
+}
+
+.v1-voice.is-featured .v1-voice-mark {
+  background-image: linear-gradient(
+    transparent 58%,
+    rgba(95, 191, 159, 0.42) 58%,
+    rgba(95, 191, 159, 0.42) 94%,
+    transparent 94%
+  );
+}
+
+.v1-voice-foot {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 28px;
-  padding-top: 22px;
+  gap: 12px;
+  padding-top: 18px;
   border-top: 1px solid var(--v1-line-soft);
 }
 
-.v1-quote-initials {
+.v1-voice.is-featured .v1-voice-foot {
+  margin-top: 30px;
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.v1-voice-initials {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   border-radius: 50%;
   background: linear-gradient(140deg, var(--green-secondary), var(--green-primary));
   color: var(--white);
-  font-size: 14px;
+  font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.02em;
+  transition: transform 620ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--c, 0ms) + 300ms);
 }
 
-.v1-quote-who strong {
+.v1-voice.is-featured .v1-voice-initials {
+  width: 46px;
+  height: 46px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(95, 191, 159, 0.55);
+  color: var(--green-light);
+}
+
+.v1-voice-who {
+  min-width: 0;
+}
+
+.v1-voice-who strong {
   display: block;
   color: var(--v1-ink);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
 }
 
-.v1-quote-who span {
+.v1-voice-who span {
   display: block;
   margin-top: 2px;
   color: var(--v1-muted);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.v1-voice.is-featured .v1-voice-who strong {
+  color: var(--white);
+  font-size: 15px;
+}
+
+.v1-voice.is-featured .v1-voice-who span {
+  color: rgba(255, 255, 255, 0.66);
   font-size: 13px;
 }
 
-.v1-quote-picker {
-  display: grid;
-  gap: 8px;
+/* Entrance — hidden state (JS-armed only). */
+.v1-voices.is-armed:not(.is-in) .v1-voice,
+.v1-voices.is-armed:not(.is-in) .v1-voice::after,
+.v1-voices.is-armed:not(.is-in) .v1-voice-word,
+.v1-voices.is-armed:not(.is-in) .v1-voice-mark,
+.v1-voices.is-armed:not(.is-in) .v1-voice-initials,
+.v1-voices.is-armed:not(.is-in) .v1-voice-glyph path {
+  /* Snap into the hidden state; only the reveal is animated. */
+  transition: none;
 }
 
-.v1-quote-chip {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 13px;
-  padding: 13px 16px;
-  border: 1px solid transparent;
-  border-radius: 14px;
-  background: transparent;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition:
-    background 280ms var(--v1-ease),
-    border-color 280ms var(--v1-ease),
-    transform 280ms var(--v1-ease);
+.v1-voices.is-armed:not(.is-in) .v1-voice {
+  opacity: 0;
+  transform: translateY(30px) scale(0.985);
 }
 
-.v1-quote-chip:hover {
-  background: var(--v1-tint);
+.v1-voices.is-armed:not(.is-in) .v1-voice::after {
+  transform: scaleX(0);
 }
 
-.v1-quote-chip.is-active {
-  border-color: var(--v1-line);
-  background: var(--white);
-  box-shadow: var(--v1-shadow-card);
+.v1-voices.is-armed:not(.is-in) .v1-voice-word {
+  opacity: 0.12;
+  filter: blur(3px);
 }
 
-.v1-quote-chip i {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(10, 75, 53, 0.08);
-  color: var(--green-primary);
-  font-size: 11.5px;
-  font-style: normal;
-  font-weight: 700;
+.v1-voices.is-armed:not(.is-in) .v1-voice-mark {
+  background-size: 0% 100%;
 }
 
-.v1-quote-chip.is-active i {
-  background: linear-gradient(140deg, var(--green-secondary), var(--green-primary));
-  color: var(--white);
+.v1-voices.is-armed:not(.is-in) .v1-voice-initials {
+  transform: scale(0.4);
 }
 
-.v1-quote-chip b {
-  display: block;
-  color: var(--v1-ink);
-  font-size: 13.5px;
-  font-weight: 650;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.v1-voices.is-armed:not(.is-in) .v1-voice-glyph path {
+  fill: rgba(95, 191, 159, 0);
+  stroke-dashoffset: 1;
 }
 
-.v1-quote-chip span {
-  display: block;
-  color: var(--v1-muted);
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+@media (hover: hover) and (pointer: fine) {
+  .v1-voice:hover {
+    translate: 0 -4px;
+    border-color: rgba(19, 136, 94, 0.32);
+    box-shadow: var(--v1-shadow-lift);
+  }
 
-.v1-quote-progress {
-  position: relative;
-  height: 2px;
-  margin-top: 16px;
-  border-radius: 2px;
-  background: var(--v1-line-soft);
-  overflow: hidden;
-}
+  .v1-voice:hover::before {
+    opacity: 1;
+  }
 
-.v1-quote-progress i {
-  position: absolute;
-  inset: 0 auto 0 0;
-  display: block;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--green-secondary), var(--green-primary));
+  .v1-voices.is-in:has(.v1-voice:hover) .v1-voice:not(:hover) {
+    filter: saturate(0.55) opacity(0.62);
+  }
 }
 
 /* ─── Contato ───────────────────────────────────────────────────────── */
@@ -1464,9 +1584,17 @@
 
 @media (max-width: 1024px) {
   .v1-head.is-split,
-  .v1-quote-stage,
   .v1-contact-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .v1-voices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .v1-voice.is-featured {
+    grid-row: auto;
+    grid-column: 1 / -1;
   }
 
   .v1-mod-grid {
@@ -1549,15 +1677,15 @@
   .v1-mod-facts {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .v1-voices {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 480px) {
   .v1-hero-media {
     object-position: 34% center;
-  }
-
-  .v1-quote-mark {
-    font-size: 78px;
   }
 }
 
