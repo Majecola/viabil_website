@@ -6,17 +6,17 @@ import AutoScroll from "embla-carousel-auto-scroll";
 type Logo = { src: string; alt: string };
 
 const row1: Logo[] = [
-  { src: "/assets/client-logos/cyrela.png",           alt: "Cyrela" },
+  { src: "/assets/client-logos/cyrela.svg",           alt: "Cyrela" },
   { src: "/assets/client-logos/btgpactual.png",        alt: "BTG Pactual" },
   { src: "/assets/client-logos/tecnisa.png",           alt: "Tecnisa" },
   { src: "/assets/client-logos/helbor.png",            alt: "Helbor" },
   { src: "/assets/client-logos/multiplan.png",         alt: "Multiplan" },
   { src: "/assets/client-logos/brookfield.png",        alt: "Brookfield" },
-  { src: "/assets/client-logos/moura-dubeux.png",      alt: "Moura Dubeux" },
+  { src: "/assets/client-logos/mouradubeux.svg",      alt: "Moura Dubeux" },
   { src: "/assets/client-logos/goldsztein.png",        alt: "Goldsztein" },
-  { src: "/assets/client-logos/rodobens.png",          alt: "Rodobens" },
+  { src: "/assets/client-logos/rodobens.svg",          alt: "Rodobens" },
   { src: "/assets/client-logos/queiroz-galvao.png",    alt: "Queiroz Galvão" },
-  { src: "/assets/client-logos/setin.png",             alt: "Setin" },
+  { src: "/assets/client-logos/setin.svg",             alt: "Setin" },
   { src: "/assets/client-logos/cbre.png",              alt: "CBRE" },
   { src: "/assets/client-logos/trisul.png",            alt: "Trisul" },
   { src: "/assets/client-logos/odebrecht.png",         alt: "Odebrecht" },
@@ -100,17 +100,15 @@ function MarqueeRow({
               <img
                 src={logo.src}
                 alt={logo.alt}
-                width={286}
-                height={96}
+                width={200}
+                height={80}
                 style={{
                   width: "auto",
                   height: "auto",
-                  maxWidth: "286px",
-                  maxHeight: "96px",
+                  maxWidth: "200px",
+                  maxHeight: "80px",
                   objectFit: "contain",
                   display: "block",
-                  transform: "scale(1.06)",
-                  transformOrigin: "center",
                 }}
               />
             </div>
