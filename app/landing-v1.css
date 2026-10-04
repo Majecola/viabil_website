@@ -1821,6 +1821,433 @@
   gap: 16px;
 }
 
+/* ─── Implantação — cronograma em 28 semanas ────────────────────────── *
+   Gantt of the four phases on a week ruler. On first view a cursor sweeps
+   the weeks and each bar grows as the cursor reaches it; a hatched band
+   marks the typical completion window (19–28 weeks).                     */
+
+.v1-im {
+  --label-w: 230px;
+  margin-top: clamp(36px, 5vw, 56px);
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--v1-line-soft);
+  border-radius: 24px;
+  background: linear-gradient(180deg, var(--white) 0%, var(--off-white) 100%);
+  box-shadow: var(--v1-shadow-card);
+}
+
+.v1-im-ruler {
+  display: grid;
+  grid-template-columns: var(--label-w) minmax(0, 1fr);
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.v1-im-ruler-label {
+  padding-left: 12px;
+  color: var(--v1-muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.v1-im-ruler-track {
+  position: relative;
+  height: 16px;
+}
+
+.v1-im-ruler-track span {
+  position: absolute;
+  bottom: 0;
+  color: var(--v1-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+}
+
+.v1-im-ruler-track span:first-child {
+  transform: none;
+}
+
+.v1-im-ruler-track span:last-child {
+  transform: translateX(-100%);
+}
+
+.v1-im-rows {
+  position: relative;
+  display: grid;
+  gap: 6px;
+}
+
+.v1-im-plot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: var(--label-w);
+  pointer-events: none;
+}
+
+.v1-im-band {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  bottom: -8px;
+  border-left: 1.5px dashed rgba(19, 136, 94, 0.55);
+  border-radius: 0 10px 10px 0;
+  background: repeating-linear-gradient(135deg, rgba(19, 136, 94, 0.08) 0 6px, transparent 6px 12px);
+}
+
+.v1-im-band span {
+  position: absolute;
+  bottom: -30px;
+  left: 8px;
+  color: var(--green-secondary);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.v1-im-cursor {
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  left: 0;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--green-secondary);
+  box-shadow: 0 0 12px rgba(19, 136, 94, 0.55);
+  opacity: 0;
+}
+
+.v1-im.is-in .v1-im-cursor {
+  animation: v1-im-sweep var(--sweep, 2800ms) linear forwards;
+}
+
+@keyframes v1-im-sweep {
+  0% {
+    left: 0;
+    opacity: 1;
+  }
+  90% {
+    left: 100%;
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.v1-im-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--label-w) minmax(0, 1fr);
+  align-items: center;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 260ms var(--v1-ease);
+}
+
+.v1-im-row:hover,
+.v1-im-row.is-active {
+  background: var(--v1-tint);
+}
+
+.v1-im-row:focus-visible {
+  outline: 2px solid var(--green-secondary);
+  outline-offset: 2px;
+}
+
+.v1-im-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding-left: 12px;
+}
+
+.v1-im-label b {
+  color: rgba(10, 75, 53, 0.45);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  transition: color 260ms var(--v1-ease);
+}
+
+.v1-im-name,
+.v1-im-short {
+  color: var(--v1-ink);
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.v1-im-short {
+  display: none;
+}
+
+.v1-im-row.is-active .v1-im-label b {
+  color: var(--green-secondary);
+}
+
+/* Track with a faint grid every 4 weeks. */
+.v1-im-track {
+  position: relative;
+  height: 38px;
+  margin-right: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(100% / 7 - 1px),
+    rgba(10, 75, 53, 0.07) calc(100% / 7 - 1px),
+    rgba(10, 75, 53, 0.07) calc(100% / 7)
+  );
+}
+
+.v1-im-bar {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: rgba(10, 75, 53, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(10, 75, 53, 0.14);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition:
+    transform 900ms var(--v1-ease) var(--delay, 0ms),
+    background 300ms var(--v1-ease),
+    box-shadow 300ms var(--v1-ease);
+}
+
+.v1-im.is-in .v1-im-bar {
+  transform: scaleX(1);
+}
+
+.v1-im-row.is-active .v1-im-bar {
+  background: linear-gradient(90deg, var(--green-secondary), var(--green-primary));
+  box-shadow: 0 10px 22px -12px rgba(10, 75, 53, 0.7);
+}
+
+.v1-im-weeks {
+  color: var(--green-primary);
+  font-size: 11px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    opacity 400ms var(--v1-ease) calc(var(--delay, 0ms) + 600ms),
+    color 300ms var(--v1-ease);
+}
+
+.v1-im.is-in .v1-im-weeks {
+  opacity: 1;
+}
+
+.v1-im-row.is-active .v1-im-weeks {
+  color: var(--white);
+}
+
+.v1-im-note {
+  margin: 44px 0 0;
+  color: var(--v1-muted);
+  font-size: 12.5px;
+}
+
+.v1-im-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 40px);
+  margin-top: 18px;
+  padding: clamp(20px, 2.4vw, 28px);
+  border-radius: 18px;
+  background: var(--v1-tint);
+  animation: v1-im-fade 500ms var(--v1-ease);
+}
+
+@keyframes v1-im-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.v1-im-detail-num,
+.v1-im-detail-label {
+  color: var(--green-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.v1-im-detail-label {
+  color: var(--v1-muted);
+}
+
+.v1-im-detail h3 {
+  margin: 6px 0 8px;
+  color: var(--green-primary);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.v1-im-detail p {
+  margin: 0;
+  color: var(--v1-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.v1-im-detail ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v1-im-detail li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid var(--v1-line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--green-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.v1-im-detail li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green-secondary);
+}
+
+/* After go-live: ongoing services with proof numbers. */
+.v1-im-after {
+  margin-top: clamp(48px, 6vw, 72px);
+}
+
+.v1-im-after-kicker {
+  color: var(--green-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.v1-im-after-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 44px);
+  margin-top: 18px;
+}
+
+.v1-im-after-grid article {
+  padding-top: 20px;
+  border-top: 1px solid var(--v1-line);
+}
+
+.v1-im-after-grid strong {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  color: var(--green-primary);
+  font-size: 34px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.v1-im-after-grid small {
+  color: var(--v1-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.v1-im-after-grid h3 {
+  margin: 14px 0 6px;
+  color: var(--v1-ink);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.v1-im-after-grid p {
+  margin: 0;
+  color: var(--v1-muted);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .v1-im {
+    --label-w: 116px;
+  }
+
+  .v1-im-name,
+  .v1-im-weeks {
+    display: none;
+  }
+
+  .v1-im-short {
+    display: inline;
+    font-size: 13px;
+  }
+
+  .v1-im-label {
+    gap: 6px;
+    padding-left: 8px;
+  }
+
+  .v1-im-detail,
+  .v1-im-after-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .v1-im-band span {
+    left: auto;
+    right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v1-im-bar,
+  .v1-im-weeks {
+    transition: none;
+  }
+
+  .v1-im.is-in .v1-im-cursor,
+  .v1-im-detail {
+    animation: none;
+  }
+}
+
 /* ─── Sempre em movimento — radar de mercado ────────────────────────── *
    Graphite band (not brand green) with green as a sparse accent. A slow
    sweep pings one blip per front; the numbered list beside it expands one

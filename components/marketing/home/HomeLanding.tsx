@@ -1,5 +1,4 @@
 import { ClientsMarquee } from "@/components/marketing/ClientsMarquee";
-import { ImplantacaoStepper } from "@/components/marketing/ImplantacaoStepper";
 import { PlataformaFeatures } from "@/components/marketing/PlataformaFeatures";
 import { ProofMetrics } from "@/components/marketing/ProofMetrics";
 import { ViabilidadeFeatures } from "@/components/marketing/ViabilidadeFeatures";
@@ -7,6 +6,7 @@ import { CicloSection } from "@/components/marketing/home/CicloSection";
 import { DepoimentosPremium } from "@/components/marketing/home/DepoimentosPremium";
 import { HeroV1 } from "@/components/marketing/home/HeroV1";
 import { HomeContato } from "@/components/marketing/home/HomeContato";
+import { ImplantacaoSection } from "@/components/marketing/home/ImplantacaoSection";
 import { MercadoRadar } from "@/components/marketing/home/MercadoRadar";
 import { ModulosSection } from "@/components/marketing/home/ModulosSection";
 import { SegmentosSection } from "@/components/marketing/home/SegmentosSection";
@@ -62,20 +62,7 @@ export function HomeLanding() {
       <SegmentosSection />
 
       <section className="v1-band is-white" id="implantacao">
-        <div className="v1-shell">
-          <div className="v1-head is-split v1-rise">
-            <div>
-              <span className="v1-kicker">Implantação</span>
-              <h2 className="v1-title">Da contratação ao uso seguro em estudos reais.</h2>
-            </div>
-            <p className="v1-lede">
-              Parametrizar é traduzir a forma de trabalho da empresa para O VIABIL. O caminho é
-              estruturado em quatro fases acompanhadas pela nossa equipe — tecnologia sem conteúdo
-              é pouco eficaz.
-            </p>
-          </div>
-          <ImplantacaoStepper />
-        </div>
+        <ImplantacaoSection />
       </section>
 
       <MercadoRadar />

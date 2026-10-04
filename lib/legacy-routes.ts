@@ -12,7 +12,7 @@
  *
  * The v0 homepage itself is NOT in this list: `app/page.tsx` belongs to the
  * one-pager now. Its old version lives in
- * `components/marketing/landing-page.tsx` and is not wired to any route.
+ * `legacy/components/marketing/landing-page.tsx` (not built or deployed; see legacy/README.md).
  */
 export const LEGACY_ROUTES_ENABLED = false;
 
