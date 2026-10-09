@@ -12,6 +12,19 @@ export const contactSchema = z.object({
   message: z.string().trim().max(3000).optional().or(z.literal("")),
 });
 
+export const bookingRequestSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  time: z.string().regex(/^\d{2}:\d{2}$/),
+  name: z.string().trim().min(2).max(120),
+  email: z.string().trim().email().max(180),
+  phone: z.string().trim().min(8).max(40),
+  company: z.string().trim().min(2).max(160),
+  city: z.string().trim().max(120).optional().or(z.literal("")),
+  segment: z.string().trim().min(2).max(120),
+  message: z.string().trim().max(2000).optional().or(z.literal("")),
+  sourcePage: z.string().trim().max(240).optional().or(z.literal("")),
+});
+
 export const newsletterSubscribeSchema = z.object({
   email: z.string().trim().email().max(180),
   name: z.string().trim().max(120).optional().or(z.literal("")),

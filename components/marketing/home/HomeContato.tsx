@@ -2,7 +2,8 @@
 
 import { FormEvent, useState } from "react";
 import { track } from "@vercel/analytics";
-import { ArrowRight, CalendarCheck, Handshake, MessageCircle, Receipt } from "lucide-react";
+import { ArrowRight, CalendarCheck, CalendarDays, Handshake, MessageCircle, Receipt } from "lucide-react";
+import { AgendarModal } from "@/components/marketing/home/AgendarModal";
 import { getWhatsAppHref } from "@/lib/whatsapp";
 
 const SEGMENTS = [
@@ -19,12 +20,6 @@ const SEGMENTS = [
 ];
 
 const PATHS = [
-  {
-    Icon: CalendarCheck,
-    label: "Agendar uma apresentação",
-    desc: "Veja O VIABIL aplicado ao seu segmento.",
-    message: "Olá, gostaria de agendar uma apresentação do VIABIL.",
-  },
   {
     Icon: Receipt,
     label: "Solicitar uma proposta",
@@ -45,6 +40,7 @@ export function HomeContato() {
     text: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -129,6 +125,19 @@ export function HomeContato() {
             </p>
 
             <div className="v1-contact-paths">
+              <button
+                aria-haspopup="dialog"
+                className="v1-contact-path is-booking"
+                onClick={() => setBookingOpen(true)}
+                type="button"
+              >
+                <CalendarCheck aria-hidden="true" />
+                <span>
+                  <strong>Agendar uma apresentação</strong>
+                  <span>Escolha um horário livre na agenda do Eli.</span>
+                </span>
+                <CalendarDays aria-hidden="true" />
+              </button>
               {PATHS.map((path) => (
                 <a
                   className="v1-contact-path"
@@ -223,6 +232,8 @@ export function HomeContato() {
           </div>
         </div>
       </div>
+
+      <AgendarModal onClose={() => setBookingOpen(false)} open={bookingOpen} />
     </section>
   );
 }
