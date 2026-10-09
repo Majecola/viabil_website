@@ -2517,30 +2517,37 @@
     rgba(95, 191, 159, 0.24) 70deg,
     rgba(95, 191, 159, 0) 70.4deg
   );
-  animation: v1-radar-spin var(--sweep, 9s) linear infinite;
-  animation-play-state: paused;
   pointer-events: none;
 }
 
-.v1-radar-sweep {
-  transform-box: view-box;
-  transform-origin: 200px 200px;
-  animation: v1-radar-spin var(--sweep, 9s) linear infinite;
-  animation-play-state: paused;
-}
-
-.v1-radar-beam {
-  stroke: var(--green-light);
-  stroke-width: 1.5;
-  stroke-linecap: round;
+/* Leading edge of the sweep, riding on the wedge so a single HTML element
+   turns (WebKit is unreliable at rotating SVG groups). */
+.v1-radar-cone::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1.5px;
+  height: 50%;
+  border-radius: 1px;
+  background: var(--green-light);
   opacity: 0.85;
+  transform: translateX(-50%);
 }
 
-.v1-radar-stage.is-live .v1-radar-cone,
-.v1-radar-stage.is-live .v1-radar-sweep,
-.v1-radar-stage.is-live .v1-radar-ping,
+/* Animations are attached only while the radar is on screen instead of
+   being declared paused and resumed: iOS Safari often fails to resume a
+   paused animation on SVG elements, which left the radar static on phones. */
+.v1-radar-stage.is-live .v1-radar-cone {
+  animation: v1-radar-spin var(--sweep, 9s) linear infinite;
+}
+
+.v1-radar-stage.is-live .v1-radar-ping {
+  animation: v1-radar-ping var(--sweep, 9s) linear var(--ping-delay, 0s) infinite;
+}
+
 .v1-radar-stage.is-live .v1-radar-dot {
-  animation-play-state: running;
+  animation: v1-radar-flash var(--sweep, 9s) linear var(--ping-delay, 0s) infinite;
 }
 
 @keyframes v1-radar-spin {
@@ -2564,9 +2571,6 @@
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
-  animation: v1-radar-ping var(--sweep, 9s) linear infinite;
-  animation-delay: var(--ping-delay, 0s);
-  animation-play-state: paused;
 }
 
 @keyframes v1-radar-ping {
@@ -2600,9 +2604,6 @@
 .v1-radar-dot {
   fill: rgba(255, 255, 255, 0.5);
   transition: fill 300ms var(--v1-ease);
-  animation: v1-radar-flash var(--sweep, 9s) linear infinite;
-  animation-delay: var(--ping-delay, 0s);
-  animation-play-state: paused;
 }
 
 @keyframes v1-radar-flash {
@@ -2629,7 +2630,7 @@
   transform: scale(1);
 }
 
-.v1-radar-blip.is-active .v1-radar-dot {
+.v1-radar-stage .v1-radar-blip.is-active .v1-radar-dot {
   fill: var(--green-light);
   animation: none;
 }
@@ -2731,10 +2732,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .v1-radar-cone,
-  .v1-radar-sweep,
-  .v1-radar-ping,
-  .v1-radar-dot,
+  .v1-radar-stage.is-live .v1-radar-cone,
+  .v1-radar-stage.is-live .v1-radar-ping,
+  .v1-radar-stage.is-live .v1-radar-dot,
   .v1-radar-note-dot::after {
     animation: none;
   }
