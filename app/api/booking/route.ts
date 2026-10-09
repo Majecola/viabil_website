@@ -1,5 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { BOOKING_DURATION_MIN, isSlotAvailable } from "@/lib/booking/slots";
+import {
+  BOOKING_DURATION_MIN,
+  SUGGEST_HORIZON_DAYS,
+  addDays,
+  isSlotAvailable,
+  todayInBrasilia,
+} from "@/lib/booking/slots";
 import { getFromEmail, getResend, hasResendEnv } from "@/lib/email/resend";
 import { matchCustomerByEmail } from "@/lib/leads/customer-match";
 import { encryptText } from "@/lib/security/crypto";
@@ -24,8 +30,21 @@ export async function POST(request: NextRequest) {
   }
 
   const input = parsed.data;
+  const isSuggest = input.mode === "suggest";
 
-  if (!isSlotAvailable(input.date, input.time)) {
+  if (isSuggest) {
+    const today = todayInBrasilia();
+    if (
+      !input.period ||
+      input.date <= today ||
+      input.date > addDays(today, SUGGEST_HORIZON_DAYS)
+    ) {
+      return NextResponse.json(
+        { error: "Escolha um dia a partir de amanhã e um período." },
+        { status: 400 },
+      );
+    }
+  } else if (!input.time || !isSlotAvailable(input.date, input.time)) {
     return NextResponse.json(
       { error: "Esse horário acabou de ficar indisponível. Escolha outro, por favor." },
       { status: 409 },
@@ -45,10 +64,14 @@ export async function POST(request: NextRequest) {
   const phone = normalizePhone(input.phone);
   const ip = getClientIp(request.headers);
   const customerMatch = await matchCustomerByEmail(supabase, email);
-  const when = formatSlot(input.date, input.time);
+  const when = isSuggest
+    ? `${formatDay(input.date)}, ${PERIOD_LABELS[input.period!]}`
+    : `${formatDay(input.date)}, às ${input.time}`;
 
   const message = [
-    `Pedido de apresentação: ${when} (${BOOKING_DURATION_MIN} min, horário de Brasília).`,
+    isSuggest
+      ? `Sugestão de horário (nenhum horário livre serviu): ${when}, horário de Brasília.`
+      : `Pedido de apresentação: ${when} (${BOOKING_DURATION_MIN} min, horário de Brasília).`,
     input.city ? `Cidade/UF: ${input.city}` : "",
     input.message ? `\n${input.message}` : "",
   ]
@@ -65,7 +88,7 @@ export async function POST(request: NextRequest) {
       phone_encrypted: encryptText(input.phone),
       phone_hash: phone ? hashIdentifier(phone) : null,
       segment: input.segment,
-      source: "Agendar apresentação",
+      source: isSuggest ? "Agendar apresentação · sugestão de horário" : "Agendar apresentação",
       source_page: input.sourcePage || null,
       message_encrypted: encryptText(message),
       is_customer: customerMatch.isCustomer,
@@ -90,7 +113,15 @@ export async function POST(request: NextRequest) {
         from: getFromEmail(),
         to: email,
         subject: "Recebemos seu pedido de apresentação do VIABIL",
-        html: `
+        html: isSuggest
+          ? `
+          <p>Olá, ${escapeHtml(input.name)}.</p>
+          <p>Recebemos sua sugestão de horário para a apresentação do VIABIL:
+          <strong>${escapeHtml(when)}</strong> (horário de Brasília).</p>
+          <p>Vamos responder neste e-mail confirmando sua sugestão ou propondo o horário mais próximo.</p>
+          <p>Equipe VIABIL</p>
+        `
+          : `
           <p>Olá, ${escapeHtml(input.name)}.</p>
           <p>Recebemos seu pedido de apresentação do VIABIL para <strong>${escapeHtml(when)}</strong>
           (horário de Brasília, ${BOOKING_DURATION_MIN} minutos).</p>
@@ -107,10 +138,15 @@ export async function POST(request: NextRequest) {
           from: getFromEmail(),
           to: hostEmail,
           replyTo: email,
-          subject: `Pedido de apresentação: ${input.company} · ${when}`,
+          subject: `${isSuggest ? "Sugestão de horário" : "Pedido de apresentação"}: ${input.company} · ${when}`,
           html: `
-            <h2>Novo pedido de apresentação</h2>
-            <p><strong>Horário pedido:</strong> ${escapeHtml(when)} (Brasília, ${BOOKING_DURATION_MIN} min)</p>
+            <h2>${isSuggest ? "Sugestão de horário para apresentação" : "Novo pedido de apresentação"}</h2>
+            ${
+              isSuggest
+                ? `<p>Nenhum horário livre serviu. O visitante sugere:</p>
+            <p><strong>Sugestão:</strong> ${escapeHtml(when)} (Brasília)</p>`
+                : `<p><strong>Horário pedido:</strong> ${escapeHtml(when)} (Brasília, ${BOOKING_DURATION_MIN} min)</p>`
+            }
             <p><strong>Nome:</strong> ${escapeHtml(input.name)}</p>
             <p><strong>Empresa:</strong> ${escapeHtml(input.company)}</p>
             <p><strong>E-mail:</strong> ${escapeHtml(email)}</p>
@@ -132,14 +168,19 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ ok: true, id: data.id });
 }
 
-function formatSlot(date: string, time: string) {
-  const label = new Intl.DateTimeFormat("pt-BR", {
+const PERIOD_LABELS = {
+  manha: "manhã (8h – 12h)",
+  tarde: "tarde (13h – 18h)",
+  noite: "início da noite (18h – 20h)",
+} as const;
+
+function formatDay(date: string) {
+  return new Intl.DateTimeFormat("pt-BR", {
     weekday: "long",
     day: "numeric",
     month: "long",
     timeZone: "UTC",
   }).format(new Date(`${date}T12:00:00Z`));
-  return `${label}, às ${time}`;
 }
 
 function escapeHtml(value: string) {

@@ -81,3 +81,6 @@ export function getAvailability(now = new Date()): BookingDay[] {
 export function isSlotAvailable(date: string, time: string, now = new Date()) {
   return getAvailability(now).some((day) => day.date === date && day.slots.includes(time));
 }
+
+/** How far ahead a visitor may suggest a day of their own when no slot fits. */
+export const SUGGEST_HORIZON_DAYS = 90;

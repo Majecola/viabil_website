@@ -13,8 +13,12 @@ export const contactSchema = z.object({
 });
 
 export const bookingRequestSchema = z.object({
+  // "slot": an open slot from the calendar. "suggest": the visitor proposes a
+  // day and period because none of the open slots fit.
+  mode: z.enum(["slot", "suggest"]).default("slot"),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  time: z.string().regex(/^\d{2}:\d{2}$/),
+  time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+  period: z.enum(["manha", "tarde", "noite"]).optional(),
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(180),
   phone: z.string().trim().min(8).max(40),
