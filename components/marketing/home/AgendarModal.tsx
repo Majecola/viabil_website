@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import {
   BOOKING_DURATION_MIN,
+  SUGGEST_HORIZON_DAYS,
   addDays,
   getAvailability,
   todayInBrasilia,
@@ -50,6 +51,17 @@ const WEEKDAYS = ["D", "S", "T", "Q", "Q", "S", "S"];
 const WEEKDAYS_LONG = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
 
 const STEPS = ["Escolha o horário", "Seus dados", "Confirmação do Eli"];
+
+const PERIODS = [
+  { id: "manha", label: "Manhã", hint: "8h – 12h" },
+  { id: "tarde", label: "Tarde", hint: "13h – 18h" },
+  { id: "noite", label: "Início da noite", hint: "18h – 20h" },
+] as const;
+
+type Period = (typeof PERIODS)[number]["id"];
+
+
+
 
 type Step = 0 | 1 | 2;
 
@@ -94,6 +106,10 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
   const [viewMonth, setViewMonth] = useState("");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  // "suggest": none of the open slots fit, the visitor proposes a day and period.
+  const [mode, setMode] = useState<"slot" | "suggest">("slot");
+  const [suggestDate, setSuggestDate] = useState("");
+  const [suggestPeriod, setSuggestPeriod] = useState<Period | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<{ email: string; preview: boolean } | null>(null);
@@ -114,6 +130,9 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
     setStep(0);
     setSelectedDate(null);
     setSelectedTime(null);
+    setMode("slot");
+    setSuggestDate("");
+    setSuggestPeriod("");
     setError("");
     setResult(null);
     track("booking_modal_open", { path: window.location.pathname });
@@ -171,7 +190,7 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
         step === 0
           ? root.querySelector<HTMLElement>('.v1-cal-day[tabindex="0"]')
           : step === 1
-            ? root.querySelector<HTMLElement>("#b-name")
+            ? root.querySelector<HTMLElement>(mode === "suggest" && !suggestDate ? "#b-suggest-date" : "#b-name")
             : root.querySelector<HTMLElement>(".v1-book-done h3");
       target?.focus();
     });
@@ -245,7 +264,15 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!selectedDate || !selectedTime) return;
+    const isSuggest = mode === "suggest";
+    if (isSuggest ? !suggestDate || !suggestPeriod : !selectedDate || !selectedTime) {
+      setError(
+        isSuggest
+          ? "Informe o dia e o período que funcionam melhor para você."
+          : "Escolha um horário no calendário.",
+      );
+      return;
+    }
     const data = new FormData(event.currentTarget);
     const email = String(data.get("email") || "").trim();
 
@@ -256,8 +283,9 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        date: selectedDate,
-        time: selectedTime,
+        mode,
+        date: isSuggest ? suggestDate : selectedDate,
+        ...(isSuggest ? { period: suggestPeriod } : { time: selectedTime }),
         name: data.get("name") || "",
         email,
         phone: data.get("phone") || "",
@@ -280,15 +308,39 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
     }
 
     const payload = await response.json().catch(() => ({}));
-    track("booking_request", { weekday: weekdayOf(selectedDate), time: selectedTime });
+    track(isSuggest ? "booking_suggest" : "booking_request", {
+      weekday: weekdayOf(isSuggest ? suggestDate : selectedDate!),
+      time: isSuggest ? suggestPeriod : selectedTime!,
+    });
     setResult({ email, preview: Boolean(payload?.preview) });
     setStep(2);
   }
 
   if (!open) return null;
 
+  const period = PERIODS.find((p) => p.id === suggestPeriod);
   const whenLabel =
-    selectedDate && selectedTime ? `${capitalize(dayLabel(selectedDate))}, às ${selectedTime}` : "";
+    mode === "suggest"
+      ? suggestDate && period
+        ? `${capitalize(dayLabel(suggestDate))}, ${period.label.toLowerCase()} (${period.hint})`
+        : ""
+      : selectedDate && selectedTime
+        ? `${capitalize(dayLabel(selectedDate))}, às ${selectedTime}`
+        : "";
+
+  function startSuggest() {
+    setMode("suggest");
+    // Seed with the day they were looking at, if any.
+    if (!suggestDate && selectedDate) setSuggestDate(selectedDate);
+    setError("");
+    setStep(1);
+  }
+
+  function backToCalendar() {
+    setMode("slot");
+    setError("");
+    setStep(0);
+  }
 
   // Portaled to <body>: the trigger lives in a dark band whose text colour and
   // reveal transforms must not reach the dialog.
@@ -481,7 +533,10 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
                             <button
                               aria-hidden={!isPicked}
                               className="v1-slot-go"
-                              onClick={() => setStep(1)}
+                              onClick={() => {
+                                setMode("slot");
+                                setStep(1);
+                              }}
                               tabIndex={isPicked ? 0 : -1}
                               type="button"
                             >
@@ -501,25 +556,82 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
                     </p>
                   </div>
                 )}
+
+                <button className="v1-slots-alt" onClick={startSuggest} type="button">
+                  <span>
+                    <strong>Nenhum horário funciona?</strong>
+                    Sugira o dia e o período ideais para você.
+                  </span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
               </section>
             </div>
           ) : null}
 
           {step === 1 ? (
             <div className="v1-book-details" key="details">
-              <div className="v1-book-summary">
-                <CalendarDays aria-hidden="true" />
-                <div>
-                  <strong>{whenLabel}</strong>
-                  <span>
-                    {BOOKING_DURATION_MIN} min · Videochamada · Horário de Brasília
-                  </span>
+              {mode === "suggest" ? (
+                <fieldset className="v1-book-suggest">
+                  <legend>
+                    <strong>Sugira um horário</strong>
+                    <span>O Eli confirma ou propõe a alternativa mais próxima.</span>
+                  </legend>
+                  <button className="v1-book-change" onClick={backToCalendar} type="button">
+                    <ArrowLeft aria-hidden="true" />
+                    Calendário
+                  </button>
+
+                  <div className="v1-field">
+                    <label htmlFor="b-suggest-date">Dia de preferência</label>
+                    <input
+                      id="b-suggest-date"
+                      max={today ? addDays(today, SUGGEST_HORIZON_DAYS) : undefined}
+                      min={today ? addDays(today, 1) : undefined}
+                      onChange={(e) => setSuggestDate(e.target.value)}
+                      required
+                      type="date"
+                      value={suggestDate}
+                    />
+                  </div>
+
+                  <div className="v1-field">
+                    <span className="v1-book-label" id="b-period-label">
+                      Período
+                    </span>
+                    <div aria-labelledby="b-period-label" className="v1-period" role="radiogroup">
+                      {PERIODS.map((p) => (
+                        <label className="v1-period-opt" key={p.id}>
+                          <input
+                            checked={suggestPeriod === p.id}
+                            name="period"
+                            onChange={() => setSuggestPeriod(p.id)}
+                            type="radio"
+                            value={p.id}
+                          />
+                          <span>
+                            <strong>{p.label}</strong>
+                            {p.hint}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </fieldset>
+              ) : (
+                <div className="v1-book-summary">
+                  <CalendarDays aria-hidden="true" />
+                  <div>
+                    <strong>{whenLabel}</strong>
+                    <span>
+                      {BOOKING_DURATION_MIN} min · Videochamada · Horário de Brasília
+                    </span>
+                  </div>
+                  <button className="v1-book-change" onClick={() => setStep(0)} type="button">
+                    <ArrowLeft aria-hidden="true" />
+                    Alterar
+                  </button>
                 </div>
-                <button className="v1-book-change" onClick={() => setStep(0)} type="button">
-                  <ArrowLeft aria-hidden="true" />
-                  Alterar
-                </button>
-              </div>
+              )}
 
               <form className="v1-form" onSubmit={handleSubmit}>
                 <div className="v1-field">
@@ -582,7 +694,11 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
                     disabled={isSubmitting}
                     type="submit"
                   >
-                    {isSubmitting ? "Enviando..." : "Solicitar este horário"}
+                    {isSubmitting
+                      ? "Enviando..."
+                      : mode === "suggest"
+                        ? "Enviar sugestão"
+                        : "Solicitar este horário"}
                     {isSubmitting ? null : <ArrowRight aria-hidden="true" />}
                   </button>
                   {error ? (
@@ -591,8 +707,9 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
                     </p>
                   ) : (
                     <p className="v1-form-note" style={{ marginTop: 12 }}>
-                      O horário é confirmado pelo Eli. Você recebe um e-mail agora e o convite assim
-                      que ele confirmar.
+                      {mode === "suggest"
+                        ? "O Eli responde por e-mail confirmando sua sugestão ou propondo o horário mais próximo."
+                        : "O horário é confirmado pelo Eli. Você recebe um e-mail agora e o convite assim que ele confirmar."}
                     </p>
                   )}
                 </div>
@@ -605,9 +722,10 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
               <i aria-hidden="true" className="v1-book-check">
                 <Check />
               </i>
-              <h3 tabIndex={-1}>Pedido enviado.</h3>
+              <h3 tabIndex={-1}>{mode === "suggest" ? "Sugestão enviada." : "Pedido enviado."}</h3>
               <p>
-                Seu pedido para <strong>{whenLabel}</strong> está com o Eli. Enviamos um e-mail para{" "}
+                {mode === "suggest" ? "Sua sugestão para " : "Seu pedido para "}
+                <strong>{whenLabel}</strong> está com o Eli. Enviamos um e-mail para{" "}
                 <strong>{result.email}</strong> com os detalhes.
               </p>
 
@@ -624,8 +742,10 @@ export function AgendarModal({ open, onClose }: { open: boolean; onClose: () => 
                 <li className="is-active">
                   <i aria-hidden="true" />
                   <div>
-                    <strong>Eli confirma o horário</strong>
-                    <span>Você recebe a confirmação neste e-mail.</span>
+                    <strong>
+                      {mode === "suggest" ? "Eli confirma ou propõe um horário" : "Eli confirma o horário"}
+                    </strong>
+                    <span>Você recebe a resposta neste e-mail.</span>
                   </div>
                 </li>
                 <li>
