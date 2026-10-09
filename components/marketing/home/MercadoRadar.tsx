@@ -117,6 +117,7 @@ export function MercadoRadar() {
           </div>
 
           <div className="v1-radar-scope v1-rise v1-rise-2" aria-hidden="true">
+            {/* Sweep wedge and its leading edge (::after), turning over the scope circle. */}
             <div className="v1-radar-cone" style={{ "--sweep": `${SWEEP}s` } as CSSProperties} />
             <svg viewBox="0 0 400 400" className="v1-radar-svg">
               <defs>
@@ -149,11 +150,6 @@ export function MercadoRadar() {
                   />
                 );
               })}
-
-              {/* Leading edge of the sweep; the fading wedge behind it is .v1-radar-cone. */}
-              <g className="v1-radar-sweep" style={{ "--sweep": `${SWEEP}s` } as CSSProperties}>
-                <line className="v1-radar-beam" x1={C} x2={C} y1={C} y2={C - R} />
-              </g>
 
               {FRONTS.map((front, index) => {
                 const { x, y } = polar(front.blip);
